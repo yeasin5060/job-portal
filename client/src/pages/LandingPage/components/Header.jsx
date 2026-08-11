@@ -1,61 +1,113 @@
-import React from 'react'
-import {motion} from "framer-motion";
-import {Briefcase} from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { motion } from "framer-motion";
+import { Briefcase } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-    const isAuthenticated = true;
-    const user = {fullName : "yeasin" , role : "employer"};
-    const nagigate = useNavigate();
+  const isAuthenticated = true;
+  const user = {
+    fullName: "Yeasin",
+    role: "employer",
+  };
+
+  const navigate = useNavigate();
+
   return (
     <motion.header
-        initial = {{opacity : 0 , y: -20}}
-        animate = {{opacity : 1 , y: 0}}
-        transition={{ duration : 0.6}}
-        className='fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100'
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100"
     >
-        <div className='container mx-auto px-4'> 
-            <div className='flex items-center justify-between h-16'>
-                {/* logo */}
-                <div className='flex items-center space-x-3'>
-                    <div className='w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center'>
-                        <Briefcase className='w-5 h-5 text-white'/>
-                    </div>
-                    <span className='text-xl font-bold text-gray-900'>jobportal</span>
-                </div>
-                {/* navigation --link hiddent on mobile */}
-                <nav className='hidden md:flex items-center space-x-8'>
-                    <a className='text-gray-600 hover:text-gray-900 transition-colors font-medium cursor-pointer'  onClick={()=> nagigate('/find-jobs')} > Find Jobs</a>
-                    <a className='text-gray-600 hover:text-gray-900 transition-colors font-medium cursor-pointer' onClick={()=> nagigate( isAuthenticated && user?.role === "employer" ?"/employer-dashboard" : "/login")} > For Employers</a>
-                </nav>
-                {/* Auth Buttons*/}
-                <div className='flex items-center space-x-3'>
-                    {isAuthenticated 
-                        ? 
-                        (<div className='flex items-center space-x-3'>
-                            <spa className = 'text-700'>Welcome , {user.fullName}</spa>
-                            <a className='bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-sm hover:shadow-md' href={user?.role === "employer" ?"/employer-dashboard" : "/find-jobs"}>
-                                Dashboard
-                            </a>
+        <div className="container mx-auto px-4">
+            <div className="flex items-center justify-between h-16">
 
-                        </div>) 
-                        :
-                        ( 
-                            <>
-                                <a className='text-gray-600 hover:text-gray-900 transition-colors font-medium px-4 py-2 rounded-lg hover:bg-gray-500' href='/login'>
-                                    Login
-                                </a>
-                                <a className='bg-gradient-to-r from-blue-600 to-purple-600 text-white  px-6 py-2 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-sm hover:shadow-md' href='/signup'>
-                                    SignUp
-                                </a>
-                            </>
+                {/* Logo */}
+                <div
+                    className="flex items-center space-x-3 cursor-pointer"
+                    onClick={() => navigate("/")}
+                >
+                    <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                        <Briefcase className="w-5 h-5 text-white" />
+                    </div>
+
+                    <span className="text-xl font-bold text-gray-900">
+                        জবপোর্টাল
+                    </span>
+                </div>
+
+                {/* Navigation */}
+                <nav className="hidden md:flex items-center space-x-8">
+
+                    <button
+                    onClick={() => navigate("/find-jobs")}
+                    className="text-gray-600 hover:text-gray-900 transition-colors font-medium"
+                    >
+                        চাকরি খুঁজুন
+                    </button>
+
+                    <button
+                    onClick={() =>
+                        navigate(
+                        isAuthenticated && user?.role === "employer"
+                            ? "/employer-dashboard"
+                            : "/login"
                         )
                     }
+                    className="text-gray-600 hover:text-gray-900 transition-colors font-medium"
+                    >
+                        নিয়োগদাতাদের জন্য
+                    </button>
+
+                </nav>
+
+                {/* Auth Buttons */}
+                <div className="flex items-center space-x-3">
+
+                    {isAuthenticated ? (
+                        <div className="flex items-center space-x-3">
+
+                            <span className="text-gray-700 hidden sm:block">
+                                স্বাগতম, {user.fullName}
+                            </span>
+
+                            <button
+                            onClick={() =>
+                                navigate(
+                                user?.role === "employer"
+                                    ? "/employer-dashboard"
+                                    : "/find-jobs"
+                                )
+                            }
+                            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-sm hover:shadow-md"
+                            >
+                                ড্যাশবোর্ড
+                            </button>
+
+                        </div>
+                    ) : (
+                        <>
+                            <button
+                            onClick={() => navigate("/login")}
+                            className="text-gray-600 hover:text-gray-900 transition-colors font-medium px-4 py-2 rounded-lg hover:bg-gray-100"
+                            >
+                                লগইন
+                            </button>
+
+                            <button
+                            onClick={() => navigate("/signup")}
+                            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-sm hover:shadow-md"
+                            >
+                                নিবন্ধন
+                            </button>
+                        </>
+                    )}
+
                 </div>
             </div>
         </div>
     </motion.header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

@@ -73,3 +73,13 @@ export const CATEGORIES = [
     {value : "Other" , label : "Other"},
 
 ];
+
+export const JOB_TYPES = [
+    {value : "Remote" , label : "Remote"},
+    {value : "Full-Time" , label : "Full-Time"},
+    {value : "Part-Time" , label : "Part-Time" },
+    {value : "Contract" , label : "Contract"},
+    {value : "Internship" , label : "Internship"},
+]
+
+

@@ -45,9 +45,8 @@ const Analytics = () => {
   ];
 
   return (
-    <section className="py-20 bg-white relative overflow-hidden">
+    <section className="pt-20 pb-10 bg-white relative overflow-hidden">
       <div className="container mx-auto px-4">
-
         {/* Section Heading */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

@@ -74,6 +74,27 @@ const Login = () => {
       }}))
     }
   }
+
+  if(formState.success) {
+    return (
+      <div className='min-h-screen flex items-center justify-center bg-gray-50 px-4'>
+        <motion.div
+        initial={{ opacity: 0, scale : 0.9 }}
+        animate={{ opacity: 1, scale : 1}}
+        className='bg-white p-8 ronded-xl shadow-lg max-w-md w-full text-center'
+        >
+
+          <CheckCircle className=' w-16 h-16 text-green-500 mx-auto mb-4'/>
+          <h2 className='text-2xl font-bold text-gray-900 mb-2'>Welcome Back 👋</h2>
+          < p className='text-gray-600 mb-4'> Yuo have been successfully logged in.</p>
+          <div className='w-6 h-6 animate-spin border-2 border-blue-600 border-t-transparent rounded-full mx-auto'/>
+          <p className='text-gray-500 text-sm mt-2'>
+            Redirecting to your dashboard...
+          </p>
+        </motion.div>
+      </div>
+    )
+  }
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-10 bg-gray-50">
 

@@ -19,7 +19,6 @@ const Login = () => {
   });
 
   // validation functions
-
   const validateEmail = (email) => {
     if(!email.trim()) return "Email is required";
 
@@ -75,25 +74,50 @@ const Login = () => {
     }
   }
 
-  if(formState.success) {
+  if (formState.success) {
     return (
-      <div className='min-h-screen flex items-center justify-center bg-gray-50 px-4'>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+
         <motion.div
-        initial={{ opacity: 0, scale : 0.9 }}
-        animate={{ opacity: 1, scale : 1}}
-        className='bg-white p-8 ronded-xl shadow-lg max-w-md w-full text-center'
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-md rounded-2xl border border-gray-100 bg-white p-8 text-center shadow-xl"
         >
 
-          <CheckCircle className=' w-16 h-16 text-green-500 mx-auto mb-4'/>
-          <h2 className='text-2xl font-bold text-gray-900 mb-2'>Welcome Back 👋</h2>
-          < p className='text-gray-600 mb-4'> Yuo have been successfully logged in.</p>
-          <div className='w-6 h-6 animate-spin border-2 border-blue-600 border-t-transparent rounded-full mx-auto'/>
-          <p className='text-gray-500 text-sm mt-2'>
-            Redirecting to your dashboard...
+          {/* সফলতার আইকন */}
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.4 }}
+            className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-green-50"
+          >
+            <CheckCircle className="h-14 w-14 text-green-500" />
+          </motion.div>
+
+          {/* শিরোনাম */}
+          <h2 className="mb-2 text-2xl font-bold text-gray-900">
+            আবারও স্বাগতম! 👋
+          </h2>
+
+          {/* বার্তা */}
+          <p className="mb-6 text-gray-600">
+            আপনি সফলভাবে লগইন করেছেন।
           </p>
+
+          {/* লোডিং */}
+          <div className="flex justify-center">
+            <div className="h-7 w-7 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+          </div>
+
+          <p className="mt-3 text-sm text-gray-500">
+            আপনাকে ড্যাশবোর্ডে নিয়ে যাওয়া হচ্ছে...
+          </p>
+
         </motion.div>
+
       </div>
-    )
+    );
   }
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-10 bg-gray-50">
@@ -107,37 +131,27 @@ const Login = () => {
 
         {/* Header */}
         <div className="text-center mb-8">
-
           {/* Logo */}
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 text-2xl shadow-lg shadow-blue-200">
             💼
           </div>
-
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Welcome Back 👋
+            আবার স্বাগতম! 👋
           </h2>
-
           <p className="text-sm text-gray-500">
             আপনার JobPortal অ্যাকাউন্টে সাইন ইন করুন
           </p>
-
         </div>
-
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
-
           {/* Email */}
           <div>
-
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Email Address
+              ইমেইল ঠিকানা <span className="text-red-500">*</span>
             </label>
-
             <div className="relative">
-
               <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-
               <input
                 type="email"
                 name="email"
@@ -169,29 +183,22 @@ const Login = () => {
 
           </div>
 
-
           {/* Password */}
           <div>
-
             <div className="flex items-center justify-between mb-2">
-
               <label className="text-sm font-semibold text-gray-700">
-                Password
+                 পাসওয়ার্ড <span className="text-red-500">*</span>
               </label>
 
               <a
                 href="/forgot-password"
                 className="text-xs font-medium text-blue-600 hover:text-blue-700"
               >
-                Forgot Password?
+               পাসওয়ার্ড ভুলে গেছেন?
               </a>
-
             </div>
-
             <div className="relative">
-
               <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-
               <input
                 type={formState.showPassword ? "text" : "password"}
                 name="password"
@@ -228,7 +235,6 @@ const Login = () => {
                   <Eye className="h-5 w-5" />
                 )}
               </button>
-
             </div>
 
             {formState.errors.password && (
@@ -239,7 +245,6 @@ const Login = () => {
             )}
 
           </div>
-
 
           {/* Submit Error */}
           {formState.errors.submit && (
@@ -252,7 +257,6 @@ const Login = () => {
 
             </div>
           )}
-
 
           {/* Submit Button */}
           <button
@@ -272,44 +276,35 @@ const Login = () => {
               disabled:hover:translate-y-0
             "
           >
-
             {formState.loading ? (
               <>
                 <Loader className="h-5 w-5 animate-spin" />
-                <span>Signing in...</span>
+                <span>অ্যাকাউন্টে প্রবেশ করা হচ্ছে...</span>
               </>
             ) : (
               <>
-                <span>Sign In</span>
+                <span>সাইন ইন করুন</span>
                 <span>→</span>
               </>
             )}
-
           </button>
-
 
           {/* Divider */}
           <div className="relative py-2">
-
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-200" />
             </div>
-
             <div className="relative flex justify-center">
               <span className="bg-white px-3 text-xs text-gray-400">
                 অথবা
               </span>
             </div>
-
           </div>
-
-
           {/* Sign Up */}
           <div className="text-center">
 
             <p className="text-sm text-gray-600">
               আপনার কি এখনো অ্যাকাউন্ট নেই?{" "}
-
               <a
                 href="/signup"
                 className="font-semibold text-blue-600 transition hover:text-purple-600"

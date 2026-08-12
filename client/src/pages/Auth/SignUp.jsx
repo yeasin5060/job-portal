@@ -241,15 +241,11 @@ const SignUp = () => {
 
           {/* Password */}
           <div>
-
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               পাসওয়ার্ড <span className="text-red-500">*</span>
             </label>
-
             <div className="relative">
-
               <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-
               <input
                 type={formState.showPassword ? "text" : "password"}
                 name="password"
@@ -298,6 +294,162 @@ const SignUp = () => {
 
           </div>
 
+          {/* Avatar Upload - Optional */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              প্রোফাইল ছবি
+              <span className="ml-2 text-xs font-normal text-gray-400">
+                (Optional)
+              </span>
+            </label>
+            <div className="flex items-center gap-4">
+              {/* Avatar Preview */}
+              <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full border-2 border-gray-200 bg-gray-100">
+                {formState.avatarPreview ? (
+                  <img
+                    src={URL.createObjectURL(formState.avatarPreview)}
+                    alt="প্রোফাইল ছবি"
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center text-3xl">
+                    <Users/>
+                  </div>
+                )}
+              </div>
+
+              {/* Upload */}
+              <div>
+                <label
+                  htmlFor="avatar"
+                  className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm font-medium text-gray-700 transition hover:border-blue-500 hover:bg-blue-50 hover:text-blue-600"
+                >
+                  <Upload className=''/>
+                  ছবি নির্বাচন করুন
+                </label>
+
+                <input
+                  id="avatar"
+                  type="file"
+                  name="avatar"
+                  accept="image/png, image/jpeg, image/jpg, image/webp"
+                  className="hidden"
+                  onChange={handleAvatarChange}
+                />
+
+                <p className="mt-2 text-xs text-gray-400">
+                  ছবি না দিলেও অ্যাকাউন্ট তৈরি করতে পারবেন
+                </p>
+              </div>
+            </div>
+          </div>
+          {formState.errors.avatar && (
+            <p className="mt-2 flex items-center gap-1 text-sm text-red-500">
+              <AlertCircle className="h-4 w-4" />
+              {formState.errors.avatar}
+            </p>
+          )}
+
+         {/* Role Selection */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-3">
+              আপনি কে? <span className="text-red-500">*</span>
+            </label>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+              {/* Job Seeker */}
+              <button
+                type="button"
+                onClick={() => handleRoleChange("jobseeker")}
+                className={`
+                  group rounded-xl border-2 p-4 text-left
+                  transition-all duration-200
+                  ${
+                    formData.role === "jobseeker"
+                      ? "border-blue-500 bg-blue-50 text-blue-700 shadow-sm"
+                      : "border-gray-200 bg-gray-50 text-gray-700 hover:border-blue-300 hover:bg-blue-50/50"
+                  }
+                `}
+              >
+                <div className="flex items-start gap-3">
+
+                  <div
+                    className={`
+                      flex h-11 w-11 shrink-0 justify-center rounded-lg
+                      ${
+                        formData.role === "jobseeker"
+                          ? "bg-blue-100 text-blue-600"
+                          : "bg-white text-gray-500"
+                      }
+                    `}
+                  >
+                    <UserCheck className="h-6 w-6" />
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-gray-900">
+                      চাকরিপ্রার্থী
+                    </h4>
+
+                    <p className="mt-1 text-xs leading-5 text-gray-500">
+                      আপনার পছন্দের চাকরির সুযোগ খুঁজুন
+                    </p>
+                  </div>
+                </div>
+              </button>
+
+              {/* Employer */}
+              <button
+                type="button"
+                onClick={() => handleRoleChange("employer")}
+                className={`
+                  group rounded-xl border-2 p-4 text-left
+                  transition-all duration-200
+                  ${
+                    formData.role === "employer"
+                      ? "border-purple-500 bg-purple-50 text-purple-700 shadow-sm"
+                      : "border-gray-200 bg-gray-50 text-gray-700 hover:border-purple-300 hover:bg-purple-50/50"
+                  }
+                `}
+              >
+                <div className="flex items-start gap-3">
+
+                  <div
+                    className={`
+                      flex h-11 w-11 shrink-0  justify-center rounded-lg
+                      ${
+                        formData.role === "employer"
+                          ? "bg-purple-100 text-purple-600"
+                          : "bg-white text-gray-500"
+                      }
+                    `}
+                  >
+                    <Building2 className="h-6 w-6" />
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-gray-900">
+                      নিয়োগকর্তা
+                    </h4>
+
+                    <p className="mt-1 text-xs leading-5 text-gray-500">
+                      যোগ্য প্রার্থী খুঁজে নিয়োগ দিন
+                    </p>
+                  </div>
+
+                </div>
+              </button>
+            </div>
+
+            {/* Role Error */}
+            {formState.errors.role && (
+              <p className="mt-2 flex items-center gap-1 text-sm text-red-500">
+                <AlertCircle className="h-4 w-4" />
+                {formState.errors.role}
+              </p>
+            )}
+          </div>
 
           {/* Submit Error */}
           {formState.errors.submit && (
@@ -310,7 +462,6 @@ const SignUp = () => {
 
             </div>
           )}
-
 
           {/* Submit Button */}
           <button
@@ -345,22 +496,17 @@ const SignUp = () => {
 
           </button>
 
-
           {/* Divider */}
           <div className="relative py-2">
-
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-200" />
             </div>
-
             <div className="relative flex justify-center">
               <span className="bg-white px-3 text-xs text-gray-400">
                 অথবা
               </span>
             </div>
-
           </div>
-
 
           {/* Login Link */}
           <div className="text-center">
@@ -375,11 +521,8 @@ const SignUp = () => {
                 লগইন করুন
               </a>
             </p>
-
           </div>
-
         </form>
-
       </motion.div>
     </div>
   )

@@ -4,6 +4,7 @@ import {
   Users, Mail, Lock, Upload, Eye, EyeOff, Loader, AlertCircle, CheckCircle, UserCheck, Building2
 } from "lucide-react";
 import { useState } from 'react';
+import { validateEmail, validatePassword } from '../../utils/helper';
 
 
 const SignUp = () => {
@@ -35,17 +36,59 @@ const SignUp = () => {
   };
 
   const handleRoleChange = (role) => {
-
+      setFormData(prev => ({...prev, role}));
+      if(formState.errors.role) {
+        setFormState(prev => ({...prev, errors : {...prev.errors, role : ''}}));
+      }
   };
 
   const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
 
-  }
+    if (file) {
+      const error = validateAvatar(file);
+
+      if (error) {
+        setFormState((prev) => ({
+          ...prev,
+          errors: {
+            ...prev.errors,
+            avatar: error,
+          },
+        }));
+        return;
+      }
+
+      setFormData((prev) => ({
+        ...prev,
+        avatar: file,
+      }));
+
+      // Create preview
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        setFormState((prev) => ({
+          ...prev,
+          avatarPreview: e.target.result,
+          errors: {
+            ...prev.errors,
+            avatar: "",
+          },
+        }));
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
 
   const validateForm = () => {
     const errors = {
+      fullName : !formData.fullName ? 'Enter your full name' : '',
       email : validateEmail(formData.email),
-      password : validatePassword(formData.password)
+      password : validatePassword(formData.password),
+      role : !formData.role ? 'Please select a role' : '',
+      avatar : ''
     };
 
     //remove empty errors
@@ -68,7 +111,7 @@ const SignUp = () => {
       
     } catch (error) {
       setFormState(prev => ({...prev , loading : false , errors : {
-        submit : error.response?.data?.message || "Login failed , Please check your credentials"
+        submit : error.response?.data?.message || "Registration failed , Please try again"
       }}))
     }
   }
@@ -76,7 +119,6 @@ const SignUp = () => {
   if (formState.success) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-
         <motion.div
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -113,16 +155,13 @@ const SignUp = () => {
           <p className="mt-3 text-sm text-gray-500">
             আপনাকে ড্যাশবোর্ডে নিয়ে যাওয়া হচ্ছে...
           </p>
-
         </motion.div>
-
       </div>
     );
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-10 bg-gray-50">
-
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -132,38 +171,29 @@ const SignUp = () => {
 
         {/* Header */}
         <div className="text-center mb-8">
-
           {/* Logo */}
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 text-2xl shadow-lg shadow-blue-200">
             💼
           </div>
-
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
             অ্যাকাউন্ট তৈরি করুন 👋
           </h2>
-
           <p className="text-sm text-gray-500 leading-6">
             আপনার ক্যারিয়ারের জন্য সেরা চাকরির সুযোগ খুঁজে পেতে
             JobPortal-এ যোগ দিন।
           </p>
-
         </div>
-
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
 
           {/* Full Name */}
           <div>
-
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               পুরো নাম <span className="text-red-500">*</span>
             </label>
-
             <div className="relative">
-
               <Users className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-
               <input
                 type="text"
                 name="fullName"
@@ -183,30 +213,22 @@ const SignUp = () => {
                   }
                 `}
               />
-
             </div>
-
             {formState.errors.fullName && (
               <p className="mt-2 flex items-center gap-1 text-sm text-red-500">
                 <AlertCircle className="h-4 w-4" />
                 {formState.errors.fullName}
               </p>
             )}
-
           </div>
-
 
           {/* Email */}
           <div>
-
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               ইমেইল ঠিকানা <span className="text-red-500">*</span>
             </label>
-
             <div className="relative">
-
               <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-
               <input
                 type="email"
                 name="email"
@@ -226,18 +248,14 @@ const SignUp = () => {
                   }
                 `}
               />
-
             </div>
-
             {formState.errors.email && (
               <p className="mt-2 flex items-center gap-1 text-sm text-red-500">
                 <AlertCircle className="h-4 w-4" />
                 {formState.errors.email}
               </p>
             )}
-
           </div>
-
 
           {/* Password */}
           <div>
@@ -265,7 +283,6 @@ const SignUp = () => {
                   }
                 `}
               />
-
               <button
                 type="button"
                 onClick={() =>
@@ -284,7 +301,6 @@ const SignUp = () => {
               </button>
 
             </div>
-
             {formState.errors.password && (
               <p className="mt-2 flex items-center gap-1 text-sm text-red-500">
                 <AlertCircle className="h-4 w-4" />
@@ -327,7 +343,6 @@ const SignUp = () => {
                   <Upload className=''/>
                   ছবি নির্বাচন করুন
                 </label>
-
                 <input
                   id="avatar"
                   type="file"
@@ -336,7 +351,6 @@ const SignUp = () => {
                   className="hidden"
                   onChange={handleAvatarChange}
                 />
-
                 <p className="mt-2 text-xs text-gray-400">
                   ছবি না দিলেও অ্যাকাউন্ট তৈরি করতে পারবেন
                 </p>
@@ -355,9 +369,7 @@ const SignUp = () => {
             <label className="block text-sm font-semibold text-gray-700 mb-3">
               আপনি কে? <span className="text-red-500">*</span>
             </label>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
               {/* Job Seeker */}
               <button
                 type="button"
@@ -373,7 +385,6 @@ const SignUp = () => {
                 `}
               >
                 <div className="flex items-start gap-3">
-
                   <div
                     className={`
                       flex h-11 w-11 shrink-0 justify-center rounded-lg
@@ -386,12 +397,10 @@ const SignUp = () => {
                   >
                     <UserCheck className="h-6 w-6" />
                   </div>
-
                   <div>
                     <h4 className="font-semibold text-gray-900">
                       চাকরিপ্রার্থী
                     </h4>
-
                     <p className="mt-1 text-xs leading-5 text-gray-500">
                       আপনার পছন্দের চাকরির সুযোগ খুঁজুন
                     </p>
@@ -414,7 +423,6 @@ const SignUp = () => {
                 `}
               >
                 <div className="flex items-start gap-3">
-
                   <div
                     className={`
                       flex h-11 w-11 shrink-0  justify-center rounded-lg
@@ -427,17 +435,14 @@ const SignUp = () => {
                   >
                     <Building2 className="h-6 w-6" />
                   </div>
-
                   <div>
                     <h4 className="font-semibold text-gray-900">
                       নিয়োগকর্তা
                     </h4>
-
                     <p className="mt-1 text-xs leading-5 text-gray-500">
                       যোগ্য প্রার্থী খুঁজে নিয়োগ দিন
                     </p>
                   </div>
-
                 </div>
               </button>
             </div>
@@ -478,7 +483,7 @@ const SignUp = () => {
               hover:shadow-lg
               disabled:cursor-not-allowed
               disabled:opacity-60
-              disabled:hover:translate-y-0
+              disabled:hover:translate-y-0 cursor-pointer
             "
           >
 

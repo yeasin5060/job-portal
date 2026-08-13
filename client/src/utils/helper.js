@@ -31,3 +31,25 @@ export const validateEmail = (email) => {
 
   return "";
 };
+
+export const validateAvatar = (file) => {
+  if (!file) return ""; // Avatar is optional
+
+  const allowedType = [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+  ];
+
+  if (!allowedType.includes(file.type)) {
+    return "Avatar must be a JPG or PNG file";
+  }
+
+  const maxSize = 5 * 1024 * 1024; // 5MB
+
+  if (file.size > maxSize) {
+    return "Avatar must be less than 5MB";
+  }
+
+  return "";
+};

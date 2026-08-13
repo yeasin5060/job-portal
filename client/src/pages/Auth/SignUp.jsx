@@ -4,7 +4,7 @@ import {
   Users, Mail, Lock, Upload, Eye, EyeOff, Loader, AlertCircle, CheckCircle, UserCheck, Building2
 } from "lucide-react";
 import { useState } from 'react';
-import { validateEmail, validatePassword } from '../../utils/helper';
+import { validateAvatar, validateEmail, validatePassword } from '../../utils/helper';
 
 
 const SignUp = () => {
@@ -43,43 +43,42 @@ const SignUp = () => {
   };
 
   const handleAvatarChange = (e) => {
-    const file = e.target.files[0];
+  const file = e.target.files[0];
 
-    if (file) {
-      const error = validateAvatar(file);
+  if (!file) return;
 
-      if (error) {
-        setFormState((prev) => ({
-          ...prev,
-          errors: {
-            ...prev.errors,
-            avatar: error,
-          },
-        }));
-        return;
-      }
+  const error = validateAvatar(file);
 
-      setFormData((prev) => ({
-        ...prev,
-        avatar: file,
-      }));
+  if (error) {
+    setFormState((prev) => ({
+      ...prev,
+      errors: {
+        ...prev.errors,
+        avatar: error,
+      },
+    }));
+    return;
+  }
 
-      // Create preview
-      const reader = new FileReader();
+  setFormData((prev) => ({
+    ...prev,
+    avatar: file,
+  }));
 
-      reader.onload = (e) => {
-        setFormState((prev) => ({
-          ...prev,
-          avatarPreview: e.target.result,
-          errors: {
-            ...prev.errors,
-            avatar: "",
-          },
-        }));
-      };
+  const reader = new FileReader();
 
-      reader.readAsDataURL(file);
-    }
+  reader.onload = (e) => {
+    setFormState((prev) => ({
+      ...prev,
+      avatarPreview: e.target.result,
+      errors: {
+        ...prev.errors,
+        avatar: "",
+      },
+    }));
+  };
+
+  reader.readAsDataURL(file);
   };
 
   const validateForm = () => {
@@ -323,7 +322,7 @@ const SignUp = () => {
               <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full border-2 border-gray-200 bg-gray-100">
                 {formState.avatarPreview ? (
                   <img
-                    src={URL.createObjectURL(formState.avatarPreview)}
+                    src={formState.avatarPreview}
                     alt="প্রোফাইল ছবি"
                     className="h-full w-full object-cover"
                   />

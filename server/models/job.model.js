@@ -31,10 +31,10 @@ const jobSchema = new mongoose.Schema({
         required : true
     },
     salaryMin : {
-        type : String,
+        type : Number,
     },
     salaryMax : {
-        type : String,
+        type : Number,
     },
     isClosed : {
         type : Boolean, 

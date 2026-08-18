@@ -58,7 +58,8 @@ export const login = async (req , res) => {
             companyName  : user.companyName || '',
             companyDescription : user.companyDescription || '',
             companyLogo : user.companyLogo || '',
-            resume : user.resume || ''
+            resume : user.resume || '',
+            message : "User login successfully"
         });
 
     } catch (error) {

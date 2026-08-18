@@ -1,30 +1,67 @@
-import express from 'express';
-import 'dotenv/config';
-import cors from 'cors';
-import path from 'path'
-import connectDB from './config/db.js';
+import express from "express";
+import "dotenv/config";
+import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
 
-
-
+import connectDB from "./config/db.js";
+import authRouter from "./routes/auth.route.js";
 
 const app = express();
 
-//Database connection
-await connectDB()
+// ===============================
+// __dirname for ES Module
+// ===============================
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-app.use(cors({
-    origin : "*",
-    methods : ["GET" , "POST", "DELETE" , "PUT"],
-    allowedHeaders : ["Content-Type", "Authorization"]
-}));
+// ===============================
+// Database connection
+// ===============================
+await connectDB();
 
+// ===============================
+// Middleware
+// ===============================
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "DELETE", "PUT"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
-//app.use('/uploads' , express.static(path.join(_dirname,'uploads'), {}))
+// Parse JSON
+app.use(express.json());
 
-app.get("/", (req, res) => {res.send("Server is live!");});
+// Parse URL encoded data
+app.use(express.urlencoded({ extended: true }));
 
+// ===============================
+// Static uploads
+// ===============================
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "uploads"))
+);
 
+// ===============================
+// Root route
+// ===============================
+app.get("/", (req, res) => {
+  res.send("Server is live!");
+});
 
-const PORT = process.env.PORT || 5000 ;
+// ===============================
+// Auth routes
+// ===============================
+app.use("/api/auth", authRouter);
 
-app.listen(PORT , ()=> console.log(`Server running on port ${PORT}`))
+// ===============================
+// Server
+// ===============================
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

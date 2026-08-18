@@ -6,6 +6,9 @@ import { User } from '../models/user.model.js';
 // update user profile  {name , avatar , company details}
 export const updateProfile = async(req , res) => {
     try {
+
+        const {name , avatar , companyName , companyDescription , companyLogo , resume} = req.body;
+        
         const user = await User.findById(req.user._id);
 
         if(!user) {

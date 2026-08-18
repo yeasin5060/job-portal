@@ -7,8 +7,8 @@ protect
 
 const router = express.Router();
 
-router.put('/profile' , protect , updateProfile);
-router.delete('/resume' , protect , deleteResume);
+router.put('/update-profile' , protect , updateProfile);
+router.delete('/delete-resume' , protect , deleteResume);
 router.get('/:id', getPublicProfile);
 
 

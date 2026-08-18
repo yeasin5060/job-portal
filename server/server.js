@@ -6,23 +6,18 @@ import { fileURLToPath } from "url";
 
 import connectDB from "./config/db.js";
 import authRouter from "./routes/auth.route.js";
+import userRouter from "./routes/user.route.js";
 
 const app = express();
 
-// ===============================
 // __dirname for ES Module
-// ===============================
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ===============================
 // Database connection
-// ===============================
 await connectDB();
 
-// ===============================
 // Middleware
-// ===============================
 app.use(
   cors({
     origin: "*",
@@ -37,29 +32,23 @@ app.use(express.json());
 // Parse URL encoded data
 app.use(express.urlencoded({ extended: true }));
 
-// ===============================
 // Static uploads
-// ===============================
 app.use(
   "/uploads",
   express.static(path.join(__dirname, "uploads"))
 );
 
-// ===============================
 // Root route
-// ===============================
 app.get("/", (req, res) => {
   res.send("Server is live!");
 });
 
-// ===============================
-// Auth routes
-// ===============================
-app.use("/api/auth", authRouter);
 
-// ===============================
+// All import route
+app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
+
 // Server
-// ===============================
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

@@ -19,7 +19,7 @@ export const createJob = async (req , res) => {
 }
 
 
-export const getJobds = async (req , res) => {
+export const getJobs = async (req , res) => {
 
     const {
         keyword,

@@ -102,7 +102,7 @@ export const getJobById = async (req , res) => {
         const job = await Job.findById(req.params.id).populate("company" , "name companyName companyLogo");
 
         if(!job) {
-            return res.status(404).json({message : "Job not fount"});
+            return res.status(404).json({message : "Job not found"});
         }
 
         let applicationStatus = [];
@@ -133,7 +133,7 @@ export const updateJob = async (req , res) => {
         const job = await Job.findById(req.params.id);
 
         if(!job) {
-            return res.status(404).json({message : "Job not fount"});
+            return res.status(404).json({message : "Job not found"});
         }
 
         if(job.company.toString() !== req.user._id.toString()) {
@@ -156,7 +156,7 @@ export const deleteJob = async (req , res) => {
         const job = await Job.findById(req.params.id);
 
         if(!job) {
-            return res.status(404).json({message : "Job not fount"});
+            return res.status(404).json({message : "Job not found"});
         }
 
          if(job.company.toString() !== req.user._id.toString()) {
@@ -174,7 +174,21 @@ export const deleteJob = async (req , res) => {
 
 export const toggleCloseJob = async (req , res) => {
     try {
-        
+        const job = await Job.findById(req.params.id);
+
+        if(!job) {
+            return res.status(404).json({message : "Job not found"});
+        }
+
+         if(job.company.toString() !== req.user._id.toString()) {
+            return resizeBy.status(403).json({message : "Not authorized to close this job"});
+        }
+
+        job.isClosed = !job.isClosed;
+
+        await job.save();
+
+        res.json({message : "Job market is closed"})
     } catch (error) {
         res.status(500).json({message : error.message});
     }

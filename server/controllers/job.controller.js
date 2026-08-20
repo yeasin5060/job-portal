@@ -97,7 +97,31 @@ export const getJobs = async (req , res) => {
 
 export const getJobById = async (req , res) => {
     try {
-        
+        const {userId} = req.query;
+
+        const job = await Job.findById(req.params.id).populate("company" , "name companyName companyLogo");
+
+        if(!job) {
+            return res.status(404).json({message : "Job not fount"});
+        }
+
+        let applicationStatus = [];
+
+        if(userId) {
+            const application = await Application.findOne({
+                job : job._id,
+                applicant : userId
+            }).select('status');
+
+            if(application) {
+                applicationStatus = application.status;
+            }
+        }
+
+        res.json({
+            ...job.toObject(),
+            applicationStatus
+        });
     } catch (error) {
         res.status(500).json({message : error.message});
     }
@@ -135,8 +159,8 @@ export const getJobsEmployer = async (req , res) => {
         const userId = req.user._id;
         const {role} = req.user;
 
-        if(role !== " employer") {
-            return status(403).json({message : "Access denied"});
+        if(role !== "employer") {
+            return res.status(403).json({message : "Access denied"});
         }
 
         // get all jobs posted by employer

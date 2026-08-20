@@ -130,7 +130,21 @@ export const getJobById = async (req , res) => {
 
 export const updateJob = async (req , res) => {
     try {
-        
+        const job = await Job.findById(req.params.id);
+
+        if(!job) {
+            return res.status(404).json({message : "Job not fount"});
+        }
+
+        if(job.company.toString() !== req.user._id.toString()) {
+            return resizeBy.status(403).json({message : "Not authorized to update this jod"});
+        }
+
+        Object.assign(job , req.body);
+
+        const update = await job.save();
+
+        res.json({message : "Job update successfully" , update});
     } catch (error) {
         res.status(500).json({message : error.message});
     }

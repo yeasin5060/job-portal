@@ -5,9 +5,11 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 import connectDB from "./config/db.js";
+
 import authRouter from "./routes/auth.route.js";
 import userRouter from "./routes/user.route.js";
 import jobRouter from "./routes/job.route.js";
+import applicationRouter from './routes/application.route.js'
 
 const app = express();
 
@@ -49,6 +51,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/jobs", jobRouter);
+app.use("/api/applications", applicationRouter);
 
 // Server
 const PORT = process.env.PORT || 5000;

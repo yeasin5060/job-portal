@@ -1,6 +1,6 @@
 import { Application } from "../models/application.model.js";
 import { Job } from "../models/job.model.js";
-import { SavedJob } from "../models/savedJob.model";
+import { SavedJob } from "../models/savedJob.model.js";
 import { User } from "../models/user.model.js";
 
 // Crate a new job  (Employer Only)
@@ -56,7 +56,7 @@ export const getJobs = async (req , res) => {
     }
     try {
         const jobs = await Job.find(query).populate(
-            'companyName',
+            'company',
             'name companyName companyLogo'
         );
 
@@ -132,7 +132,30 @@ export const toggleCloseJob = async (req , res) => {
 
 export const getJobsEmployer = async (req , res) => {
     try {
-        
+        const userId = req.user._id;
+        const {role} = req.user;
+
+        if(role !== " employer") {
+            return status(403).json({message : "Access denied"});
+        }
+
+        // get all jobs posted by employer
+        const jobs = await Job.find({company : userId}).populate("company" , "name companyName companyLogo").lean(); //lean() makes jobs plain js uobjects so we can add new field
+
+        //count application for eacj job
+        const jobsWithApplicationCount = await Promise.all(
+            jobs.map(async (job) => {
+                const applicatioCount = await Application.countDocuments({
+                    job : job._id
+                });
+                return {
+                    ...job,
+                    applicatioCount,
+                };
+            })
+        );
+
+        res.status(200).json(jobsWithApplicationCount);
     } catch (error) {
         res.status(500).json({message : error.message});
     }

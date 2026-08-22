@@ -63,7 +63,19 @@ export const getApplicantForJob = async (req, res) => {
 
 export const getApplicationById = async (req, res) => {
     try {
-        
+        const app = await Application.findById(req.user.id).populate('job',"title").populate("applicant","name email avatar resume");
+
+        if(!app) {
+            return res.status(404).json({message : "Application not found" , id : req.params.id});
+        }
+
+        const isOwner = app.applicant._id.toString() ===  req.user._id.toString() || app.job.company ===  req.user._id.toString();
+
+        if(!isOwner) {
+            return res.status(404).json({message : "Not authorized to view this application"});
+        }
+
+        res.json(app);
     } catch (error) {
         res.status(500).json({message : error.message});
     }

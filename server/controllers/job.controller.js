@@ -137,7 +137,7 @@ export const updateJob = async (req , res) => {
         }
 
         if(job.company.toString() !== req.user._id.toString()) {
-            return resizeBy.status(403).json({message : "Not authorized to update this job"});
+            return res.status(403).json({message : "Not authorized to update this job"});
         }
 
         Object.assign(job , req.body);
@@ -160,7 +160,7 @@ export const deleteJob = async (req , res) => {
         }
 
          if(job.company.toString() !== req.user._id.toString()) {
-            return resizeBy.status(403).json({message : "Not authorized to delete this job"});
+            return res.status(403).json({message : "Not authorized to delete this job"});
         }
 
         await job.deleteOne();
@@ -181,7 +181,7 @@ export const toggleCloseJob = async (req , res) => {
         }
 
          if(job.company.toString() !== req.user._id.toString()) {
-            return resizeBy.status(403).json({message : "Not authorized to close this job"});
+            return res.status(403).json({message : "Not authorized to close this job"});
         }
 
         job.isClosed = !job.isClosed;

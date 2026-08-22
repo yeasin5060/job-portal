@@ -40,10 +40,22 @@ export const getMyApplications = async (req, res) => {
     }
 }
 
-
+// get all application for a job (Employer)
 export const getApplicantForJob = async (req, res) => {
     try {
-        
+        const job = await Job.findById(req.params.jobId);
+
+        if(!job) {
+            return res.status(404).json({message : "Job not found"});
+        }
+
+        if(job.company.toString() !== req.user._id.toString()) {
+            return res.status(403).json({message : "Not authorized to view application"});
+        }
+
+        const applications = await Application.find({job : req.params.jobId}).populate('job',"title category lication type").populate("applicant","name email avatar resume");
+
+        res.json(applications);
     } catch (error) {
        res.status(500).json({message : error.message});  
     }

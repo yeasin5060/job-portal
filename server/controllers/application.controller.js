@@ -29,10 +29,12 @@ export const applyToJob = async (req, res) => {
     }
 }
 
-
+//get logged-in user's application
 export const getMyApplications = async (req, res) => {
     try {
-        
+        const apps = await Application.find({applicant : req.user._id}).populate('job', 'title company location type').sort({createdAt : -1});
+
+        res.json(apps)
     } catch (error) {
         res.status(500).json({message : error.message});
     }

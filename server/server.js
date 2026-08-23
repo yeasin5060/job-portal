@@ -9,7 +9,9 @@ import connectDB from "./config/db.js";
 import authRouter from "./routes/auth.route.js";
 import userRouter from "./routes/user.route.js";
 import jobRouter from "./routes/job.route.js";
-import applicationRouter from './routes/application.route.js'
+import applicationRouter from './routes/application.route.js';
+import savedJobsRouter from './routes/savedJobs.route.js';
+
 
 const app = express();
 
@@ -52,6 +54,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/jobs", jobRouter);
 app.use("/api/applications", applicationRouter);
+app.use("/api/save-jobs" , savedJobsRouter);
 
 // Server
 const PORT = process.env.PORT || 5000;

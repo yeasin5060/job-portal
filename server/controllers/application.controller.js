@@ -83,7 +83,19 @@ export const getApplicationById = async (req, res) => {
 
 export const updateStatus = async (req, res) => {
     try {
-        
+        const {status} = req.body;
+
+        const app = await Application.findById(req.user.id).populate("job");
+
+        if(!app || app.job.company.toString() !== res.user._id.toString()) {
+            return res.status(403).json({message : "Not Authorized to update this application"});
+        }
+
+        app.status = status;
+
+        await app.sove();
+
+        res.json({message : "Application status apdate", status})
     } catch (error) {
         res.status(500).json({message : error.message}); 
     }

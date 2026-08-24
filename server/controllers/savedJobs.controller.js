@@ -25,7 +25,7 @@ export const unsaveJob = async (req , res) => {
         await SavedJob.findOneAndDelete({job : req.params.jobId , jobseeker : req.user._id});
 
         res.json({message : "Job remove for saved list"});
-        
+
     } catch (error) {
         res.status(500).json({message :  "Failed to remove saved job" , error : error.message});
     }
@@ -33,6 +33,15 @@ export const unsaveJob = async (req , res) => {
 
 export const getMySavedJobs = async (req , res) => {
     try {
+        const savedJobs = await SavedJob.findById({jobseeker : req.user._id}).populate({
+            path : "job",
+            populate : {
+                path : "company",
+                select : "name companyName companyLogo"
+            },
+        });
+
+        res.json(savedJobs);
         
     } catch (error) {
         res.status(500).json({message :"Failed to fetch saved jobs", error : error.message});

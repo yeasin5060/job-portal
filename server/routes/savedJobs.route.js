@@ -6,8 +6,8 @@ import { saveJob, unsaveJob , getMySavedJobs } from '../controllers/savedJobs.co
 const router = express.Router();
 
 router.post('/:jobId', protect , saveJob);
-router.post('/:jobId', protect , unsaveJob);
-router.post('/my', protect , getMySavedJobs);
+router.delete('/:jobId', protect , unsaveJob);
+router.get('/my', protect , getMySavedJobs);
 
 
 export default router;

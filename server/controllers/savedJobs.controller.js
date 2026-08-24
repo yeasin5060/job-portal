@@ -5,7 +5,7 @@ import { SavedJob } from "../models/savedJob.model.js";
 
 export const saveJob = async (req , res) => {
     try {
-        const exists = await SavedJob.findById({job : req.params.jobId , jobseeker : req.user._id});
+        const exists = await SavedJob.findOne({job : req.params.jobId , jobseeker : req.user._id});
 
         if(exists) {
             return res.status(403).json({message : "Job already saved"});
@@ -33,7 +33,7 @@ export const unsaveJob = async (req , res) => {
 
 export const getMySavedJobs = async (req , res) => {
     try {
-        const savedJobs = await SavedJob.findById({jobseeker : req.user._id}).populate({
+        const savedJobs = await SavedJob.find({jobseeker : req.user._id}).populate({
             path : "job",
             populate : {
                 path : "company",

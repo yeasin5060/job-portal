@@ -42,7 +42,7 @@ export const getEmployerAnalytics = async (req , res) => {
 
         const activeJobPrev7 = await Job.countDocuments({
             company : companyId,
-            createdAt : {gte : prev7Days, $lte : last7Days},
+            createdAt : {$gte : prev7Days, $lte : last7Days},
         });
 
         const activeJobTrand = getTrend( activeJobLast7 , activeJobPrev7);

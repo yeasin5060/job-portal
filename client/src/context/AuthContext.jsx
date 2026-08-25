@@ -37,7 +37,13 @@ export const AuthProvider = ({children}) => {
       setLoding(false)
     }
   };
-  const login = (userData , token) => {};
+  const login = (userData , token) => {
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(updateUser));
+
+    setUser(updateUser);
+    setIsAuthenticated(false);
+  };
   const logout = () => {};
   const updateUser = (updateUserData) => {};
 

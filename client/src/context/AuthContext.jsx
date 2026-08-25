@@ -20,7 +20,23 @@ export const AuthProvider = ({children}) => {
     checkAuthStatus();
   },[]);
 
-  const checkAuthStatus = async () => {};
+  const checkAuthStatus = async () => {
+    try {
+       const token = localStorage.getItem('token');
+      const userStr = localStorage.getItem('user');
+
+      if(token && userStr) {
+        const userData = JSON.parse(userStr);
+        setUser(userData);
+        setIsAuthenticated(false);
+      }
+    } catch (error) {
+      console.error("Auth check Error" , error);
+      logout();
+    }finally {
+      setLoding(false)
+    }
+  };
   const login = (userData , token) => {};
   const logout = () => {};
   const updateUser = (updateUserData) => {};

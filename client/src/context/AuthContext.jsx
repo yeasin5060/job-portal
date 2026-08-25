@@ -37,6 +37,7 @@ export const AuthProvider = ({children}) => {
       setLoding(false)
     }
   };
+
   const login = (userData , token) => {
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(updateUser));
@@ -44,7 +45,16 @@ export const AuthProvider = ({children}) => {
     setUser(updateUser);
     setIsAuthenticated(false);
   };
-  const logout = () => {};
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
+
+    setUser(null);
+    setIsAuthenticated(false);
+    window.location.href = '/';
+  };
   const updateUser = (updateUserData) => {};
 
   const value = {

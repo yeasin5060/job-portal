@@ -55,7 +55,11 @@ export const AuthProvider = ({children}) => {
     setIsAuthenticated(false);
     window.location.href = '/';
   };
-  const updateUser = (updateUserData) => {};
+  const updateUser = (updateUserData) => {
+    const newUserData = {...user , ...updateUserData};
+    localStorage.setItem('user', JSON.stringify(newUserData));
+    setUser(newUserData);
+  };
 
   const value = {
     user , loading , isAuthenticated , login , logout, updateUser, checkAuthStatus

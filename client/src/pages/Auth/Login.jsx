@@ -3,8 +3,14 @@ import { motion } from "framer-motion";
 import {
   Mail , Lock, Eye, EyeOff , Loader , AlertCircle , CheckCircle
 } from "lucide-react";
+import axiosInstance from '../../utils/axiosinstance';
+import { API_PATHS } from '../../utils/apiPaths';
+import { useAuth } from '../../context/AuthContext';
 
 const Login = () => {
+
+  const {login , user} = useAuth();
+
   const [formData , setFormData] = useState({
     email : '',
     password : '' , 
@@ -66,7 +72,35 @@ const Login = () => {
     setFormState(prev => ({...prev , loading : true}));
 
     try {
-      
+      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+        email : formData.email,
+        password : formData.password,
+        rememberMe : formData.rememberMe
+      });
+
+      setFormState(prev => ({
+        ...prev,
+        loading : false,
+        success : true,
+        errors : {}
+      }));
+
+      const {token , role} = response.data;
+
+      if(token) {
+        login(response.data , token);
+
+        //redirect based on role
+        setTimeout(() => {
+          window.location.href = role === "employer" ? "/employer-dashboard" : "/find-jobs"
+        },2000);
+      }
+
+       //redirect based on user role
+        setTimeout(() => {
+          const redirectPath = user.role === "employer" ? "/employer-dashboard" : "/find-jobs"
+          window.location.href = redirectPath;
+        },1500);
     } catch (error) {
       setFormState(prev => ({...prev , loading : false , errors : {
         submit : error.response?.data?.message || "Login failed , Please check your credentials"

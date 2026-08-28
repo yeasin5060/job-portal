@@ -30,7 +30,7 @@ export const AuthProvider = ({children}) => {
       if(token && userStr) {
         const userData = JSON.parse(userStr);
         setUser(userData);
-        setIsAuthenticated(false);
+        setIsAuthenticated(true);
       }
     } catch (error) {
       console.error("Auth check Error" , error);
@@ -45,7 +45,7 @@ export const AuthProvider = ({children}) => {
     localStorage.setItem('user', JSON.stringify(userData));
 
     setUser(userData);
-    setIsAuthenticated(false);
+    setIsAuthenticated(true);
   };
 
   const logout = () => {

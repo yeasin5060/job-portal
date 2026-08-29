@@ -30,8 +30,21 @@ const DashboardLayout = ({activeMenu}) => {
             window.removeEventListener("resize" , handleResize);
         }
     },[]);
+
+    useEffect (() => {
+        const handleClickOutside = () => {
+            if(profileDropdownOpen) {
+                setProfileDropdownOpen(false)
+            }
+        }
+
+        document.addEventListener("click" , handleClickOutside);
+        return () => document.removeEventListener("click" , handleClickOutside)
+    },[profileDropdownOpen]);
+
   return (
     <div>DashboardLayout</div>
+    
   )
 }
 

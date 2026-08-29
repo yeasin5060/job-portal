@@ -25,8 +25,11 @@ const EmployerDashboard = () => {
     }
   }
 
+  console.log(dashboardData)
+
   useEffect(()=> {
-    getDashboardOverviwe()
+    getDashboardOverviwe();
+    return () => {};
   },[]);
   return (
     <DashboardLayout activeMenu="employer-dashboard">

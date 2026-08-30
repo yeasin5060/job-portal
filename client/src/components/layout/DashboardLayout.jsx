@@ -4,6 +4,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { NAVIGATION_MENU } from '../../utils/data';
 
+const NavigationItem = ({key , item , isActive , onClick , isCollaspsed}) => {
+    const Icon = item.icon;
+
+    return 
+}
+
 const DashboardLayout = ({activeMenu}) => {
 
     const {user , logout} = useAuth();
@@ -62,7 +68,7 @@ const DashboardLayout = ({activeMenu}) => {
        <div className={`fixed inset-y-0 left-0 z-50 transition-transform duration-300 ${isMobile ? sidebarOpen ? "translate-x-0" : "-translate-x-full" : "translate-x-0"} ${sidebarCollapsed ? "w-16" : "w-64"} bg-white border-r border-gray-200`}>
             <div className='flex items-center h-16 border-b border-gray-200 pl-6'>
                 {
-                    sidebarCollapsed ? (
+                    !sidebarCollapsed ? (
                         <Link className='flex items-center space-x-3' to = "/" >
                             <div className='w-8 h-8 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg flex items-center justify-center'>
                                 <Briefcase className='w-5 h-5 text-white'/>
@@ -77,6 +83,12 @@ const DashboardLayout = ({activeMenu}) => {
                 }
             </div>
             {/* Navigation */}
+
+            <nav className='p-4 space-y-2'>
+                {NAVIGATION_MENU.map((item) => (
+                    <NavigationItem key ={item.id} item = {item} isActive = {activeNavItem === item.id} onclick = {handleNavigation} isCollaspsed = {sidebarCollapsed} />
+                ))}
+            </nav>
 
             {/* Logout */}
             <div className='absolute left-4 right-4 bottom-4'>

@@ -13,7 +13,7 @@ const NavigationItem = ({ item , isActive , onClick , isCollaspsed}) => {
         </button>
 }
 
-const DashboardLayout = ({activeMenu}) => {
+const DashboardLayout = ({activeMenu , children}) => {
 
     const {user , logout} = useAuth();
     const navigate = useNavigate();
@@ -76,7 +76,7 @@ const DashboardLayout = ({activeMenu}) => {
                             <div className='w-8 h-8 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg flex items-center justify-center'>
                                 <Briefcase className='w-5 h-5 text-white'/>
                             </div>
-                            <span className='text-xl font-bold text-gray-900'>Jobprotal</span>
+                            <span className='text-xl font-bold text-gray-900'> জবপোর্টাল</span>
                         </Link>
                     ) : (
                         <div className='w-8 h-8 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg flex items-center justify-center'>
@@ -100,6 +100,42 @@ const DashboardLayout = ({activeMenu}) => {
                     {!sidebarCollapsed && <span className='ml-3'>Logout</span>}
                 </button>
             </div>
+       </div>
+       {/* mobile overlay */}
+       {isMobile && sidebarOpen && (
+        <div className='fixed inset-0 bg-black bg-opacity-25 z-40 backdrop-blur-sm' onClick={() => setSidebarOpne(false)}>
+
+        </div>
+       )}
+
+       {/* main content */}
+       <div className={`flex-1 flex flex-col transition-all duration-300 ${isMobile ? "ml-0" : sidebarCollapsed ? "ml-16" : "ml-64"}`}>
+            {/* top navbar */}
+            <header className='bg-white/80 backdrop-blur-sm border-b border-gray-200 h-16 flex items-center justify-between px-3 sticky top-0 z-30'>
+                <div className='flex items-center space-x-4'>
+                    {
+                        isMobile && (
+                            <button className='p-2 rounded-xl hover:bg-gray-100 transition-colors duration-200' onClick={toggleSidebar}>
+                                {sidebarOpen ? (<X className='h-5 w-5 text-gray-600'/>) : (<Menu className='h-5 w-5 text-gray-600'/>)}
+                            </button>
+                        )
+                    }
+                    <div>
+                        <h1 className='text-base font-semibold text-gray-900'>
+                            আবারও স্বাগতম!
+                        </h1>
+                        <p className='text-sm text-gray-500 hidden sm:block'>
+                            আজ আপনার চাকরি সংক্রান্ত কী ঘটছে, তা এখানে দেখতে পারবেন।
+                        </p>
+                    </div>
+                </div>
+                {/* profile dropdown */}
+                <div className='flex items-center space-x-3'>
+
+                </div>
+            </header>
+            {/* main content area */}
+            <main className='flex-1 overflow-auto p-6'>{children}</main>
        </div>
     </div>
 

@@ -4,10 +4,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { NAVIGATION_MENU } from '../../utils/data';
 
-const NavigationItem = ({key , item , isActive , onClick , isCollaspsed}) => {
+const NavigationItem = ({ item , isActive , onClick , isCollaspsed}) => {
     const Icon = item.icon;
 
-    return 
+    return <button className={`w-full flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 group ${isActive ? "bg-blue-50 text-blue-700 shadow-sm shadow-blue-50 " : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"} `}  onClick={()=> onClick(item.id)}>
+            <Icon className ={`w-5 h-5 flex shrink-0 ${isActive ? "text-blue-600" : "text-gray-500"}`}/>
+            {!isCollaspsed && <span className='ml-3 truncate'>{item.name}</span>}
+        </button>
 }
 
 const DashboardLayout = ({activeMenu}) => {

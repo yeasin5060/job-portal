@@ -6,9 +6,36 @@ import axiosInstance from '../../utils/axiosinstance';
 import { API_PATHS } from '../../utils/apiPaths';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import JobDashboardCard from '../../components/Cards/JobDashboardCard';
 
-const Card = ({className , children}) => {
-  return <>Card</>
+const Card = ({className , children , title , headerAction, subtitle}) => {
+  return (
+    <div className= {`bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200 ${className}`}>
+
+      {
+        (title || headerAction) && (
+          <div className='flex items-center justify-between p-6 pb-4'>
+            <div>
+              {
+                title && (
+                  <h3 className='text-lg font-semibold text-gray-900'>{title}</h3>
+                )
+              }
+              {
+                subtitle && (
+                  <p className='text-sm text-gray-500 mt-1'>{subtitle}</p>
+                )
+              }
+            </div>
+            {headerAction}
+          </div>
+        )
+      }
+      <div className={`${title ? "px-4 pb-6" : "p-6"}`}>
+        {children}
+      </div>
+    </div>
+  )
 }
 
 const StatCard = ({tilte , value , icon : Icon , trend , trendValue , color = "blue"}) => {
@@ -60,6 +87,7 @@ const EmployerDashboard = () => {
   }
 
 
+
   useEffect(()=> {
     getDashboardOverviwe();
     return () => {};
@@ -68,7 +96,8 @@ const EmployerDashboard = () => {
     <DashboardLayout activeMenu="employer-dashboard">
         {
           isLoading ? (<LoadingSpinner/>) : ( 
-          <div className='max-w-7xl mx-auto space-y-8'>
+          <div className='max-w-7xl mx-auto space-y-8 mb-96'>
+            {/*Dashboard Stats */}
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
               <StatCard 
                 tilte = "Active Jobs"
@@ -78,6 +107,44 @@ const EmployerDashboard = () => {
                 trendValue = {`${dashboardData?.counts?.trends?.activeJobs || 0}%`}
                 color = "blue"
               />
+
+              <StatCard 
+                tilte = "Total Applicants"
+                value = {dashboardData?.counts?.totalApplications || 0 }
+                icon = {Users}
+                trend = {true}
+                trendValue = {`${dashboardData?.counts?.trends?.totalApplicants || 0}%`}
+                color = "green"
+              />
+
+              <StatCard 
+                tilte = "Hired"
+                value = {dashboardData?.counts?.totalHired || 0 }
+                icon = {CheckCircle2}
+                trend = {true}
+                trendValue = {`${dashboardData?.counts?.trends?.totalHired || 0}%`}
+                color = "purple"
+              />
+
+            </div>
+
+            {/*Recent Activity */}
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+              <Card
+                title = "Recent Jobs Posts" 
+                subtitle= "Your latest job postings"
+                headerAction={
+                  <button className='text-sm text-blue-600 hover:text-blue-700 font-medium' onClick={() => navigate("/manage-jobs")}>
+                    View All
+                  </button>
+                }
+              >
+                <div className='space-y-3'>
+                  {dashboardData?.data?.recentJobs?.slice(0 ,3)?.map((job , index)=> (
+                    <JobDashboardCard key = {index}  job = {job}/>
+                  ))}
+                </div>
+              </Card>
             </div>
           </div>
           )

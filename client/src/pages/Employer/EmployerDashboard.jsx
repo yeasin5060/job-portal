@@ -86,6 +86,7 @@ const EmployerDashboard = () => {
     }
   }
 
+  console.log(dashboardData);
   
 
   useEffect(()=> {
@@ -142,6 +143,26 @@ const EmployerDashboard = () => {
                 <div className='space-y-3'>
                   {dashboardData?.data?.recendJobs?.slice(0, 3)?.map((job , index)=> (
                     <JobDashboardCard key = {index}  job = {job}/>
+                  ))}
+                </div>
+              </Card>
+               <Card
+                title = "Recent Applications" 
+                subtitle= "Latest candidate applications "
+                headerAction={
+                  <button className='text-sm text-blue-600 hover:text-blue-700 font-medium' onClick={() => navigate("/manage-jobs")}>
+                    View All
+                  </button>
+                }
+              >
+                <div className='space-y-3'>
+                  {dashboardData?.data?.recentApllications?.slice(0, 3)?.map((data , index)=> (
+                    <ApplicantDashboardCard 
+                      key = {index}
+                      applicant = {data.applicant || ""}
+                      position = {data?.job?.title || ""}
+                      time = {moment(data?.updatedAt).fromNow()}
+                    />
                   ))}
                 </div>
               </Card>

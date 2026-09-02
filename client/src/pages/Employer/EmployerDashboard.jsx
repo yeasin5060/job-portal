@@ -86,7 +86,7 @@ const EmployerDashboard = () => {
     }
   }
 
-
+  
 
   useEffect(()=> {
     getDashboardOverviwe();
@@ -140,7 +140,7 @@ const EmployerDashboard = () => {
                 }
               >
                 <div className='space-y-3'>
-                  {dashboardData?.data?.recentJobs?.slice(0 ,3)?.map((job , index)=> (
+                  {dashboardData?.data?.recendJobs?.slice(0, 3)?.map((job , index)=> (
                     <JobDashboardCard key = {index}  job = {job}/>
                   ))}
                 </div>

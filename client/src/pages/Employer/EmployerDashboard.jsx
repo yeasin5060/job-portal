@@ -7,6 +7,7 @@ import { API_PATHS } from '../../utils/apiPaths';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import JobDashboardCard from '../../components/Cards/JobDashboardCard';
+import ApplicantDashboardCard from '../../components/Cards/ApplicantDashboardCard ';
 
 const Card = ({className , children , title , headerAction, subtitle}) => {
   return (
@@ -157,7 +158,7 @@ const EmployerDashboard = () => {
               >
                 <div className='space-y-3'>
                   {dashboardData?.data?.recentApllications?.slice(0, 3)?.map((data , index)=> (
-                    <ApplicantDashboardCard 
+                    <ApplicantDashboardCard
                       key = {index}
                       applicant = {data.applicant || ""}
                       position = {data?.job?.title || ""}

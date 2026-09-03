@@ -133,8 +133,8 @@ const EmployerDashboard = () => {
             {/*Recent Activity */}
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
               <Card
-                title = "Recent Jobs Posts" 
-                subtitle= "Your latest job postings"
+                title = "সাম্প্রতিক চাকরির বিজ্ঞপ্তি" 
+                subtitle= "আপনার সাম্প্রতিক চাকরির বিজ্ঞপ্তিগুলো"
                 headerAction={
                   <button className='text-sm text-blue-600 hover:text-blue-700 font-medium' onClick={() => navigate("/manage-jobs")}>
                     View All
@@ -148,8 +148,8 @@ const EmployerDashboard = () => {
                 </div>
               </Card>
                <Card
-                title = "Recent Applications" 
-                subtitle= "Latest candidate applications "
+                title = "সাম্প্রতিক আবেদনসমূহ" 
+                subtitle= "প্রার্থীদের সর্বশেষ আবেদনপত্র"
                 headerAction={
                   <button className='text-sm text-blue-600 hover:text-blue-700 font-medium' onClick={() => navigate("/manage-jobs")}>
                     View All
@@ -178,19 +178,19 @@ const EmployerDashboard = () => {
                 {
                   [
                     {
-                      title : "Pot Now Job",
+                      title : "চাকরি পোস্ট করুন",
                       icon : Plus,
                       color : "bg-blue-50 text-blue-700",
                       path : "/post-job"
                     },
                     {
-                      title : "Review Applications",
+                      title : "আবেদন পর্যালোচনা করুন",
                       icon : Users,
                       color : "bg-green-50 text-green-700",
                       path : "/manage-jobs"
                     },
                     {
-                      title : "Company setting",
+                      title : "কোম্পানির সেটিংস",
                       icon : Building2,
                       color : "bg-orange-50 text-orange-700",
                       path : "/company-profile"

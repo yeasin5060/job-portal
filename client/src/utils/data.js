@@ -84,7 +84,7 @@ export const NAVIGATION_MENU = [
   },
   {
     id: "manage-jobs",
-    name: "চাকরি পরিচালনা",
+    name: "আবেদন পর্যালোচনা করুন",
     icon: Briefcase,
   },
   {

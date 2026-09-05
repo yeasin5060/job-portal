@@ -28,7 +28,17 @@ const JobPostingForm = () => {
   const [isSubmitting , setIsSubmitting] = useState(false);
   const [isPreview , setIsPreview] = useState(false);
 
-  const handleInputChange = (field , value) => {};
+  const handleInputChange = (field , value) => {
+    setFormData((prev) => ({
+      ...prev , [field] : value
+    }));
+
+    if(errors[field]) {
+      setErros((prev) => ({
+        ...prev , [field] : ""
+      }));
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();

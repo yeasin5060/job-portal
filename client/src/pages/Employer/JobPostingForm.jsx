@@ -5,7 +5,7 @@ import { CATEGORIES , JOB_TYPES } from "../../utils/data"
 import toast from 'react-hot-toast'
 import DashboardLayout from "../../components/layout/DashboardLayout"
 import { useState } from "react"
-import { Briefcase, Eye } from "lucide-react"
+import { Briefcase, Eye, MapPin } from "lucide-react"
 import InputField from "../../components/input/InputField"
 
 const JobPostingForm = () => {
@@ -80,14 +80,34 @@ const JobPostingForm = () => {
             <div className="space-y-6">
               <InputField
                 label = "Job Title" 
-                id = "JobTitle"
+                id = "jobTitle"
                 placeholder = "e.g., Senior Frondend Developer"
                 value = {formData.jobTitle}
-                onChange = {(e) => handleInputChange("JobTitle" , e.target.value)}
+                onChange = {(e) => handleInputChange("jobTitle" , e.target.value)}
                 error = {errors.jobTitle}
                 required 
                 icon = {Briefcase}
               />
+
+              {/*Location & Remote */}
+              <div className="space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-end sm:space-x-4 space-y-4 sm:space-y-0">
+                  <div className="flex-1">
+                    <InputField
+                      label = "Location" 
+                      id = "location"
+                      placeholder = "e.g., Dhaka"
+                      value = {formData.location}
+                      onChange = {(e) => handleInputChange("location" , e.target.value)}
+                      error = {errors.location}
+                      required 
+                      icon = {MapPin}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/*Location & Remote */}
             </div>
           </div>
         </div>

@@ -5,8 +5,9 @@ import { CATEGORIES , JOB_TYPES } from "../../utils/data"
 import toast from 'react-hot-toast'
 import DashboardLayout from "../../components/layout/DashboardLayout"
 import { useState } from "react"
-import { Briefcase, Eye, MapPin } from "lucide-react"
+import { Briefcase, Eye, MapPin, Users } from "lucide-react"
 import InputField from "../../components/input/InputField"
+import SelectField from "../../components/input/SelectField"
 
 const JobPostingForm = () => {
   const navigate = useNavigate();
@@ -107,7 +108,31 @@ const JobPostingForm = () => {
                 </div>
               </div>
 
-              {/*Location & Remote */}
+              {/*Category & Job type */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <SelectField
+                  label = "Category" 
+                  id = "category"
+                  value = {formData.category}
+                  placeholder = "Select a category"
+                  onChange = {(e) => handleInputChange("category" , e.target.value)}
+                  options = {CATEGORIES}
+                  error = {errors.category}
+                  required 
+                  icon = {Users}
+                />
+                <SelectField
+                  label = "Job Type" 
+                  id = "jobType"
+                  value = {formData.jobType}
+                  placeholder = "Select a category"
+                  onChange = {(e) => handleInputChange("jobType" , e.target.value)}
+                  options = {JOB_TYPES}
+                  error = {errors.jobType}
+                  required 
+                  icon = {Briefcase}
+                />
+              </div>
             </div>
           </div>
         </div>

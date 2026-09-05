@@ -5,7 +5,8 @@ import { CATEGORIES , JOB_TYPES } from "../../utils/data"
 import toast from 'react-hot-toast'
 import DashboardLayout from "../../components/layout/DashboardLayout"
 import { useState } from "react"
-import { Eye } from "lucide-react"
+import { Briefcase, Eye } from "lucide-react"
+import InputField from "../../components/input/InputField"
 
 const JobPostingForm = () => {
   const navigate = useNavigate();
@@ -66,7 +67,18 @@ const JobPostingForm = () => {
                 </button>
               </div>
             </div>
-            <div className="space-y-6"></div>
+            <div className="space-y-6">
+              <InputField
+                label = "Job Title" 
+                id = "JobTitle"
+                placeholder = "e.g., Senior Frondend Developer"
+                value = {formData.jobTitle}
+                onChange = {(e) => handleInputChange("JobTitle" , e.target.value)}
+                error = {errors.jobTitle}
+                required 
+                icon = {Briefcase}
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -98,47 +98,47 @@ export const NAVIGATION_MENU = [
 export const CATEGORIES = [
   {
     value: "Engineering",
-    label: "ইঞ্জিনিয়ারিং",
+    label: "Engineering",
   },
   {
     value: "Design",
-    label: "ডিজাইন",
+    label: "Design",
   },
   {
     value: "Marketing",
-    label: "মার্কেটিং",
+    label: "Marketing",
   },
   {
     value: "Sales",
-    label: "সেলস",
+    label: "Sales",
   },
   {
     value: "IT & Software",
-    label: "আইটি ও সফটওয়্যার",
+    label: "IT & Software",
   },
   {
     value: "Customer-Service",
-    label: "কাস্টমার সার্ভিস",
+    label: "Customer-Service",
   },
   {
     value: "Product",
-    label: "প্রোডাক্ট",
+    label: "Product",
   },
   {
     value: "Operations",
-    label: "অপারেশনস",
+    label: "Operations",
   },
   {
     value: "Finance",
-    label: "ফাইন্যান্স",
+    label: "Finance",
   },
   {
     value: "HR",
-    label: "হিউম্যান রিসোর্স",
+    label: "HR",
   },
   {
     value: "Other",
-    label: "অন্যান্য",
+    label: "Other",
   },
 ];
 
@@ -146,23 +146,23 @@ export const CATEGORIES = [
 export const JOB_TYPES = [
   {
     value: "Remote",
-    label: "রিমোট",
+    label: "Remote",
   },
   {
     value: "Full-Time",
-    label: "ফুল-টাইম",
+    label: "Full-Time",
   },
   {
     value: "Part-Time",
-    label: "পার্ট-টাইম",
+    label: "Part-Time",
   },
   {
     value: "Contract",
-    label: "চুক্তিভিত্তিক",
+    label: "Contract",
   },
   {
     value: "Internship",
-    label: "ইন্টার্নশিপ",
+    label: "Internship",
   },
 ];
 

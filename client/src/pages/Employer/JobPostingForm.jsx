@@ -8,6 +8,7 @@ import { useState } from "react"
 import { Briefcase, Eye, MapPin, Users } from "lucide-react"
 import InputField from "../../components/input/InputField"
 import SelectField from "../../components/input/SelectField"
+import TexrareaField from "../../components/input/TexrareaField"
 
 const JobPostingForm = () => {
   const navigate = useNavigate();
@@ -142,7 +143,7 @@ const JobPostingForm = () => {
                 value = {formData.description}
                 onChange = {(e) => handleInputChange("description" , e.target.value)}
                 error = {errors.description}
-                helperTex = "Include key responsibilities, day-to-day tasks, and what makes this role existing."
+                helperText = "Include key responsibilities, day-to-day tasks, and what makes this role existing."
                 required 
               />
 
@@ -154,7 +155,7 @@ const JobPostingForm = () => {
                 value = {formData.requirements}
                 onChange = {(e) => handleInputChange("requirements" , e.target.value)}
                 error = {errors.requirements}
-                helperTex = "Include required skills.Expreience level, education, and any preferred qualifications."
+                helperText = "Include required skills.Expreience level, education, and any preferred qualifications."
                 required 
               />
             </div>

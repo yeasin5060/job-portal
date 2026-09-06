@@ -34,7 +34,7 @@ const InputField = ({label , id , type = "text" , placeholder, value , helperTex
         }
         {
             helperText && !error && (
-                <p className="">{helperText}</p>
+                <p className="text-sm text-gray-500">{helperText}</p>
             )
         }
     </div>

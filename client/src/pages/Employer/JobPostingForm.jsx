@@ -133,6 +133,30 @@ const JobPostingForm = () => {
                   icon = {Briefcase}
                 />
               </div>
+
+              {/*Description */}
+              <TexrareaField
+                label = "Job Description" 
+                id = "description"
+                placeholder = "Describe the role and reaponsibilities..."
+                value = {formData.description}
+                onChange = {(e) => handleInputChange("description" , e.target.value)}
+                error = {errors.description}
+                helperTex = "Include key responsibilities, day-to-day tasks, and what makes this role existing."
+                required 
+              />
+
+              {/*Requirements */}
+              <TexrareaField
+                label = "Requirements" 
+                id = "requirements"
+                placeholder = "List key qualifications and skill.."
+                value = {formData.requirements}
+                onChange = {(e) => handleInputChange("requirements" , e.target.value)}
+                error = {errors.requirements}
+                helperTex = "Include required skills.Expreience level, education, and any preferred qualifications."
+                required 
+              />
             </div>
           </div>
         </div>

@@ -5,10 +5,12 @@ import { CATEGORIES , JOB_TYPES } from "../../utils/data"
 import toast from 'react-hot-toast'
 import DashboardLayout from "../../components/layout/DashboardLayout"
 import { useState } from "react"
-import { Briefcase, DollarSign, Eye, MapPin, Users, AlertCircle, Send } from "lucide-react"
+import { Briefcase, Eye, MapPin, Users, AlertCircle, Send } from "lucide-react"
 import InputField from "../../components/input/InputField"
 import SelectField from "../../components/input/SelectField"
 import TexrareaField from "../../components/input/TexrareaField"
+import JobPostingPreview from "../../components/Cards/JobPostingPreview"
+import { TbCurrencyTaka } from "react-icons/tb";
 
 const JobPostingForm = () => {
   const navigate = useNavigate();
@@ -137,11 +139,13 @@ const JobPostingForm = () => {
     const validationErrors = validateForm(formData);
     return Object.keys(validationErrors).length === 0 ;
   }
+  console.log(formData);
+  
 
   if(isPreview) {
     return (
       <DashboardLayout activeMenu="post-job">
-        
+        <JobPostingPreview formData = {formData} setIsPreview = {setIsPreview} />
       </DashboardLayout>
     )
   }
@@ -255,7 +259,7 @@ const JobPostingForm = () => {
                 <div className="grid grid-cols-2 gap-3">
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 z-10 flex items-center pl-3 pointer-events-none">
-                      <DollarSign className="w-5 h-5 text-gray-400"/>
+                      <TbCurrencyTaka className="w-5 h-5 text-gray-400"/>
                     </div>
                     <input 
                       type="number"
@@ -268,7 +272,7 @@ const JobPostingForm = () => {
                   </div>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 z-10 flex items-center pl-3 pointer-events-none">
-                      <DollarSign className="w-5 h-5 text-gray-400"/>
+                      <TbCurrencyTaka className="w-5 h-5 text-gray-400"/>
                     </div>
                     <input 
                       type="number"

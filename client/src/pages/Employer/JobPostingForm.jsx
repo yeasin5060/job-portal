@@ -44,6 +44,61 @@ const JobPostingForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validateForm(formData);
+    if(Object.keys(validationErrors).length > 0) {
+      setErros(validationErrors);
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    const jobPayload = {
+      title : formData.jobTitle,
+      description : formData.description,
+      requirements : formData.requirements,
+      location : formData.location,
+      type : formData.jobType,
+      category : formData.category,
+      salaryMin : formData.salaryMin,
+      salaryMax : formData.salaryMax
+    }
+
+    try {
+      const response = jobId ? await axiosInstance.post(API_PATHS.JOBS.UPDATE_JOB(jobId), jobPayload) :  await axiosInstance.post(API_PATHS.JOBS.POST_JOB, jobPayload);
+
+      if(response.status === 200 || response.status === 201) {
+        toast.success(jobId ? "Job update successfully" : "Job posted successfully");
+
+        setFormData({
+          jobTitle : "",
+          location : "",
+          category : "",
+          jobType : "",
+          description : "",
+          requirements : "",
+          salaryMin : "",
+          salaryMax : ""
+        });
+
+        navigate("/employer-dashboard")
+        return;
+      }
+
+      console.error("Unexpected response", response)
+      toast.error("Something is wrong. please try again");
+
+    } catch (error) {
+      if(error.response?.data?.message) {
+        console.error("API ERROR", error.response.data.message);
+        toast.error(error.response.data.message)
+      }else {
+        console.error("Unexpected error:", error);
+        toast.error("Faild to post/update job. please try again")
+      }
+    }finally {
+      setIsSubmitting(false)
+    }
   }
 
   //Form validation halper
@@ -81,6 +136,14 @@ const JobPostingForm = () => {
   const isFormValid = () => {
     const validationErrors = validateForm(formData);
     return Object.keys(validationErrors).length === 0 ;
+  }
+
+  if(isPreview) {
+    return (
+      <DashboardLayout activeMenu="post-job">
+        
+      </DashboardLayout>
+    )
   }
 
   return (
@@ -198,7 +261,7 @@ const JobPostingForm = () => {
                       type="number"
                       placeholder="Min"
                       value={formData.salaryMin}
-                      onChange={(e) => handleInputChange(e.target.value)}
+                      onChange={(e)=> handleInputChange("salaryMin", e.target.value)}
                       className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg text-base focus:outline-none focus:ring-2
                       focus:ring-blue-500 focus:ring-opacity-20 focus:border-blue-500 transition-colors duration-200 "
                     />
@@ -211,7 +274,7 @@ const JobPostingForm = () => {
                       type="number"
                       placeholder="Max"
                       value={formData.salaryMax}
-                      onChange={(e) => handleInputChange(e.target.value)}
+                      onChange={(e) => handleInputChange("salaryMax", e.target.value)}
                       className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg text-base focus:outline-none focus:ring-2
                       focus:ring-blue-500 focus:ring-opacity-20 focus:border-blue-500 transition-colors duration-200"
                     />
@@ -227,8 +290,8 @@ const JobPostingForm = () => {
               </div>
               <div className="pt-2">
                 <button
-                  onClick={() => handleSubmit()}
-                  disabled = {isSubmitting || !isFormValid()}
+                  onClick={handleSubmit}
+                  disabled={isSubmitting || !isFormValid()}
                   className="w-full flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 
                 disabled:cursor-not-allowed outline-none transition-colors duration-200"
                 >

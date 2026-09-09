@@ -46,7 +46,32 @@ const ManageJobs = () => {
 
   const sortIcon = ({field}) => {};
 
-  const LoadingRow = () => <></>;
+  const LoadingRow = () => (
+    <tr className='animate-spin'>
+      <td className='px-6 py-4'>
+        <div className='flex items-center space-x-3'>
+          <div className='w-10 h-10 bg-gray-100 rounded-full'></div>
+          <div className='space-y-2'>
+            <div className='h-4 w-32 rounded bg-gray-200'></div>
+            <div className='h-3 w-24 rounded bg-gray-200'></div>
+          </div>
+        </div>
+      </td>
+      <td className='px-6 py-4'>
+        <div className='h-4 w-16 rounded-full bg-gray-200'></div>
+      </td>
+       <td className='px-6 py-4'>
+        <div className='h-4 w-12 rounded bg-gray-200'></div>
+      </td>
+       <td className='px-6 py-2'>
+        <div className='flex space-x-2'>
+          <div className='h-8 w-16 rounded bg-gray-200'></div>
+          <div className='h-8 w-16 rounded bg-gray-200'></div>
+          <div className='h-8 w-16 rounded bg-gray-200'></div>
+        </div>
+      </td>
+    </tr>
+  );
 
   const getPostedJobs = async (disableLoder) => {
     setIsLoading(!disableLoder);

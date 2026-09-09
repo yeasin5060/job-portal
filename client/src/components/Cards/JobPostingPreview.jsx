@@ -24,6 +24,8 @@ const JobPostingPreview = ({formData , setIsPreview}) => {
 
           {/*Main content card */}
           <div className="">
+
+            {/*Hero section */}
             <div className="relative bg-white px-0 pb-8 mt-8 border-b border-gray-100">
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-0">
@@ -67,6 +69,44 @@ const JobPostingPreview = ({formData , setIsPreview}) => {
                   <div className="flex items-center space-x-1 px-4 py-1 bg-gray-50 text-sm text-gray-700 font-semibold rounded-full border border-gray-200">
                     <Clock className="w-4 h-4"/>
                     <span>Posted today</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/*content section */}
+            <div className="px-0 pb-8 space-y-8">
+              <div className="relative overflow-hidden bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-100 p-6 rounded-2xl">
+                <div className="absolute top-0 right-0 h-32 w-32 bg-gradient-to-br from-emerald-400/10 to-teal-400/10 rounded-full -translate-y-16 translate-x-16"></div>
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className="p-3 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl">
+                        <TbCurrencyTaka className="h-4 md:h-6 w-4 md:w-6 text-white"/>
+                      </div>
+                      <div className="">
+                        <h3 className="text-sm font-semibold text-gray-900 mb-1">
+                          Compensation
+                        </h3>
+                        <div className="text-sm md:text-lg font-bold text-gray-900">
+                          {
+                            currencies.map((c) => c.value === formData.currency)?.label
+                          }
+                          {formData.salaryMin.toLocaleString()} -{""}
+                          {
+                            currencies.map((c) => c.value === formData.currency)?.label
+                          }
+                          {formData.salaryMax.toLocaleString()}
+                          <span className="text-sm md:text-lg font-normal text-gray-600 ml-1">
+                            per year
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="hidden md:flex items-center space-x-2 text-sm text-emerald-700 bg-emerald-100 px-3 pt-1 rounded-full">
+                      <Users className="h-4 w-4"/>
+                      <span>Conpetitive</span>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -15,7 +15,7 @@ const ManageJobs = () => {
   const [statusFilter , setStatusFilter] = useState("All");
   const [currentPage , setCurrentPage] = useState(1);
   const [sortField , setSortField] = useState("title");
-  const [sortDescription , setDescription] = useState("asc");
+  const [sortDirection , setSortDirection] = useState("asc");
   const [isLoading , setIsLoading] = useState(false);
 
   const itemsPerPage = 8;
@@ -28,7 +28,7 @@ const ManageJobs = () => {
     let filtered = [];
 
     return filtered;
-  }, [jobs , searchTerm , sortDescription , sortField , statusFilter]);
+  }, [jobs , searchTerm , sortDirection , sortField , statusFilter]);
 
   //pagination
   const totalPages = Math.ceil(filterAndSortJobs.length / itemsPerPage);
@@ -38,13 +38,20 @@ const ManageJobs = () => {
     startIndex + itemsPerPage
   );
 
-  const handleSort = (field) => {};
+  const handleSort = (field) => {
+    if(sortField === field) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc")
+    } else {
+      setSortField(field);
+      setSortDirection("asc");
+    }
+  };
 
   const handleStatusChange = async (jobId) => {};
 
   const handleDeleteJobs = async (jobId) => {};
 
-  const sortIcon = ({field}) => {};
+  const SortIcon = ({field}) => {};
 
   const LoadingRow = () => (
     <tr className='animate-spin'>
@@ -156,6 +163,65 @@ const ManageJobs = () => {
             <p className='text-sm text-gray-600'>
               Showing {paginatedJobs.length} of {filterAndSortJobs.length}{" "} Jobs
             </p>
+          </div>
+
+          {/* Table */}
+          <div className='bg-white/80 backdrop-blur-sm rounded-2xl border border-white/20 overflow-hidden'>
+            {
+              filterAndSortJobs.length === 0 && !isLoading ? 
+              (
+                <div className='text-center py-12'>
+                  <div className='w-24 h-24 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4'>
+                    <Search className='w-10 h-10 text-gray-500'/>
+                  </div>
+                  <h3 className='text-lg font-medium text-gray-900 mb-2'>
+                    No Job Found
+                  </h3>
+                  <p className='text-gray-500'>
+                    Try adjusting your search and filter criteria
+                  </p>
+                </div>
+              ) : (
+                <div className='w-[75vw] md:w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100'>
+                  <table className='min-w-full divide-y divide-gray-100'>
+                    <thead className='bg-gradient-to-r from-gray-50 to-gray-100/50'>
+                      <tr>
+                        <th className='px-6 py-4 text-xs font-semibold text-left text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100/60 transition-all duration-200 min-w-[200px] sm:min-w-0' onClick={() => handleSort("title")}>
+                          <div className='flex items-center space-x-1'>
+                            <span>Job Title</span>
+                            <SortIcon field = "title"/>
+                          </div>
+                        </th>
+                        <th className='px-6 py-4 text-xs font-semibold text-left text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100/60 transition-all duration-200 min-w-[120px] sm:min-w-0' onClick={() => handleSort("status")}>
+                          <div className='flex items-center space-x-1'>
+                            <span>Status</span>
+                            <SortIcon field = "status"/>
+                          </div>
+                        </th>
+                        <th className='px-6 py-4 text-xs font-semibold text-left text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100/60 transition-all duration-200 min-w-[130px] sm:min-w-0' onClick={() => handleSort("applicants")}>
+                          <div className='flex items-center space-x-1'>
+                            <span>Applicants</span>
+                            <SortIcon field = "applicants"/>
+                          </div>
+                        </th>
+                        <th className='px-6 py-4 text-xs font-semibold text-left text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100/60 transition-all duration-200 min-w-[180px] sm:min-w-0'>
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className='bg-white divide-y divide-gray-200'>
+                      {
+                        isLoading ? Array.from({ length : 5}).map((_, index)=> (
+                          <LoadingRow key={index}/>
+                        )) : paginatedJobs.map((job) => (
+                          <></>
+                        ))
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              )
+            }
           </div>
         </div>
       </div>

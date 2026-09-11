@@ -4,7 +4,7 @@ import axiosInstance from "../../utils/axiosinstance"
 import { CATEGORIES , JOB_TYPES } from "../../utils/data"
 import toast from 'react-hot-toast'
 import DashboardLayout from "../../components/layout/DashboardLayout"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Briefcase, Eye, MapPin, Users, AlertCircle, Send } from "lucide-react"
 import InputField from "../../components/input/InputField"
 import SelectField from "../../components/input/SelectField"
@@ -67,7 +67,7 @@ const JobPostingForm = () => {
     }
 
     try {
-      const response = jobId ? await axiosInstance.post(API_PATHS.JOBS.UPDATE_JOB(jobId), jobPayload) :  await axiosInstance.post(API_PATHS.JOBS.POST_JOB, jobPayload);
+      const response = jobId ? await axiosInstance.put(API_PATHS.JOBS.UPDATE_JOB(jobId), jobPayload) :  await axiosInstance.post(API_PATHS.JOBS.POST_JOB, jobPayload);
 
       if(response.status === 200 || response.status === 201) {
         toast.success(jobId ? "Job update successfully" : "Job posted successfully");
@@ -139,7 +139,39 @@ const JobPostingForm = () => {
     const validationErrors = validateForm(formData);
     return Object.keys(validationErrors).length === 0 ;
   }
-  console.log(formData);
+
+  useEffect(() => {
+    const fetchJobDatails = async () => {
+      if(jobId) {
+        try {
+          const response = await axiosInstance.get(API_PATHS.JOBS.GET_JOB_BY_ID(jobId));
+          const jobData = response.data;
+
+          if(jobData) {
+            setFormData({
+              jobTitle : jobData.title,
+              location : jobData.location,
+              category : jobData.category,
+              jobType : jobData.type,
+              description : jobData.description,
+              requirements : jobData.requirements,
+              salaryMin : jobData.salaryMin,
+              salaryMax : jobData.salaryMax
+            })
+          }
+        } catch (error) {
+          console.error("Error fetching job details:" , error)
+          if(error.response?.data?.message) {
+            console.error("API ERROR", error.response.data.message);
+          }
+        }
+      }
+    }
+
+    fetchJobDatails();
+
+    return () => {};
+  },[]);
   
 
   if(isPreview) {

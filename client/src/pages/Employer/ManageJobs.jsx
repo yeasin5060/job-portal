@@ -25,7 +25,30 @@ const ManageJobs = () => {
 
   //Filter and Sort jobs
   const filterAndSortJobs = useMemo(() => {
-    let filtered = [];
+    let filtered = jobs.filter((job) => {
+      const matchsSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||job.company.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchsSatus = statusFilter === "All" || job.status === statusFilter;
+
+      return matchsSearch && matchsSatus
+    });
+
+    // Sort jobs 
+    filtered.sort((a , b) => {
+      let aValue = a[sortField];
+      let bValue = b[sortField];
+
+      if(sortField === "applicants") {
+        aValue = Number(aValue);
+        bValue = Number(bValue);
+      }
+
+      if(sortDirection === "asc") {
+        return aValue > bValue ? 1 : -1
+      }else {
+        return aValue < bValue ? 1 : -1
+      }
+    });
 
     return filtered;
   }, [jobs , searchTerm , sortDirection , sortField , statusFilter]);
@@ -37,6 +60,8 @@ const ManageJobs = () => {
     startIndex ,
     startIndex + itemsPerPage
   );
+
+  
 
   const handleSort = (field) => {
     if(sortField === field) {
@@ -66,7 +91,14 @@ const ManageJobs = () => {
     }
   };
 
-  const SortIcon = ({field}) => {};
+  const SortIcon = ({field}) => {
+    if(sortField !== field) return <ChevronUp className='w-4 h-4 text-gray-400'/>
+    return sortDirection === "asc" ? (
+      <ChevronUp className='w-4 h-4 text-blue-400'/>
+    ) : (
+      <ChevronDown className='w-4 h-4 text-blue-400'/>
+    )
+  };
 
   const LoadingRow = () => (
     <tr className='animate-spin'>
@@ -224,14 +256,61 @@ const ManageJobs = () => {
                         </th>
                       </tr>
                     </thead>
-                    <tbody className='bg-white divide-y divide-gray-200'>
-                      {
-                        isLoading ? Array.from({ length : 5}).map((_, index)=> (
-                          <LoadingRow key={index}/>
-                        )) : paginatedJobs.map((job) => (
-                          <></>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {isLoading ? (
+                        Array.from({ length: 5 }).map((_, index) => (
+                          <LoadingRow key={index} />
                         ))
-                      }
+                      ) : (
+                        paginatedJobs.map((job) => (
+                          <tr key={job.id} className='hover:bg-blue-50/30 transition-all duration-20 border-b border-gray-100/30'>
+                            <td className='px-6 py-5 whitespace-nowrap min-w-[200px] sm:min-w-0'>
+                              <div>
+                                <h3 className='text-sm font-semibold text-gray-900'>{job.title}</h3>
+                                <p className='text-xs font-medium text-gray-500'>{job.company}</p>
+                              </div>
+                            </td>
+                            <td className='px-6 py-5 whitespace-nowrap min-w-[120px] sm:min-w-0'>
+                              <span className={`inline-flex px-3 py-1.5 text-xs font-semibold rounded-full ${job.status === "Active" ? "bg-emerald-100 text-emerald-800 border border-emerald-200" : "bg-gray-100 text-gray-800 border border-gray-200 "}`}>
+                                {job.status}
+                              </span>
+                            </td>
+                            <td className='px-6 py-5 whitespace-nowrap min-w-[130px] sm:min-w-0'>
+                              <button className='flex items-center text-sm text-blue-600 hover:text-blue-800 font-semibold transition-colors duration-200 hover:bg-blue-50 px-2 py-1 rounded-lg' onClick={() => navigate("/applicants" , {
+                                state : {jobId : job.id}
+                              })}>
+                                <Users className='w-4 h-4 mr-1.5'/>
+                                {job.applicants}
+                              </button>
+                            </td>
+                            <td className='px-6 py-4 whitespace-nowrap text-sm font-medium min-w-[180px] sm:min-w-0'>
+                              <div className='flex space-x-2'>
+                                <button className='text-blue-600 hover:text-blue-800 font-semibold p-2 rounded-lg hover:bg-blue-50 transition-colors duration-200' onClick={() => navigate("/post-job" , {
+                                  state : {jobId : job.id}
+                                })}>
+                                  <Edit className='w-4 h-4'/>
+                                </button>
+                                {
+                                  job.status === "Active" ? (
+                                    <button className='flex items-center text-xs gap-2 text-orange-600 hover:text-orange-600 p-2 rounded-lg hover:bg-orange-50 transition-colors duration-200' onClick={() => handleStatusChange(job.id)}>
+                                      <X className='w-4 h-4'/>
+                                      <span className='hidden sm:inline'>Close</span>
+                                    </button>
+                                  ) : (
+                                    <button className='flex items-center text-xs gap-2 text-green-600 hover:text-green-800 p-2 rounded-lg hover:bg-green-50 transition-colors duration-200' onClick={() => handleStatusChange(job.id)}>
+                                      <Plus className='w-4 h-4'/>
+                                      <span className='hidden sm:inline'>Active</span>
+                                    </button>
+                                  )
+                                }
+                                <button className='text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50 transition-colors duration-200' onClick={() => handleDeleteJobs(job.id)}>
+                                  <Trash2 className='w-4 h-4'/>
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
                     </tbody>
                   </table>
                 </div>

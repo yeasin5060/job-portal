@@ -56,7 +56,15 @@ const ManageJobs = () => {
     }
   };
 
-  const handleDeleteJobs = async (jobId) => {};
+  const handleDeleteJobs = async (jobId) => {
+    try {
+      await axiosInstance.delete(API_PATHS.JOBS.DELETE_JOB(jobId));
+      setJobs(jobs.filter((job)=> job.id !== jobId));
+      toast.success("Job listing delete successfully")
+    } catch (error) {
+      console.error("Error deleting job:", error)
+    }
+  };
 
   const SortIcon = ({field}) => {};
 

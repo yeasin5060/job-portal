@@ -7,6 +7,7 @@ import { useNavigate , useLocation } from 'react-router-dom';
 import moment from 'moment';
 import { getInitials } from '../../utils/helper';
 import toast from 'react-hot-toast'
+import StatusBadge from '../../components/StatusBadge';
 
 const ApplicationViewer = () => {
 
@@ -141,6 +142,58 @@ const ApplicationViewer = () => {
                         </div>
                       </div>
 
+                      {/* Application list */}
+                      <div className='p-6'>
+                        <div className='space-y-4'>
+                          {
+                            applications.map((application) => (
+                              <div key={application._id} className='flex flex-col md:flex-row md:items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors'>
+                                <div className='flex items-center gap-4'>
+                                  {/* Avatar */}
+                                  <div className='flex shrink-0'>
+                                    {
+                                      application.applicant.avatar ? 
+                                      (
+                                        <img className='h-12 w-12 rounded-full object-cover' src={application.applicant.avatar} alt={application.applicant.name}/>
+                                      ) : (
+                                        <div className='h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center'>
+                                          <span className='text-blue-600 font-semibold'>
+                                            {getInitials(application.applicant.name)}
+                                          </span>
+                                        </div>
+                                      )
+                                    }
+                                  </div>
+                                  {/* Application Info */}
+                                  <div className='min-w-0 flex-1'>
+                                    <h3 className='font-semibold text-gray-900'>{application.applicant.name}</h3>
+                                    <p className='text-sm text-gray-600'>{application.applicant.email}</p>
+                                    <div className='flex items-center gap-1 mt-1 text-gray-500 text-xs'>
+                                      <Calendar className='h-3 w-3'/>
+                                      <span className=''>
+                                        Applied {" "}
+                                        {moment(application.createdAt)?.format( " DD MM YYYY ")}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                                {/*Actions */}
+                                <div className='flex items-center gap-3 mt-4 md:m-0'>
+                                  <StatusBadge status = {application.status}/>
+                                  <button className='inline-flex items-center gsp-2 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors' onClick={() => handleDownloadResume(application.applicant.resume)}>
+                                    <Download className='h-4 w-4'/>
+                                    Resume
+                                  </button>
+                                  <button className='inline-flex items-center gsp-2 px-3 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors' onClick={() => setApplications(application)}>
+                                    <Eye className='h-4 w-4'/>
+                                    View Profile
+                                  </button>
+                                </div>
+                              </div>
+                            ))
+                          }
+                        </div>
+                      </div>
                     </div>
                   ))
                 }

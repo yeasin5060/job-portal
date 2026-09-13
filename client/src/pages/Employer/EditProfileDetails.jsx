@@ -1,8 +1,9 @@
 import React from 'react'
+import DashboardLayout from '../../components/layout/DashboardLayout'
 
-const EditProfileDetails = () => {
+const EditProfileDetails = ({ formData , handleImageChange , handleInputChange , handleCancel , handleSave , saving , uploading }) => {
   return (
-    <div>EditProfileDetails</div>
+    <DashboardLayout activeMenu='company-profile'>EditProfileDetails</DashboardLayout>
   )
 }
 

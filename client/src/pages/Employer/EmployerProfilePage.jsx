@@ -6,6 +6,7 @@ import axiosInstance from '../../utils/axiosinstance'
 import { API_PATHS } from '../../utils/apiPaths'
 import toast from 'react-hot-toast'
 import uploadImage from '../../utils/uploadImage'
+import EditProfileDetails from './EditProfileDetails'
 
 
 const EmployerProfilePage = () => {
@@ -33,9 +34,28 @@ const EmployerProfilePage = () => {
     }));
   };
 
-  const handleImageUpload = async (field , type) => {};
+  const handleImageUpload = async (file , type) => {
+    setUploading((prev) => ({...prev , [type] : true}));
 
-  const handleImageChange = async (e , type) => {};
+    try {
+      const imgUploadingRes = await uploadImage(file);
+      const avatarUrl =  imgUploadingRes.imageUrl || ""
+
+      //Update form data with new image url
+
+      const field = type === "avatar" ? "avatar" : "conpanyLogo";
+
+      handleInputChange(avatarUrl , field);
+    } catch (error) {
+      console.error("Image uploading failed:", error);
+    }finally {
+      setUploading((prev) => ({...prev , [type] : false}));
+    }
+  };
+
+  const handleImageChange = async (e , type) => {
+    
+  };
 
   const handleSave = () => {};
 
@@ -43,6 +63,22 @@ const EmployerProfilePage = () => {
     setFormData({...profileData});
     setEditMode(false);
   }
+
+  if(editMode) {
+    return (
+      <EditProfileDetails
+        formData = {formData}
+        handleImageChange = {handleImageChange}
+        handleInputChange = {handleInputChange}
+        handleCancel = {handleCancel}
+        handleSave = {handleSave}
+        saving = {saving}
+        uploading = {uploading}
+      />
+    )
+  }
+
+  
   return ( 
     <DashboardLayout activeMenu="company-profile">
       <div className='min-h-screen bg-gray-50 px-8 py-4'>
@@ -77,6 +113,30 @@ const EmployerProfilePage = () => {
                     </div>
                   </div>
                 </div>
+
+                {/*company information */}
+                <div className='space-y-6'>
+                  <h2 className='text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2'>
+                    Company Information
+                  </h2>
+                  {/*Company logo and name */}
+                  <div className='flex items-center space-x-4'>
+                    <img className='w-20 h-20 rounded-lg object-cover border-4 border-gray-50' src={profileData.companyLogo} alt="company logo" />
+                    <div>
+                      <h3 className='text-lg font-semibold text-gray-800'>{profileData.companyName}</h3>
+                      <div className='flex items-center text-sm text-gray-600 mt-1'>
+                        <Building2 className='w-4 h-4 mr-2'/>
+                        <span>Company</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/*company description */}
+              <div className='mt-8'>
+                <h2 className='text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2 mb-2'>About Company</h2>
+                <p className='text-sm text-gray-700 leading-relaxed bg-gray-50 p-6 rounded-lg'>{profileData.companyDescription}</p>
               </div>
             </div>
           </div>

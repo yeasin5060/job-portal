@@ -33,7 +33,6 @@ const ApplicationViewer = () => {
     }
   }
 
-  console.log(applications);
   
 
   useEffect(() => {
@@ -185,7 +184,7 @@ const ApplicationViewer = () => {
                                     <Download className='h-4 w-4'/>
                                     Resume
                                   </button>
-                                  <button className='inline-flex items-center gsp-2 px-3 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors' onClick={() => setApplications(application)}>
+                                  <button className='inline-flex items-center gsp-2 px-3 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors' onClick={() => setSelectedApplicant(application)}>
                                     <Eye className='h-4 w-4'/>
                                     View Profile
                                   </button>

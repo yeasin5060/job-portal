@@ -156,6 +156,9 @@ const ManageJobs = () => {
     }
   };
 
+  console.log(paginatedJobs);
+  
+
   
 
   useEffect (() => {

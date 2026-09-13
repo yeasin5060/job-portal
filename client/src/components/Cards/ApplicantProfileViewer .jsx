@@ -37,6 +37,8 @@ const ApplicantProfileViewer  = ({ selectedApplicant , setSelectedApplicant , ha
         }
     }
 
+
+
   return (
     <div className='fixed inset-0 bg-[rgba(0,0,0,0.2)] bg-opacity-50 flex items-center justify-center p-4 z-50'>
         <div className='bg-white rounded-xl shadow-xl max-w-lg max-h-[90vh] overflow-y-auto'>

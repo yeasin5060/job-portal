@@ -8,6 +8,7 @@ import moment from 'moment';
 import { getInitials } from '../../utils/helper';
 import toast from 'react-hot-toast'
 import StatusBadge from '../../components/StatusBadge';
+import ApplicantProfileViewer from '../../components/Cards/ApplicantProfileViewer ';
 
 const ApplicationViewer = () => {
 
@@ -201,6 +202,20 @@ const ApplicationViewer = () => {
             )
           }
         </div>
+        {/* Profile Modal */}
+        {
+          selectedApplicant && (
+            <ApplicantProfileViewer
+              selectedApplicant = {selectedApplicant}
+              setSelectedApplicant = {setSelectedApplicant}
+              handleDownloadResume = {handleDownloadResume}
+              hangleClose = {() => {
+                setSelectedApplicant(null)
+                fetchApplication()
+              }}
+            />
+          )
+        }
       </div>
     </DashboardLayout>
   )

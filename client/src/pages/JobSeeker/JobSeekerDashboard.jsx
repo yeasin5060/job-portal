@@ -35,7 +35,35 @@ const JobSeekerDashboard = () => {
   });
 
   const fetchJobs = async (filterParams = {}) => {
+    try {
 
+      setLoading(true);
+      setError(null)
+
+      const params = new URLSearchParams();
+
+      if(filterParams.keyword) params.append("keyword" , filterParams.keyword);
+      if(filterParams.location) params.append("location" , filterParams.location);
+      if(filterParams.maxSalary) params.append("maxSalary" , filterParams.maxSalary);
+      if(filterParams.minSalary) params.append("minSalary" , filterParams.minSalary);
+      if(filterParams.type) params.append("type" , filterParams.type);
+      if(filterParams.category) params.append("category" , filterParams.category);
+
+      if(user) params.append("user" , user?._id);
+
+      const response = await axiosInstance.get(`${API_PATHS.JOBS.GET_ALL_JOBS}?${params.toString()}`);
+
+      const jobsData = Array.isArray(response.data) ? response.data : response.data.jobs || [] ;
+
+      setJobs(jobsData);
+
+    } catch (error) {
+      console.error("Error Fetching jobs:", error);
+      setError("Failed to fetcj jobs. Please try again later");
+      setJobs({});
+    }finally {
+      setLoading(false);
+    }
   };
 
   //Fetch jobs whan filter change

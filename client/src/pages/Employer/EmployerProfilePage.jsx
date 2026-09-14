@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import { Building2, Mail, Edit3 } from "lucide-react";
@@ -23,7 +24,12 @@ const EmployerProfilePage = () => {
   const [editMode, setEditMode] = useState(false);
 
   const [formData, setFormData] = useState({
-    ...profileData,
+    name: user?.name || "",
+    email: user?.email || "",
+    avatar: user?.avatar || "",
+    companyName: user?.companyName || "",
+    companyDescription: user?.companyDescription || "",
+    companyLogo: user?.companyLogo || "",
   });
 
   const [uploading, setUploading] = useState({
@@ -33,15 +39,19 @@ const EmployerProfilePage = () => {
 
   const [saving, setSaving] = useState(false);
 
-  // Handle input change
-  const handleInputChange = ({ field, value }) => {
+  // ============================================================
+  // HANDLE INPUT CHANGE
+  // ============================================================
+  const handleInputChange = (field, value) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
 
-  // Upload image
+  // ============================================================
+  // HANDLE IMAGE UPLOAD
+  // ============================================================
   const handleImageUpload = async (file, type) => {
     setUploading((prev) => ({
       ...prev,
@@ -51,14 +61,15 @@ const EmployerProfilePage = () => {
     try {
       const imgUploadingRes = await uploadImage(file);
 
-      const imageUrl = imgUploadingRes?.imageUrl || "";
+      const imageUrl = imgUploadingRes?.imageUrl;
+
+      if (!imageUrl) {
+        throw new Error("Image URL not found");
+      }
 
       const field = type === "avatar" ? "avatar" : "companyLogo";
 
-      handleInputChange({
-        field,
-        value: imageUrl,
-      });
+      handleInputChange(field, imageUrl);
     } catch (error) {
       console.error("Image uploading failed:", error);
       toast.error("Image upload failed");
@@ -70,7 +81,9 @@ const EmployerProfilePage = () => {
     }
   };
 
-  // Handle image change
+  // ============================================================
+  // HANDLE IMAGE CHANGE
+  // ============================================================
   const handleImageChange = async (e, type) => {
     const file = e.target.files?.[0];
 
@@ -81,16 +94,25 @@ const EmployerProfilePage = () => {
 
     const field = type === "avatar" ? "avatar" : "companyLogo";
 
-    handleInputChange({
-      field,
-      value: previewUrl,
-    });
+    // Show preview immediately
+    handleInputChange(field, previewUrl);
 
+    // Upload image
     await handleImageUpload(file, type);
+
+    // Clear input so same image can be selected again
+    e.target.value = "";
   };
 
-  // Save profile
+  // ============================================================
+  // SAVE PROFILE
+  // ============================================================
   const handleSave = async () => {
+    if (uploading.avatar || uploading.logo) {
+      toast.error("Please wait for image upload to finish");
+      return;
+    }
+
     setSaving(true);
 
     try {
@@ -102,12 +124,19 @@ const EmployerProfilePage = () => {
       if (response.status === 200) {
         toast.success("Profile details updated successfully");
 
+        // Use server response if available
+        const updatedUser = response?.data?.user || formData;
+
         setProfileData({
-          ...formData,
+          ...updatedUser,
+        });
+
+        setFormData({
+          ...updatedUser,
         });
 
         updateUser({
-          ...formData,
+          ...updatedUser,
         });
 
         setEditMode(false);
@@ -116,14 +145,17 @@ const EmployerProfilePage = () => {
       console.error("Profile update failed:", error);
 
       toast.error(
-        error?.response?.data?.message || "Failed to update profile"
+        error?.response?.data?.message ||
+          "Failed to update profile"
       );
     } finally {
       setSaving(false);
     }
   };
 
-  // Cancel edit
+  // ============================================================
+  // CANCEL EDIT
+  // ============================================================
   const handleCancel = () => {
     setFormData({
       ...profileData,
@@ -132,7 +164,9 @@ const EmployerProfilePage = () => {
     setEditMode(false);
   };
 
-  // Edit mode
+  // ============================================================
+  // EDIT MODE
+  // ============================================================
   if (editMode) {
     return (
       <EditProfileDetails
@@ -147,6 +181,9 @@ const EmployerProfilePage = () => {
     );
   }
 
+  // ============================================================
+  // PROFILE VIEW
+  // ============================================================
   return (
     <DashboardLayout activeMenu="company-profile">
       <div className="min-h-screen bg-gray-50 px-8 py-4">
@@ -160,19 +197,26 @@ const EmployerProfilePage = () => {
               </h1>
 
               <button
+                type="button"
                 className="bg-white/10 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors flex items-center space-x-2"
-                onClick={() => setEditMode(true)}
+                onClick={() => {
+                  setFormData({
+                    ...profileData,
+                  });
+
+                  setEditMode(true);
+                }}
               >
                 <Edit3 className="w-4 h-4" />
                 <span>Edit Profile</span>
               </button>
             </div>
 
-            {/* Profile content */}
+            {/* Profile Content */}
             <div className="p-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-                {/* Profile information */}
+                {/* Profile Information */}
                 <div className="space-y-6">
                   <h2 className="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">
                     Profile Information
@@ -189,13 +233,15 @@ const EmployerProfilePage = () => {
                       />
                     ) : (
                       <div className="w-20 h-20 rounded-full bg-blue-100 border-4 border-blue-50 flex items-center justify-center text-blue-600 font-semibold text-xl">
-                        {profileData.name?.charAt(0)?.toUpperCase() || "U"}
+                        {profileData.name
+                          ?.charAt(0)
+                          ?.toUpperCase() || "U"}
                       </div>
                     )}
 
                     <div>
                       <h3 className="text-lg font-semibold text-gray-800">
-                        {profileData.name}
+                        {profileData.name || "User Name"}
                       </h3>
 
                       <div className="flex items-center text-sm text-gray-600 mt-1">
@@ -206,7 +252,7 @@ const EmployerProfilePage = () => {
                   </div>
                 </div>
 
-                {/* Company information */}
+                {/* Company Information */}
                 <div className="space-y-6">
                   <h2 className="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">
                     Company Information
@@ -214,7 +260,7 @@ const EmployerProfilePage = () => {
 
                   <div className="flex items-center space-x-4">
 
-                    {/* Company logo */}
+                    {/* Company Logo */}
                     {profileData.companyLogo ? (
                       <img
                         className="w-20 h-20 rounded-lg object-cover border-4 border-gray-50"
@@ -229,7 +275,8 @@ const EmployerProfilePage = () => {
 
                     <div>
                       <h3 className="text-lg font-semibold text-gray-800">
-                        {profileData.companyName || "Company Name"}
+                        {profileData.companyName ||
+                          "Company Name"}
                       </h3>
 
                       <div className="flex items-center text-sm text-gray-600 mt-1">
@@ -241,7 +288,7 @@ const EmployerProfilePage = () => {
                 </div>
               </div>
 
-              {/* Company description */}
+              {/* Company Description */}
               <div className="mt-8">
                 <h2 className="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2 mb-2">
                   About Company
@@ -261,3 +308,4 @@ const EmployerProfilePage = () => {
 };
 
 export default EmployerProfilePage;
+

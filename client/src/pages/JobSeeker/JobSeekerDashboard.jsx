@@ -6,6 +6,9 @@ import { API_PATHS } from '../../utils/apiPaths'
 import {useNavigate} from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import toast from 'react-hot-toast'
+import FilterContent from './components/FilterContent'
+import SearchHeader from './components/SearchHeader'
+import Navbar from '../../components/Navbar'
 
 const JobSeekerDashboard = () => {
 
@@ -119,24 +122,70 @@ const JobSeekerDashboard = () => {
   };
 
   const mobaileFilterOverlay = () => {
-    <div className={`fixed inset-0 z-40 lg:hidden ${showMobileFilters ? "" : "hidden"}`}>
-
-    </div>
-  }
+    return (
+      <div
+        className={`fixed inset-0 z-40 lg:hidden ${showMobileFilters ? "" : "hidden"}`}
+        role="presentation"
+      >
+       <div className='fixed inset-0 bg-black/50' onClick={() => setShowMobileFilters(false)}>
+        <div className='fixed inset-y-0 w-full max-w-sm text-white shadow-xl'>
+          <div className='flex items-center justify-center p-6 border-b border-gray-200'>
+            <h3 className='text-lg font-bold text-gray-900'>Filters</h3>
+            <button onClick={setShowMobileFilters(false)} className='p-2 hover:bg-gray-100 rounded-xl transition-colors' >
+              <X className='w-5 h-5'/>
+            </button>
+          </div>
+          <div className='p-6 overflow-y-auto h-full pb-20'>
+            <FilterContent toggleSection = {toggleSection} clearAllFilters = {clearAllFilters} expandedSections = {expandedSections} filters = {filters} hasFilterChange = {hasFilterChange}/>
+          </div>
+        </div>
+       </div>
+      </div>
+    );
+  };
 
   const toggleSaveJob = async (jobId , isSaved) => {
+    try {
+      if(isSaved) {
+        await axiosInstance.delete(API_PATHS.JOBS.UNSAVE_JOB(jobId));
+        toast.success("Job remove successfully!");
+      }else{
+        await axiosInstance.post(API_PATHS.JOBS.SAVE_JOB(jobId));
+        toast.success("Job saved successfully!");
+      }
 
+      fetchJobs();
+
+    } catch (error) {
+      console.error("Error:",error);
+      toast.error("Something wont wrong!Please try again")
+    }
   };
 
   const applyToJob = async (jobId) => {
-
+    try {
+      if(jobId) {
+        await axiosInstance.delete(API_PATHS.APPLICATIONS.APPLY_TO_JOB(jobId));
+      }
+    } catch (error) {
+      console.error("Error" , error);
+      toast.error("Something wont wrong!Please try again")
+    }
   };
 
   if(jobs.length == 0 && loading ) {
     return <LoadingSpinner/>
   }
   return (
-    <div>JobSeekerDashboard</div>
+    <div className='bg-gradient-to-br from-blue-50 via-white to-purple-50'>
+      <Navbar/>
+      <div className='min-h-screen mt-16'>
+        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8  py-4 lg:py-8'>
+          <SearchHeader  filters ={filters} hasFilterChange = {hasFilterChange}/>
+        </div>
+        <mobaileFilterOverlay />
+      </div>
+    </div>
   )
 }
 

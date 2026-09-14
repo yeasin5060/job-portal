@@ -1,7 +1,11 @@
 
 
+import { useEffect } from 'react';
 import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 import {Toaster} from 'react-hot-toast'
+import Lenis from 'lenis'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import LandingPage from './pages/LandingPage/LandingPage';
 import SignUp from './pages/Auth/SignUp';
 import Login from './pages/Auth/Login';
@@ -16,8 +20,33 @@ import ManageJobs from './pages/Employer/ManageJobs';
 import ApplicationViewer from './pages/Employer/ApplicationViewer';
 import EmployerProfilePage from './pages/Employer/EmployerProfilePage';
 
+gsap.registerPlugin(ScrollTrigger);
 
 function App() {
+  useEffect(() => {
+    // Initialize Lenis smooth scroll
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      touchMultiplier: 2,
+    });
+
+    // Sync Lenis scroll with GSAP ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update);
+
+    const updateTicker = (time) => {
+      lenis.raf(time * 1000);
+    };
+
+    gsap.ticker.add(updateTicker);
+    gsap.ticker.lagSmoothing(0);
+
+    return () => {
+      gsap.ticker.remove(updateTicker);
+      lenis.destroy();
+    };
+  }, []);
  
   return (
     <div>

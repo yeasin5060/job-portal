@@ -98,9 +98,23 @@ const JobSeekerDashboard = () => {
       }
 
       return () => clearTimeout(timeoutId)
-    },5000);
+    }, 400);
 
   },[filters , user]);
+
+  const handleImmediateSearch = () => {
+    const apiFilters = {
+      keyword : filters.keyword,
+      location : filters.location,
+      category : filters.category,
+      minSalary : filters.minSalary,
+      maxSalary : filters.maxSalary,
+      type : filters.type,
+      experience : filters.experience,
+      remoteOnly : filters.remoteOnly
+    };
+    fetchJobs(apiFilters);
+  };
 
   const hasFilterChange = (key , value) => {
     setFilters((prev) => ({...prev , [key]:value}));
@@ -181,7 +195,7 @@ const JobSeekerDashboard = () => {
       <Navbar/>
       <div className='min-h-screen mt-16'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8  py-4 lg:py-8'>
-          <SearchHeader  filters ={filters} hasFilterChange = {hasFilterChange}/>
+          <SearchHeader filters={filters} hasFilterChange={hasFilterChange} onSearch={handleImmediateSearch} />
         </div>
         <mobaileFilterOverlay />
       </div>

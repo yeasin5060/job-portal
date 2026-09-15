@@ -17,7 +17,6 @@ const JobCard = ({job , onClick , onToggleSave , onApply ,saved , hideApply }) =
 
         return `Taka ${formatNumber(min)} - ${formatNumber(max)}/m`;
     };
-    console.log(onApply);
     
   return (
     <div

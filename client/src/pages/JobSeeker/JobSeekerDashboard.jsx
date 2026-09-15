@@ -196,6 +196,41 @@ const JobSeekerDashboard = () => {
       <div className='min-h-screen mt-16'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8  py-4 lg:py-8'>
           <SearchHeader filters={filters} hasFilterChange={hasFilterChange} onSearch={handleImmediateSearch} />
+          <div className='flex gap-6 lg:gap-8'>
+            <div className='hidden lg:block w-80 flex-shrink-0'>
+              <div className='bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 p-6 sticky top-20'>
+                <h3 className='font-bold text-xl text-gray-900 mb-6'>Filter Jobs</h3>
+                <FilterContent toggleSection={toggleSection} clearAllFilters={clearAllFilters} expandedSections={expandedSections} filters={filters} hasFilterChange={hasFilterChange}/>
+              </div>
+            </div>
+            <div className='flex-1 min-w-0'>
+              <div className='flex flex-col lg:flex-row lg:items-center justify-between mb-6 lg:mb-8 gap-4'>
+                <div>
+                  <p className='text-gray-600 text-sm lg:text-base'>
+                    Showing
+                    <span className='font-bold text-gray-900'>{jobs.length}</span> {" "}
+                  </p>
+                </div>
+                <div className='flex items-center justify-center lg:justify-end gap-4'>
+                  <button className='lg:hidden flex items-center gap-2 bg-white px-4 py-2 rounded-xl border border-gray-200 font-medium text-gray-700 hover:bg-gray-50 transition-colors' onClick={() => setShowMobileFilters(false)}>
+                    <Filter className='h-4 w-4'/>
+                    Filters
+                  </button>
+                  <div className='flex items-center gap-3 lg:gap-4'>
+                    <div className='flex items-center border border-gray-200 rounded-xl p-1 bg-white'>
+                      <button className={`p-2 rounded-lg transition-colors ${viewMode ==="grid" ? "bg-blue-600 text-white shadow-sm" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"}`} onClick={() => setViewMode("grid")}>
+                        <Grid className='w-4 h-4'/>
+                      </button>
+                      <button className={`p-2 rounded-lg transition-colors ${viewMode ==="list" ? "bg-blue-600 text-white shadow-sm" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"}`} onClick={() => setViewMode("list")}>
+                        <List className='w-4 h-4'/>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
         </div>
         <mobaileFilterOverlay />
       </div>

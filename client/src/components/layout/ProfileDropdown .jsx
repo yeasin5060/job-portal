@@ -2,7 +2,7 @@ import React from 'react'
 import {ChevronDown} from 'lucide-react';
 import {Link, useNavigate} from 'react-router-dom'
  
-const ProfileDropdown  = ({isOpen , onToggle , avatar , companyName , email , onLogout }) => {
+const ProfileDropdown  = ({isOpen , onToggle , avatar , companyName , email , onLogout , uerRole }) => {
     const navigate = useNavigate();
   return (
     <div className='relative'>
@@ -21,7 +21,7 @@ const ProfileDropdown  = ({isOpen , onToggle , avatar , companyName , email , on
             }
             <div className='hidden sm:block text-left'>
                 <p className='text-sm font-medium text-gray-900'>{companyName}</p>
-                <p className='text-xs text-gray-500'>Employer</p>
+                <p className='text-xs text-gray-500'>{uerRole}</p>
             </div>
             <ChevronDown className='w-4 h-4 text-gray-400'/>
         </button>

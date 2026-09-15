@@ -10,6 +10,8 @@ const Navbar = () => {
     const { user , isAuthenticated , logout} = useAuth();
     const navigate = useNavigate();
 
+    console.log(user);
+    
     const [profileDropdownOpen , setProfileDropdownOpne] = useState(false);
 
     useEffect(() => {
@@ -23,38 +25,66 @@ const Navbar = () => {
         return () => document.removeEventListener('click' , handleClickOutsite);
     },[profileDropdownOpen]);
   return (
-    <header className='fiwed left-0 top-0 right-0 z-50 bg-white/95 backdrop-blur-sm border border-gray-100'>
-        <div className='container mx-auto px-4'>
-            <div className='flex items-center justify-between h-16'>
-                {/*logo*/}
-                <Link className='flex items-center space-x-3' to='/find-jobs'>
-                    <div className='w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center'>
-                        <Briefcase className='w-5 h-5 text-white'/>
-                    </div>
-                    <span className='text-lg font-medium text-gray-900'>জবপোর্টাল</span>
-                </Link>
-                <div className='flex items-center space-x-3'>
-                    {
-                        user && (
-                            <button className='p-2 hover:bg-gray-100 transition-colors duration-200 relative' onClick={() => navigate('/saved-jobs')}>
-                                <Bookmark className='h-5 w-5 text-gray-500'/>
-                            </button>
-                        )
-                    }
-
-                    {
-                        isAuthenticated  ? (
-                            <ProfileDropdown isOpen={profileDropdownOpen} onToggle={(e) => { e.stopPropagation() ; setProfileDropdownOpne(!profileDropdownOpen)}} avatar={user?.avatar || ""} companyName={user?.name || ""} email={user?.email || ""} uerRole = {user?.role || ""} onLogout={logout}/>
-                        ) : (
-                            <>
-                                <a className='text-gray-600 hover:text-gray-900 transition-colors font-medium px-4 py-2 rounded-lg hover:bg-gray-500' href='/login'>Login</a>
-                                <a className='bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-2 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-sm hover:shadow-md' href='/signup'>Sign up</a>
-                            </>
-                        )
-                    }
-                </div>
+    <header className="fixed left-0 top-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 transition-all duration-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link
+            className="flex items-center gap-2.5 group transition-transform active:scale-95"
+            to="/find-jobs"
+          >
+            <div className="w-9 h-9 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-md shadow-blue-500/20 group-hover:shadow-blue-500/30 transition-all">
+              <Briefcase className="w-5 h-5 text-white" />
             </div>
+            <span className="text-xl font-bold bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 dark:from-white dark:to-slate-200 bg-clip-text text-transparent tracking-tight">
+              জবপোর্টাল
+            </span>
+          </Link>
+
+          {/* Actions */}
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            {user && (
+              <button
+                className="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 relative active:scale-95"
+                onClick={() => navigate('/saved-jobs')}
+                title="Saved Jobs"
+              >
+                <Bookmark className="h-5 w-5" />
+              </button>
+            )}
+
+            {isAuthenticated ? (
+              <ProfileDropdown
+                isOpen={profileDropdownOpen}
+                onToggle={(e) => {
+                  e.stopPropagation()
+                  setProfileDropdownOpne(!profileDropdownOpen)
+                }}
+                avatar={user?.avatar || ''}
+                companyName={user?.name || ''}
+                email={user?.email || ''}
+                uerRole={user?.role || ''}
+                onLogout={logout}
+              />
+            ) : (
+              <div className="flex items-center gap-2">
+                <Link
+                  className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium text-sm px-4 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
+                  to="/login"
+                >
+                  Login
+                </Link>
+                <Link
+                  className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-sm font-semibold px-5 py-2 rounded-xl shadow-sm shadow-blue-500/20 hover:shadow-md hover:shadow-blue-500/30 transition-all duration-200 active:scale-95"
+                  to="/signup"
+                >
+                  Sign up
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
+      </div>
     </header>
   )
 }

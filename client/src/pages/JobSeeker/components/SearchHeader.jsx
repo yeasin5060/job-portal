@@ -3,30 +3,58 @@ import {Search , MapPin} from 'lucide-react'
 
 const SearchHeader = ({filters , hasFilterChange}) => {
   return (
-    <div className='bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl shadow-gray-200 border border-white/20 p-4 lg:p-8 mb-6 lg:mb-8'>
-        <div className='flex flex-col gap-4 lg:gap-6'>
-            <div className='text-center lg:text-left'>
-                <h1 className='text-2xl lg:text-2xl font-semibold text-gray-900 mb-2'>
-                    Find Your Dream Job
-                </h1>
-                <p className='text-gray-600 text-sm lg:text-base'>
-                    Discover opportunitics that match your passion
-                </p>
-            </div>
-            <div className='flex flex-col lg:flex-row gap-3 lg:gap-4'>
-                <div className='flex-1 relative'>
-                    <Search className='absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 z-10'/>
-                    <input className='w-full p-12 pr-4 py-2 lg:py-2.5 border border-gray-200 rounded-xl lg:rounded-xl outline-0 text-base bg-white/50 backdrop-blur-sm' type='text' placeholder='job title, company or keywords' value={filters.keyword} onChange={(e) => hasFilterChange('keyword', e.target.value)}/>
-                </div>
-                <div className='relative min-w-0 lg:min-w-[200px]'>
-                    <MapPin className='absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 z-10'/>
-                    <input type='Location' className='w-full p-12 pr-4 py-2 lg:py-2.5 border border-gray-200 rounded-xl lg:rounded-xl outline-0 text-base bg-white/50 backdrop-blur-sm' value={filters.keyword} onChange={(e) => hasFilterChange('location', e.target.value)}/>
-                </div>
-                <button className='bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 lg:px-10 py-3 lg:py-2.5 rounded-xl lg:rounded-xl hover:from-blue-700 hover:to-blue-700 transition-all duration-200 font-semibold text-sm shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'>
-                    Search Jobs
-                </button>
-            </div>
+    <div className="relative overflow-hidden bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl sm:rounded-3xl shadow-lg shadow-slate-200/50 dark:shadow-none border border-slate-200/80 dark:border-slate-800 p-5 sm:p-7 lg:p-9 mb-6 lg:mb-8 transition-all">
+      {/* Subtle Background Glow/Gradient Accent */}
+      <div className="absolute -top-24 -right-24 w-72 h-72 bg-blue-500/10 dark:bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-indigo-500/10 dark:bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="relative z-10 flex flex-col gap-5 lg:gap-6">
+        {/* Title & Subtitle */}
+        <div className="text-center sm:text-left">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+            Find Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Dream Job</span>
+          </h1>
+          <p className="text-slate-500 dark:text-slate-400 text-sm sm:text-base mt-1.5 font-normal">
+            Discover opportunities that match your passion and skillset
+          </p>
         </div>
+
+        {/* Search & Filter Inputs Bar */}
+        <div className="flex flex-col lg:flex-row gap-3 sm:gap-3.5">
+          {/* Keyword Search */}
+          <div className="flex-1 relative group">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 group-focus-within:text-blue-600 transition-colors pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Job title, company or keywords..."
+              value={filters?.keyword || ''}
+              onChange={(e) => hasFilterChange('keyword', e.target.value)}
+              className="w-full pl-11 pr-4 py-3 text-sm sm:text-base rounded-xl bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all shadow-sm"
+            />
+          </div>
+
+          {/* Location Input */}
+          <div className="relative min-w-0 lg:min-w-[240px] group">
+            <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 group-focus-within:text-blue-600 transition-colors pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Location or remote..."
+              value={filters?.location || ''}
+              onChange={(e) => hasFilterChange('location', e.target.value)}
+              className="w-full pl-11 pr-4 py-3 text-sm sm:text-base rounded-xl bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all shadow-sm"
+            />
+          </div>
+
+          {/* Search Button */}
+          <button
+            type="button"
+            className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-[0.99] text-white px-7 py-3 rounded-xl font-semibold text-sm shadow-md shadow-blue-500/25 hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-200 shrink-0 cursor-pointer"
+          >
+            <Search className="h-4 w-4" />
+            <span>Search Jobs</span>
+          </button>
+        </div>
+      </div>
     </div>
   )
 }

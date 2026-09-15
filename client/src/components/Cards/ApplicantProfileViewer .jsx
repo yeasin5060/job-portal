@@ -15,27 +15,44 @@ const ApplicantProfileViewer  = ({ selectedApplicant , setSelectedApplicant , ha
     const [loading , setLoading] = useState(false);
 
     const onChangeStatus = async (e) => {
-        const newStatus = e.target.value;
-         
-        setCurrentStatus(newStatus);
-        setLoading(true);
+    const newStatus = e.target.value;
+    const oldStatus = selectedApplicant.status;
 
-        try {
-            const response = await axiosInstance.put(API_PATHS.APPLICATIONS.UPDATE_STATUS(selectedApplicant._id) , {status : newStatus});
+    setCurrentStatus(newStatus);
+    setLoading(true);
 
-            if(response.status === 200) {
-                setSelectedApplicant({...selectedApplicant , status : newStatus});
-                toast.success("Application status updated successfully");
-            }
-
-
-        } catch (error) {
-            console.error("Error uploading status:" , error);
-            setCurrentStatus(selectedApplicant.status);
-        }finally {
-            setLoading(false);
+    try {
+        const response = await axiosInstance.put(
+        API_PATHS.APPLICATIONS.UPDATE_STATUS(selectedApplicant._id),
+        {
+            status: newStatus,
         }
+        );
+
+        if (response.status === 200) {
+        setSelectedApplicant((prev) => ({
+            ...prev,
+            status: response.data.status || newStatus,
+        }));
+
+        toast.success("Application status updated successfully");
+        }
+    } catch (error) {
+        console.error(
+        "Error updating status:",
+        error.response?.data || error
+        );
+
+        setCurrentStatus(oldStatus);
+
+        toast.error(
+        error.response?.data?.message ||
+        "Failed to update application status"
+        );
+    } finally {
+        setLoading(false);
     }
+    };
 
 
 

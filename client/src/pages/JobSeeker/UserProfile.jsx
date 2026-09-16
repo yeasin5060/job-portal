@@ -30,7 +30,20 @@ const UserProfile = () => {
     }));
   };
 
-  const handleImageUpload = async (file , type) => {};
+  const handleImageUpload = async (file , type) => {
+    setUploading((prev) => ({...prev , [type] : true}));
+
+    try {
+      const imgUploadRes = await uploadImage(file);
+      const avatarUrl = imgUploadRes.imageUrl || "";
+
+      handleInputChange(type , avatarUrl)
+    } catch (error) {
+      console.error("Image upload failed:", error);
+    } finally {
+      setUploading((prev) => ({...prev , [type] : false}));
+    }
+  };
 
   const handleImageChange = (e , type) => {
     const file = e.target.files[0];
@@ -44,7 +57,20 @@ const UserProfile = () => {
   };
 
   const handleSave = async () => {
+    setSaving(true)
+    try {
+      const response = await axiosInstance.put(API_PATHS.AUTH.UPDATE_PROFILE,formData);
 
+      if(response.status === 200) {
+        toast.success("Profile Details update successfully");
+        setProfileData({...formData});
+        updateUser({...formData});
+      }
+    } catch (error) {
+      console.error("Profile details update failed:", error);
+    }finally {
+      setSaving(false)
+    }
   };
 
   const handleCancel =  () => {

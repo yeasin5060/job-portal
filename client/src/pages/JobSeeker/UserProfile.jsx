@@ -51,8 +51,21 @@ const UserProfile = () => {
     setFormData({...profileData})
   };
 
-  const handleDelete =  async () => {
+  const DeleteResume =  async () => {
+    setSaving(true);
+    try {
+      const response = await axiosInstance.delete(API_PATHS.AUTH.DELETE_RESUME, {resumeUrl : user.resume || ""});
 
+      if(response.status === 200) {
+        toast.success("Resume Delete successfully");
+        setProfileData({...profileData , resume : ""});
+        updateUser({...profileData , remuse : ""});
+      }
+    } catch (error) {
+      console.error("Profile error failed:", error);
+    }finally {
+      setSaving(false)
+    }
   }
 
   useEffect (() => {

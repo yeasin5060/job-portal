@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Search, MapPin } from "lucide-react";
 
@@ -26,14 +25,14 @@ const SearchHeader = ({
         {/* Title */}
         <div className="text-center sm:text-left">
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
-            Find Your{" "}
+            আপনার{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
-              Dream Job
+              স্বপ্নের চাকরি খুঁজুন
             </span>
           </h1>
 
-          <p className="text-slate-500 dark:text-slate-400 text-sm sm:text-base mt-1.5 font-normal">
-            Discover opportunities that match your passion and skillset
+          <p className="text-slate-500 dark:text-slate-400 text-sm sm:text-base mt-1.5 font-normal mt-4">
+            আপনার দক্ষতা ও আগ্রহের সাথে মিলে যায় এমন সুযোগ খুঁজে নিন
           </p>
         </div>
 
@@ -47,7 +46,7 @@ const SearchHeader = ({
 
             <input
               type="text"
-              placeholder="Job title, company or keywords..."
+              placeholder="চাকরির পদ, কোম্পানি বা কীওয়ার্ড..."
               value={filters?.keyword || ""}
               onChange={(e) =>
                 handleFilterChange("keyword", e.target.value)
@@ -68,7 +67,7 @@ const SearchHeader = ({
 
             <input
               type="text"
-              placeholder="Location or remote..."
+              placeholder="লোকেশন বা রিমোট..."
               value={filters?.location || ""}
               onChange={(e) =>
                 handleFilterChange("location", e.target.value)
@@ -89,7 +88,7 @@ const SearchHeader = ({
             className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-[0.99] text-white px-7 py-3 rounded-xl font-semibold text-sm shadow-md shadow-blue-500/25 hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-200 shrink-0 cursor-pointer"
           >
             <Search className="h-4 w-4" />
-            <span>Search Jobs</span>
+            <span>চাকরি খুঁজুন</span>
           </button>
 
         </div>
@@ -99,4 +98,3 @@ const SearchHeader = ({
 };
 
 export default SearchHeader;
-

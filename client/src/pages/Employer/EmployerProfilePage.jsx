@@ -243,7 +243,7 @@ const EmployerProfilePage = () => {
                 className="inline-flex w-fit items-center gap-2 rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-blue-600 shadow-sm transition-all duration-200 hover:bg-blue-50 hover:shadow-md active:scale-95"
               >
                 <Edit3 className="h-4 w-4" />
-                প্রোফাইল সম্পাদনা
+                প্রোফাইল এডিট করুন
               </button>
             </div>
           </div>

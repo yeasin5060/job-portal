@@ -185,125 +185,238 @@ const EmployerProfilePage = () => {
   // PROFILE VIEW
   // ============================================================
   return (
-    <DashboardLayout activeMenu="company-profile">
-      <div className="min-h-screen bg-gray-50 px-8 py-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-xl shadow overflow-hidden">
+   <DashboardLayout activeMenu="company-profile">
+  <div className="min-h-screen bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-5xl">
+      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
 
-            {/* Header */}
-            <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-8 py-6 flex items-center justify-between">
-              <h1 className="text-xl font-medium text-white">
-                Employer Profile
+        {/* ================= Header ================= */}
+        <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-600 to-indigo-700 px-6 py-8 sm:px-8">
+
+          {/* Background Decoration */}
+          <div className="absolute -right-16 -top-20 h-56 w-56 rounded-full bg-white/10" />
+          <div className="absolute -bottom-24 right-24 h-48 w-48 rounded-full bg-white/5" />
+
+          <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div className="mb-2 inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-blue-100 backdrop-blur-sm">
+                নিয়োগকর্তার অ্যাকাউন্ট
+              </div>
+
+              <h1 className="text-2xl font-bold tracking-tight text-white">
+                কোম্পানি প্রোফাইল
               </h1>
 
-              <button
-                type="button"
-                className="bg-white/10 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors flex items-center space-x-2"
-                onClick={() => {
-                  setFormData({
-                    ...profileData,
-                  });
-
-                  setEditMode(true);
-                }}
-              >
-                <Edit3 className="w-4 h-4" />
-                <span>Edit Profile</span>
-              </button>
+              <p className="mt-1 text-sm text-blue-100">
+                আপনার ব্যক্তিগত ও কোম্পানির তথ্য পরিচালনা করুন
+              </p>
             </div>
 
-            {/* Profile Content */}
-            <div className="p-8">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <button
+              type="button"
+              onClick={() => {
+                setFormData({
+                  ...profileData,
+                });
 
-                {/* Profile Information */}
-                <div className="space-y-6">
-                  <h2 className="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">
-                    Profile Information
+                setEditMode(true);
+              }}
+              className="inline-flex w-fit items-center gap-2 rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-blue-600 shadow-sm transition-all duration-200 hover:bg-blue-50 hover:shadow-md active:scale-95"
+            >
+              <Edit3 className="h-4 w-4" />
+              প্রোফাইল সম্পাদনা
+            </button>
+          </div>
+        </div>
+
+        {/* ================= Profile Content ================= */}
+        <div className="p-5 sm:p-8">
+
+          {/* ================= Top Cards ================= */}
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+
+            {/* -------- Personal Profile -------- */}
+            <div className="group rounded-2xl border border-slate-200 bg-white p-6 transition-all duration-300 hover:border-blue-200 hover:shadow-md">
+
+              <div className="mb-6 flex items-center justify-between">
+                <div>
+                  <h2 className="text-base font-semibold text-slate-800">
+                    ব্যক্তিগত তথ্য
                   </h2>
 
-                  <div className="flex items-center space-x-4">
-
-                    {/* Avatar */}
-                    {profileData.avatar ? (
-                      <img
-                        className="w-20 h-20 rounded-full object-cover border-4 border-blue-50"
-                        src={profileData.avatar}
-                        alt="avatar"
-                      />
-                    ) : (
-                      <div className="w-20 h-20 rounded-full bg-blue-100 border-4 border-blue-50 flex items-center justify-center text-blue-600 font-semibold text-xl">
-                        {profileData.name
-                          ?.charAt(0)
-                          ?.toUpperCase() || "U"}
-                      </div>
-                    )}
-
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-800">
-                        {profileData.name || "User Name"}
-                      </h3>
-
-                      <div className="flex items-center text-sm text-gray-600 mt-1">
-                        <Mail className="w-4 h-4 mr-2" />
-                        <span>{profileData.email}</span>
-                      </div>
-                    </div>
-                  </div>
+                  <p className="mt-1 text-xs text-slate-500">
+                    আপনার অ্যাকাউন্টের তথ্য
+                  </p>
                 </div>
 
-                {/* Company Information */}
-                <div className="space-y-6">
-                  <h2 className="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">
-                    Company Information
-                  </h2>
-
-                  <div className="flex items-center space-x-4">
-
-                    {/* Company Logo */}
-                    {profileData.companyLogo ? (
-                      <img
-                        className="w-20 h-20 rounded-lg object-cover border-4 border-gray-50"
-                        src={profileData.companyLogo}
-                        alt="company logo"
-                      />
-                    ) : (
-                      <div className="w-20 h-20 rounded-lg bg-gray-100 border-4 border-gray-50 flex items-center justify-center">
-                        <Building2 className="w-8 h-8 text-gray-400" />
-                      </div>
-                    )}
-
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-800">
-                        {profileData.companyName ||
-                          "Company Name"}
-                      </h3>
-
-                      <div className="flex items-center text-sm text-gray-600 mt-1">
-                        <Building2 className="w-4 h-4 mr-2" />
-                        <span>Company</span>
-                      </div>
-                    </div>
-                  </div>
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                  <Mail className="h-5 w-5" />
                 </div>
               </div>
 
-              {/* Company Description */}
-              <div className="mt-8">
-                <h2 className="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2 mb-2">
-                  About Company
-                </h2>
+              <div className="flex items-center gap-4">
 
-                <p className="text-sm text-gray-700 leading-relaxed bg-gray-50 p-6 rounded-lg">
-                  {profileData.companyDescription ||
-                    "No company description available."}
-                </p>
+                {/* Avatar */}
+                <div className="shrink-0">
+                  {profileData.avatar ? (
+                    <img
+                      src={profileData.avatar}
+                      alt="প্রোফাইল ছবি"
+                      className="h-20 w-20 rounded-2xl border-4 border-blue-50 object-cover shadow-sm"
+                    />
+                  ) : (
+                    <div className="flex h-20 w-20 items-center justify-center rounded-2xl border-4 border-blue-50 bg-gradient-to-br from-blue-100 to-indigo-100 text-2xl font-bold text-blue-600">
+                      {profileData.name
+                        ?.charAt(0)
+                        ?.toUpperCase() || "U"}
+                    </div>
+                  )}
+                </div>
+
+                <div className="min-w-0">
+                  <h3 className="truncate text-lg font-bold text-slate-800">
+                    {profileData.name || "ব্যবহারকারীর নাম"}
+                  </h3>
+
+                  <div className="mt-2 flex items-center gap-2 text-sm text-slate-500">
+                    <Mail className="h-4 w-4 shrink-0 text-blue-500" />
+
+                    <span className="truncate">
+                      {profileData.email || "ই-মেইল পাওয়া যায়নি"}
+                    </span>
+                  </div>
+
+                  <div className="mt-2 inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-600">
+                    ● সক্রিয় নিয়োগকর্তা
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* -------- Company Profile -------- */}
+            <div className="group rounded-2xl border border-slate-200 bg-white p-6 transition-all duration-300 hover:border-indigo-200 hover:shadow-md">
+
+              <div className="mb-6 flex items-center justify-between">
+                <div>
+                  <h2 className="text-base font-semibold text-slate-800">
+                    কোম্পানির তথ্য
+                  </h2>
+
+                  <p className="mt-1 text-xs text-slate-500">
+                    আপনার কোম্পানির বিস্তারিত তথ্য
+                  </p>
+                </div>
+
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+                  <Building2 className="h-5 w-5" />
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4">
+
+                {/* Company Logo */}
+                <div className="shrink-0">
+                  {profileData.companyLogo ? (
+                    <img
+                      src={profileData.companyLogo}
+                      alt="কোম্পানির লোগো"
+                      className="h-20 w-20 rounded-2xl border border-slate-200 bg-white object-contain p-2 shadow-sm"
+                    />
+                  ) : (
+                    <div className="flex h-20 w-20 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50">
+                      <Building2 className="h-9 w-9 text-slate-400" />
+                    </div>
+                  )}
+                </div>
+
+                <div className="min-w-0">
+                  <h3 className="truncate text-lg font-bold text-slate-800">
+                    {profileData.companyName || "কোম্পানির নাম"}
+                  </h3>
+
+                  <div className="mt-2 flex items-center gap-2 text-sm text-slate-500">
+                    <Building2 className="h-4 w-4 shrink-0 text-indigo-500" />
+                    <span>কোম্পানি / প্রতিষ্ঠান</span>
+                  </div>
+
+                  <div className="mt-2 inline-flex items-center rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-medium text-indigo-600">
+                    কোম্পানি প্রোফাইল
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+
+          {/* ================= About Company ================= */}
+          <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 transition-all duration-300 hover:shadow-md sm:p-7">
+
+            <div className="mb-5 flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                <Building2 className="h-5 w-5" />
+              </div>
+
+              <div>
+                <h2 className="text-base font-semibold text-slate-800">
+                  কোম্পানি সম্পর্কে
+                </h2>
+
+                <p className="mt-1 text-xs text-slate-500">
+                  আপনার প্রতিষ্ঠান সম্পর্কে সংক্ষিপ্ত বিবরণ
+                </p>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-slate-100 bg-slate-50 p-5">
+              <p className="text-sm leading-7 text-slate-600">
+                {profileData.companyDescription ||
+                  "কোম্পানি সম্পর্কে কোনো বিবরণ দেওয়া হয়নি। চাকরিপ্রার্থীদের আপনার প্রতিষ্ঠান সম্পর্কে জানাতে একটি সংক্ষিপ্ত বিবরণ যোগ করুন।"}
+              </p>
+            </div>
+          </div>
+
+          {/* ================= Profile Summary ================= */}
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+
+            {/* Account Type */}
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <p className="text-xs font-medium text-slate-500">
+                অ্যাকাউন্টের ধরন
+              </p>
+
+              <p className="mt-1 text-sm font-semibold text-slate-800">
+                নিয়োগকর্তা
+              </p>
+            </div>
+
+            {/* Profile Status */}
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <p className="text-xs font-medium text-slate-500">
+                প্রোফাইলের অবস্থা
+              </p>
+
+              <p className="mt-1 flex items-center gap-1.5 text-sm font-semibold text-emerald-600">
+                <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                সক্রিয়
+              </p>
+            </div>
+
+            {/* Company */}
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <p className="text-xs font-medium text-slate-500">
+                কোম্পানি
+              </p>
+
+              <p className="mt-1 truncate text-sm font-semibold text-slate-800">
+                {profileData.companyName || "যোগ করা হয়নি"}
+              </p>
+            </div>
+
+          </div>
         </div>
       </div>
-    </DashboardLayout>
+    </div>
+  </div>
+  </DashboardLayout>
   );
 };
 

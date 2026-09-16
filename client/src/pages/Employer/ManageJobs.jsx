@@ -168,212 +168,665 @@ const ManageJobs = () => {
 
   return (
   <DashboardLayout activeMenu="manage-jobs">
-    <div className='min-h-screen p-4 sm:p-6 lg:p-8'>
-      <div className='max-w-7xl mx-auto'>
-        {/*Header */}
-        <div className='mb-8'>
-          <div className='flex flex-row items-center justify-between'>
-            <div className='mb-4 sm:mb-0'>
-              <h1 className='text-xl md:text-2xl font-semibold text-gray-900'>
-                Job Management
-              </h1>
-              <p className='text-sm text-gray-600 mt-1'>
-                Manage your job postings and traking application
-              </p>
-            </div>
-            <button className='inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-sm text-white font-semibold rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300 transform hover:-translate-y-0.5 whitespace-nowrap ' onClick={() => navigate("/post-job")}>
-              <Plus className='w-5 h-5 mr-2'/>
-              Add new jobs
-            </button>
-          </div>
-        </div>
+  <div className="min-h-screen bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl">
 
-        {/*Filters */}
-        <div className='bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl shadow-black/5 border border-white/20 p-6 mb-8'>
-          <div className='flex flex-col sm:flex-row gap-4'>
-            {/*Search */}
-            <div className='flex-1 relative'>
-              <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-                <Search className='h-4 w-4 text-gray-400'/>
-              </div>
-              <input className='block w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-0 transition-all duration-200 bg-gray-50/50 placeholder-gray-400' type='text' placeholder='Search' value={searchTerm} onChange={(e)=> setSearchTerm(e.target.value)}/>
+      {/* ================= HEADER ================= */}
+      <div className="mb-7">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+
+          <div>
+            <div className="mb-2 inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600">
+              নিয়োগ ব্যবস্থাপনা
             </div>
-            {/* Status Filters */}
-            <div className='sm:w-48'>
-              <select className='block w-full px-4 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-0 transition-all duration-200' value={statusFilter} onChange={(e)=> setStatusFilter(e.target.value)}>
-                <option value="All">All Status</option>
-                <option value="Active">Active</option>
-                <option value="Closed">Closed</option>
-              </select>
-            </div>
-          </div>
-          {/* Results Summery */}
-          <div className='my-4'>
-            <p className='text-sm text-gray-600'>
-              Showing {paginatedJobs.length} of {filterAndSortJobs.length}{" "} Jobs
+
+            <h1 className="text-2xl font-bold tracking-tight text-slate-800">
+              চাকরির ব্যবস্থাপনা
+            </h1>
+
+            <p className="mt-1 text-sm text-slate-500">
+              আপনার চাকরির পোস্ট এবং আবেদনকারীদের তথ্য পরিচালনা করুন
             </p>
           </div>
 
-          {/* Table */}
-          <div className='bg-white/80 backdrop-blur-sm rounded-2xl border border-white/20 overflow-hidden'>
-            {
-              filterAndSortJobs.length === 0 && !isLoading ? 
-              (
-                <div className='text-center py-12'>
-                  <div className='w-24 h-24 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4'>
-                    <Search className='w-10 h-10 text-gray-500'/>
-                  </div>
-                  <h3 className='text-lg font-medium text-gray-900 mb-2'>
-                    No Job Found
-                  </h3>
-                  <p className='text-gray-500'>
-                    Try adjusting your search and filter criteria
-                  </p>
-                </div>
-              ) : (
-                <div className='w-[75vw] md:w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100'>
-                  <table className='min-w-full divide-y divide-gray-100'>
-                    <thead className='bg-gradient-to-r from-gray-50 to-gray-100/50'>
-                      <tr>
-                        <th className='px-6 py-4 text-xs font-semibold text-left text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100/60 transition-all duration-200 min-w-[200px] sm:min-w-0' onClick={() => handleSort("title")}>
-                          <div className='flex items-center space-x-1'>
-                            <span>Job Title</span>
-                            <SortIcon field = "title"/>
-                          </div>
-                        </th>
-                        <th className='px-6 py-4 text-xs font-semibold text-left text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100/60 transition-all duration-200 min-w-[120px] sm:min-w-0' onClick={() => handleSort("status")}>
-                          <div className='flex items-center space-x-1'>
-                            <span>Status</span>
-                            <SortIcon field = "status"/>
-                          </div>
-                        </th>
-                        <th className='px-6 py-4 text-xs font-semibold text-left text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100/60 transition-all duration-200 min-w-[130px] sm:min-w-0' onClick={() => handleSort("applicants")}>
-                          <div className='flex items-center space-x-1'>
-                            <span>Applicants</span>
-                            <SortIcon field = "applicants"/>
-                          </div>
-                        </th>
-                        <th className='px-6 py-4 text-xs font-semibold text-left text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100/60 transition-all duration-200 min-w-[180px] sm:min-w-0'>
-                          Actions
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {isLoading ? (
-                        Array.from({ length: 5 }).map((_, index) => (
-                          <LoadingRow key={index} />
-                        ))
-                      ) : (
-                        paginatedJobs.map((job) => (
-                          <tr key={job.id} className='hover:bg-blue-50/30 transition-all duration-20 border-b border-gray-100/30'>
-                            <td className='px-6 py-5 whitespace-nowrap min-w-[200px] sm:min-w-0'>
-                              <div>
-                                <h3 className='text-sm font-semibold text-gray-900'>{job.title}</h3>
-                                <p className='text-xs font-medium text-gray-500'>{job.company}</p>
-                              </div>
-                            </td>
-                            <td className='px-6 py-5 whitespace-nowrap min-w-[120px] sm:min-w-0'>
-                              <span className={`inline-flex px-3 py-1.5 text-xs font-semibold rounded-full ${job.status === "Active" ? "bg-emerald-100 text-emerald-800 border border-emerald-200" : "bg-gray-100 text-gray-800 border border-gray-200 "}`}>
-                                {job.status}
-                              </span>
-                            </td>
-                            <td className='px-6 py-5 whitespace-nowrap min-w-[130px] sm:min-w-0'>
-                              <button className='flex items-center text-sm text-blue-600 hover:text-blue-800 font-semibold transition-colors duration-200 hover:bg-blue-50 px-2 py-1 rounded-lg' onClick={() => navigate("/applicants" , {
-                                state : {jobId : job.id}
-                              })}>
-                                <Users className='w-4 h-4 mr-1.5'/>
-                                {job.applicants}
-                              </button>
-                            </td>
-                            <td className='px-6 py-4 whitespace-nowrap text-sm font-medium min-w-[180px] sm:min-w-0'>
-                              <div className='flex space-x-2'>
-                                <button className='text-blue-600 hover:text-blue-800 font-semibold p-2 rounded-lg hover:bg-blue-50 transition-colors duration-200' onClick={() => navigate("/post-job" , {
-                                  state : {jobId : job.id}
-                                })}>
-                                  <Edit className='w-4 h-4'/>
-                                </button>
-                                {
-                                  job.status === "Active" ? (
-                                    <button className='flex items-center text-xs gap-2 text-orange-600 hover:text-orange-600 p-2 rounded-lg hover:bg-orange-50 transition-colors duration-200' onClick={() => handleStatusChange(job.id)}>
-                                      <X className='w-4 h-4'/>
-                                      <span className='hidden sm:inline'>Close</span>
-                                    </button>
-                                  ) : (
-                                    <button className='flex items-center text-xs gap-2 text-green-600 hover:text-green-800 p-2 rounded-lg hover:bg-green-50 transition-colors duration-200' onClick={() => handleStatusChange(job.id)}>
-                                      <Plus className='w-4 h-4'/>
-                                      <span className='hidden sm:inline'>Active</span>
-                                    </button>
-                                  )
-                                }
-                                <button className='text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50 transition-colors duration-200' onClick={() => handleDeleteJobs(job.id)}>
-                                  <Trash2 className='w-4 h-4'/>
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              )
-            }
-          </div>
-
-          {/* Pagination */}
-          {
-            totalPages > 1 && (
-              <div className='mt-6 flex items-center justify-between'>
-                <div className='flex-1 flex justify-between sm:hidden'>
-                  <button className='relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed' onClick={() => setCurrentPage(Math.max(1 , currentPage - 1 ))} disabled = {currentPage === 1 }>
-                    Previous
-                  </button>
-                  <button className='ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'  onClick={() => setCurrentPage(Math.min( totalPages, currentPage + 1 ))} disabled = {currentPage === totalPages }>
-                    Next
-                  </button>
-                </div>
-                <div className='hidden sm:flex-1 sm:flex sm:items-center sm:justify-between'>
-                  <div >
-                    <p className='text-sm text-gray-700 mr-3'>
-                      Showing {" "}
-                      <span className='font-medium'>{startIndex + 1 } </span> to {" "}
-                      <span className='font-medium'>
-                        {
-                          Math.min(
-                            startIndex + itemsPerPage,
-                            filterAndSortJobs.length
-                          )
-                        }
-                      </span> {" "}
-                      of {" "}  
-                      <span className='font-medium'>
-                        {filterAndSortJobs.length}
-                      </span> {" "}
-                      results
-                    </p>
-                  </div>
-                  <div>
-                    <nav className='relative z-10 inline-flex rounded-md shadow-sm -space-x-px'>
-                      <button className='relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50  disabled:opacity-50 disabled:cursor-not-allowed' onClick={() => setCurrentPage(Math.max(1 , currentPage - 1 ))} disabled = {currentPage === 1 }>
-                        Previous
-                      </button>
-                      {Array.from({length : totalPages} , (_,i) => i + 1).map((page)=> ( 
-                        <button key={page} onClick={() => setCurrentPage(page)} className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${currentPage === page ? "z-10 bg-blue-50 border-blue-500 text-blue-600" : "bg-white border-gray-300 text-gray-500 hover:bg-gray-500"}`}>
-                          {page}
-                        </button>
-                      ))}
-                      <button className='relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50  disabled:opacity-50 disabled:cursor-not-allowed' onClick={() => setCurrentPage(Math.min( totalPages, currentPage + 1 ))} disabled = {currentPage === totalPages }>
-                        Next
-                      </button>
-                    </nav>
-                  </div>
-                </div>
-              </div>
-            )
-          }
+          <button
+            type="button"
+            onClick={() => navigate("/post-job")}
+            className="
+              inline-flex
+              items-center
+              justify-center
+              gap-2
+              rounded-xl
+              bg-gradient-to-r
+              from-blue-600
+              to-indigo-600
+              px-5
+              py-3
+              text-sm
+              font-semibold
+              text-white
+              shadow-lg
+              shadow-blue-500/20
+              transition-all
+              duration-200
+              hover:-translate-y-0.5
+              hover:from-blue-700
+              hover:to-indigo-700
+              hover:shadow-xl
+            "
+          >
+            <Plus className="h-5 w-5" />
+            নতুন চাকরি পোস্ট করুন
+          </button>
         </div>
       </div>
+
+      {/* ================= MAIN CARD ================= */}
+      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+        {/* ================= FILTER HEADER ================= */}
+        <div className="border-b border-slate-100 bg-white p-5 sm:p-6">
+
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
+
+            {/* Search */}
+            <div className="relative flex-1">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+                <Search className="h-4 w-4 text-slate-400" />
+              </div>
+
+              <input
+                type="text"
+                placeholder="চাকরি খুঁজুন..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="
+                  block
+                  w-full
+                  rounded-xl
+                  border
+                  border-slate-200
+                  bg-slate-50
+                  py-3
+                  pl-11
+                  pr-4
+                  text-sm
+                  text-slate-700
+                  outline-none
+                  transition-all
+                  placeholder:text-slate-400
+                  focus:border-blue-500
+                  focus:bg-white
+                  focus:ring-4
+                  focus:ring-blue-500/10
+                "
+              />
+            </div>
+
+            {/* Status Filter */}
+            <div className="w-full lg:w-52">
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="
+                  block
+                  w-full
+                  rounded-xl
+                  border
+                  border-slate-200
+                  bg-slate-50
+                  px-4
+                  py-3
+                  text-sm
+                  text-slate-700
+                  outline-none
+                  transition-all
+                  focus:border-blue-500
+                  focus:bg-white
+                  focus:ring-4
+                  focus:ring-blue-500/10
+                "
+              >
+                <option value="All">সব স্ট্যাটাস</option>
+                <option value="Active">সক্রিয়</option>
+                <option value="Closed">বন্ধ</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Results Summary */}
+          <div className="mt-5 flex items-center justify-between">
+            <div>
+              <p className="text-sm text-slate-500">
+                মোট{" "}
+                <span className="font-semibold text-slate-800">
+                  {filterAndSortJobs.length}
+                </span>{" "}
+                টি চাকরি পাওয়া গেছে
+              </p>
+            </div>
+
+            <div className="hidden rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 sm:block">
+              দেখানো হচ্ছে {paginatedJobs.length} টি
+            </div>
+          </div>
+        </div>
+
+        {/* ================= TABLE ================= */}
+        <div>
+          {filterAndSortJobs.length === 0 && !isLoading ? (
+            <div className="px-6 py-16 text-center">
+
+              <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-2xl bg-slate-100">
+                <Search className="h-9 w-9 text-slate-400" />
+              </div>
+
+              <h3 className="text-lg font-semibold text-slate-800">
+                কোনো চাকরি পাওয়া যায়নি
+              </h3>
+
+              <p className="mx-auto mt-2 max-w-md text-sm text-slate-500">
+                আপনার সার্চ বা ফিল্টারের শর্ত পরিবর্তন করে আবার চেষ্টা করুন।
+              </p>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchTerm("");
+                  setStatusFilter("All");
+                }}
+                className="mt-5 text-sm font-semibold text-blue-600 hover:text-blue-700"
+              >
+                ফিল্টার পরিষ্কার করুন
+              </button>
+            </div>
+          ) : (
+            <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100">
+
+              <table className="min-w-full divide-y divide-slate-100">
+
+                {/* ================= TABLE HEAD ================= */}
+                <thead className="bg-slate-50">
+                  <tr>
+
+                    {/* Job Title */}
+                    <th
+                      className="
+                        min-w-[220px]
+                        cursor-pointer
+                        px-6
+                        py-4
+                        text-left
+                        text-xs
+                        font-semibold
+                        uppercase
+                        tracking-wider
+                        text-slate-500
+                        transition-colors
+                        hover:bg-slate-100
+                      "
+                      onClick={() => handleSort("title")}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span>চাকরির নাম</span>
+                        <SortIcon field="title" />
+                      </div>
+                    </th>
+
+                    {/* Status */}
+                    <th
+                      className="
+                        min-w-[130px]
+                        cursor-pointer
+                        px-6
+                        py-4
+                        text-left
+                        text-xs
+                        font-semibold
+                        uppercase
+                        tracking-wider
+                        text-slate-500
+                        transition-colors
+                        hover:bg-slate-100
+                      "
+                      onClick={() => handleSort("status")}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span>স্ট্যাটাস</span>
+                        <SortIcon field="status" />
+                      </div>
+                    </th>
+
+                    {/* Applicants */}
+                    <th
+                      className="
+                        min-w-[140px]
+                        cursor-pointer
+                        px-6
+                        py-4
+                        text-left
+                        text-xs
+                        font-semibold
+                        uppercase
+                        tracking-wider
+                        text-slate-500
+                        transition-colors
+                        hover:bg-slate-100
+                      "
+                      onClick={() => handleSort("applicants")}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span>আবেদনকারী</span>
+                        <SortIcon field="applicants" />
+                      </div>
+                    </th>
+
+                    {/* Actions */}
+                    <th className="min-w-[190px] px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                      অ্যাকশন
+                    </th>
+                  </tr>
+                </thead>
+
+                {/* ================= TABLE BODY ================= */}
+                <tbody className="divide-y divide-slate-100 bg-white">
+
+                  {isLoading ? (
+                    Array.from({ length: 5 }).map((_, index) => (
+                      <LoadingRow key={index} />
+                    ))
+                  ) : (
+                    paginatedJobs.map((job) => (
+                      <tr
+                        key={job.id}
+                        className="group transition-colors duration-200 hover:bg-blue-50/30"
+                      >
+
+                        {/* ================= JOB TITLE ================= */}
+                        <td className="px-6 py-5">
+                          <div>
+                            <h3 className="text-sm font-semibold text-slate-800 group-hover:text-blue-600 transition-colors">
+                              {job.title}
+                            </h3>
+
+                            <p className="mt-1 text-xs font-medium text-slate-500">
+                              {job.company}
+                            </p>
+                          </div>
+                        </td>
+
+                        {/* ================= STATUS ================= */}
+                        <td className="px-6 py-5">
+                          <span
+                            className={`
+                              inline-flex
+                              items-center
+                              gap-1.5
+                              rounded-full
+                              border
+                              px-3
+                              py-1.5
+                              text-xs
+                              font-semibold
+                              ${
+                                job.status === "Active"
+                                  ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                                  : "border-slate-200 bg-slate-100 text-slate-600"
+                              }
+                            `}
+                          >
+                            <span
+                              className={`
+                                h-1.5
+                                w-1.5
+                                rounded-full
+                                ${
+                                  job.status === "Active"
+                                    ? "bg-emerald-500"
+                                    : "bg-slate-400"
+                                }
+                              `}
+                            />
+
+                            {job.status === "Active"
+                              ? "সক্রিয়"
+                              : "বন্ধ"}
+                          </span>
+                        </td>
+
+                        {/* ================= APPLICANTS ================= */}
+                        <td className="px-6 py-5">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              navigate("/applicants", {
+                                state: {
+                                  jobId: job.id,
+                                },
+                              })
+                            }
+                            className="
+                              inline-flex
+                              items-center
+                              gap-2
+                              rounded-lg
+                              px-2
+                              py-1.5
+                              text-sm
+                              font-semibold
+                              text-blue-600
+                              transition-colors
+                              hover:bg-blue-50
+                              hover:text-blue-700
+                            "
+                          >
+                            <Users className="h-4 w-4" />
+                            {job.applicants}
+                            <span className="text-xs font-normal text-slate-400">
+                              জন
+                            </span>
+                          </button>
+                        </td>
+
+                        {/* ================= ACTIONS ================= */}
+                        <td className="px-6 py-5">
+                          <div className="flex items-center gap-1.5">
+
+                            {/* Edit */}
+                            <button
+                              type="button"
+                              title="সম্পাদনা করুন"
+                              onClick={() =>
+                                navigate("/post-job", {
+                                  state: {
+                                    jobId: job.id,
+                                  },
+                                })
+                              }
+                              className="
+                                rounded-lg
+                                p-2
+                                text-blue-600
+                                transition-colors
+                                hover:bg-blue-50
+                                hover:text-blue-700
+                              "
+                            >
+                              <Edit className="h-4 w-4" />
+                            </button>
+
+                            {/* Active / Close */}
+                            {job.status === "Active" ? (
+                              <button
+                                type="button"
+                                title="চাকরি বন্ধ করুন"
+                                onClick={() =>
+                                  handleStatusChange(job.id)
+                                }
+                                className="
+                                  inline-flex
+                                  items-center
+                                  gap-1.5
+                                  rounded-lg
+                                  p-2
+                                  text-orange-600
+                                  transition-colors
+                                  hover:bg-orange-50
+                                  hover:text-orange-700
+                                "
+                              >
+                                <X className="h-4 w-4" />
+
+                                <span className="hidden text-xs font-semibold sm:inline">
+                                  বন্ধ করুন
+                                </span>
+                              </button>
+                            ) : (
+                              <button
+                                type="button"
+                                title="চাকরি সক্রিয় করুন"
+                                onClick={() =>
+                                  handleStatusChange(job.id)
+                                }
+                                className="
+                                  inline-flex
+                                  items-center
+                                  gap-1.5
+                                  rounded-lg
+                                  p-2
+                                  text-emerald-600
+                                  transition-colors
+                                  hover:bg-emerald-50
+                                  hover:text-emerald-700
+                                "
+                              >
+                                <Plus className="h-4 w-4" />
+
+                                <span className="hidden text-xs font-semibold sm:inline">
+                                  সক্রিয় করুন
+                                </span>
+                              </button>
+                            )}
+
+                            {/* Delete */}
+                            <button
+                              type="button"
+                              title="ডিলিট করুন"
+                              onClick={() =>
+                                handleDeleteJobs(job.id)
+                              }
+                              className="
+                                rounded-lg
+                                p-2
+                                text-red-600
+                                transition-colors
+                                hover:bg-red-50
+                                hover:text-red-700
+                              "
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+
+        {/* ================= PAGINATION ================= */}
+        {totalPages > 1 && (
+          <div className="border-t border-slate-100 bg-white px-5 py-5 sm:px-6">
+
+            {/* Mobile Pagination */}
+            <div className="flex items-center justify-between sm:hidden">
+
+              <button
+                type="button"
+                onClick={() =>
+                  setCurrentPage(
+                    Math.max(1, currentPage - 1)
+                  )
+                }
+                disabled={currentPage === 1}
+                className="
+                  rounded-lg
+                  border
+                  border-slate-200
+                  bg-white
+                  px-4
+                  py-2
+                  text-sm
+                  font-medium
+                  text-slate-600
+                  transition-colors
+                  hover:bg-slate-50
+                  disabled:cursor-not-allowed
+                  disabled:opacity-40
+                "
+              >
+                পূর্ববর্তী
+              </button>
+
+              <span className="text-sm font-medium text-slate-500">
+                {currentPage} / {totalPages}
+              </span>
+
+              <button
+                type="button"
+                onClick={() =>
+                  setCurrentPage(
+                    Math.min(
+                      totalPages,
+                      currentPage + 1
+                    )
+                  )
+                }
+                disabled={currentPage === totalPages}
+                className="
+                  rounded-lg
+                  border
+                  border-slate-200
+                  bg-white
+                  px-4
+                  py-2
+                  text-sm
+                  font-medium
+                  text-slate-600
+                  transition-colors
+                  hover:bg-slate-50
+                  disabled:cursor-not-allowed
+                  disabled:opacity-40
+                "
+              >
+                পরবর্তী
+              </button>
+            </div>
+
+            {/* Desktop Pagination */}
+            <div className="hidden sm:flex sm:items-center sm:justify-between">
+
+              <p className="text-sm text-slate-500">
+                দেখানো হচ্ছে{" "}
+                <span className="font-semibold text-slate-700">
+                  {startIndex + 1}
+                </span>{" "}
+                থেকে{" "}
+                <span className="font-semibold text-slate-700">
+                  {Math.min(
+                    startIndex + itemsPerPage,
+                    filterAndSortJobs.length
+                  )}
+                </span>{" "}
+                এর মধ্যে মোট{" "}
+                <span className="font-semibold text-slate-700">
+                  {filterAndSortJobs.length}
+                </span>{" "}
+                টি
+              </p>
+
+              <nav className="inline-flex items-center gap-1">
+
+                {/* Previous */}
+                <button
+                  type="button"
+                  onClick={() =>
+                    setCurrentPage(
+                      Math.max(1, currentPage - 1)
+                    )
+                  }
+                  disabled={currentPage === 1}
+                  className="
+                    rounded-lg
+                    border
+                    border-slate-200
+                    bg-white
+                    px-3
+                    py-2
+                    text-sm
+                    font-medium
+                    text-slate-500
+                    transition-colors
+                    hover:bg-slate-50
+                    disabled:cursor-not-allowed
+                    disabled:opacity-40
+                  "
+                >
+                  পূর্ববর্তী
+                </button>
+
+                {/* Pages */}
+                {Array.from(
+                  { length: totalPages },
+                  (_, i) => i + 1
+                ).map((page) => (
+                  <button
+                    type="button"
+                    key={page}
+                    onClick={() =>
+                      setCurrentPage(page)
+                    }
+                    className={`
+                      min-w-[38px]
+                      rounded-lg
+                      border
+                      px-3
+                      py-2
+                      text-sm
+                      font-medium
+                      transition-all
+                      ${
+                        currentPage === page
+                          ? "border-blue-600 bg-blue-600 text-white shadow-sm"
+                          : "border-slate-200 bg-white text-slate-500 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
+                      }
+                    `}
+                  >
+                    {page}
+                  </button>
+                ))}
+
+                {/* Next */}
+                <button
+                  type="button"
+                  onClick={() =>
+                    setCurrentPage(
+                      Math.min(
+                        totalPages,
+                        currentPage + 1
+                      )
+                    )
+                  }
+                  disabled={currentPage === totalPages}
+                  className="
+                    rounded-lg
+                    border
+                    border-slate-200
+                    bg-white
+                    px-3
+                    py-2
+                    text-sm
+                    font-medium
+                    text-slate-500
+                    transition-colors
+                    hover:bg-slate-50
+                    disabled:cursor-not-allowed
+                    disabled:opacity-40
+                  "
+                >
+                  পরবর্তী
+                </button>
+              </nav>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
+  </div>
   </DashboardLayout>
   )
 }

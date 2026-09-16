@@ -1,7 +1,7 @@
 
 import React from "react";
 import DashboardLayout from "../../components/layout/DashboardLayout";
-import { Save, X } from "lucide-react";
+import { Save, X , Mail , Building2} from "lucide-react";
 
 const EditProfileDetails = ({
   formData,
@@ -20,101 +20,144 @@ const EditProfileDetails = ({
   return (
     <DashboardLayout activeMenu="company-profile">
       {!formData ? (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="min-h-screen flex items-center justify-center bg-slate-50">
+          <div className="flex flex-col items-center gap-3">
+            <div className="h-9 w-9 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+            <p className="text-sm text-slate-500">
+              প্রোফাইল লোড হচ্ছে...
+            </p>
+          </div>
         </div>
       ) : (
-        <div className="min-h-screen bg-gray-50 py-8 px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="min-h-screen bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-5xl">
+
+            {/* ================= MAIN CARD ================= */}
+            <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
 
               {/* ================= HEADER ================= */}
-              <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-8 py-6">
-                <h1 className="text-lg md:text-xl font-medium text-white">
-                  Edit Profile
-                </h1>
+              <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-600 to-indigo-700 px-6 py-8 sm:px-8">
 
-                <p className="text-blue-100 text-sm mt-1">
-                  Update your personal and company information
-                </p>
+                {/* Decorative Circles */}
+                <div className="absolute -right-16 -top-20 h-56 w-56 rounded-full bg-white/10" />
+                <div className="absolute -bottom-24 right-24 h-48 w-48 rounded-full bg-white/5" />
+
+                <div className="relative">
+                  <div className="mb-2 inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-blue-100 backdrop-blur-sm">
+                    প্রোফাইল সেটিংস
+                  </div>
+
+                  <h1 className="text-2xl font-bold tracking-tight text-white">
+                    প্রোফাইল সম্পাদনা করুন
+                  </h1>
+
+                  <p className="mt-1 max-w-xl text-sm text-blue-100">
+                    আপনার ব্যক্তিগত এবং কোম্পানির তথ্য আপডেট করুন
+                  </p>
+                </div>
               </div>
 
-              {/* ================= FORM ================= */}
-              <div className="p-8">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* ================= FORM CONTENT ================= */}
+              <div className="p-5 sm:p-8">
+
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
 
                   {/* =====================================================
                       PERSONAL INFORMATION
                   ====================================================== */}
-                  <div className="space-y-6">
+                  <div className="rounded-2xl border border-slate-200 bg-white p-6">
 
-                    <h2 className="text-lg font-medium text-gray-800 border-b pb-2">
-                      Personal Information
-                    </h2>
+                    {/* Section Header */}
+                    <div className="mb-7 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-base font-semibold text-slate-800">
+                          ব্যক্তিগত তথ্য
+                        </h2>
 
-                    {/* Avatar */}
-                    <div className="flex items-center gap-4">
-                      <div className="relative shrink-0">
-
-                        <img
-                          src={
-                            formData.avatar ||
-                            "https://via.placeholder.com/100"
-                          }
-                          alt="Avatar"
-                          className="w-20 h-20 rounded-full object-cover border-4 border-gray-100 bg-gray-200"
-                        />
-
-                        {uploading?.avatar && (
-                          <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
-                            <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                          </div>
-                        )}
+                        <p className="mt-1 text-xs text-slate-500">
+                          আপনার ব্যক্তিগত অ্যাকাউন্টের তথ্য
+                        </p>
                       </div>
 
-                      <div className="flex-1">
-                        <label className="block">
-                          <span className="sr-only">
-                            Choose Avatar
-                          </span>
-
-                          <input
-                            type="file"
-                            accept="image/*"
-                            disabled={uploading?.avatar}
-                            onChange={(e) =>
-                              handleImageChange(e, "avatar")
-                            }
-                            className="
-                              block
-                              w-full
-                              text-sm
-                              text-gray-500
-                              file:mr-4
-                              file:py-2
-                              file:px-4
-                              file:rounded-full
-                              file:border-0
-                              file:text-sm
-                              file:font-semibold
-                              file:bg-blue-50
-                              file:text-blue-700
-                              hover:file:bg-blue-100
-                              disabled:opacity-50
-                              cursor-pointer
-                            "
-                          />
-                        </label>
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <Mail className="h-5 w-5" />
                       </div>
                     </div>
 
-                    {/* Full Name */}
-                    <div>
+                    {/* ================= Avatar ================= */}
+                    <div className="mb-7 rounded-xl border border-slate-100 bg-slate-50 p-4">
+                      <div className="flex items-center gap-4">
+
+                        <div className="relative shrink-0">
+
+                          <img
+                            src={
+                              formData.avatar ||
+                              "https://via.placeholder.com/100"
+                            }
+                            alt="প্রোফাইল ছবি"
+                            className="h-20 w-20 rounded-2xl border-4 border-white object-cover shadow-sm"
+                          />
+
+                          {uploading?.avatar && (
+                            <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-black/50">
+                              <div className="h-6 w-6 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm font-semibold text-slate-700">
+                            প্রোফাইল ছবি
+                          </p>
+
+                          <p className="mt-1 text-xs text-slate-500">
+                            আপনার একটি পরিষ্কার প্রোফাইল ছবি আপলোড করুন
+                          </p>
+
+                          <label className="mt-3 inline-block">
+                            <span className="sr-only">
+                              প্রোফাইল ছবি নির্বাচন করুন
+                            </span>
+
+                            <input
+                              type="file"
+                              accept="image/*"
+                              disabled={uploading?.avatar}
+                              onChange={(e) =>
+                                handleImageChange(e, "avatar")
+                              }
+                              className="
+                                block
+                                w-full
+                                text-xs
+                                text-slate-500
+                                file:mr-3
+                                file:rounded-lg
+                                file:border-0
+                                file:bg-blue-50
+                                file:px-3
+                                file:py-2
+                                file:text-xs
+                                file:font-semibold
+                                file:text-blue-600
+                                hover:file:bg-blue-100
+                                disabled:opacity-50
+                                cursor-pointer
+                              "
+                            />
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* ================= Full Name ================= */}
+                    <div className="mb-5">
                       <label
                         htmlFor="name"
-                        className="block text-sm font-medium text-gray-700 mb-2"
+                        className="mb-2 block text-sm font-medium text-slate-700"
                       >
-                        Full Name
+                        পূর্ণ নাম
                       </label>
 
                       <input
@@ -126,28 +169,32 @@ const EditProfileDetails = ({
                         }
                         className="
                           w-full
+                          rounded-xl
+                          border
+                          border-slate-200
+                          bg-white
                           px-4
                           py-3
-                          border
-                          border-gray-300
-                          rounded-lg
+                          text-sm
+                          text-slate-700
                           outline-none
-                          focus:ring-2
-                          focus:ring-blue-500
-                          focus:border-blue-500
                           transition-all
+                          placeholder:text-slate-400
+                          focus:border-blue-500
+                          focus:ring-4
+                          focus:ring-blue-500/10
                         "
-                        placeholder="Enter your full name"
+                        placeholder="আপনার পূর্ণ নাম লিখুন"
                       />
                     </div>
 
-                    {/* Email */}
+                    {/* ================= Email ================= */}
                     <div>
                       <label
                         htmlFor="email"
-                        className="block text-sm font-medium text-gray-700 mb-2"
+                        className="mb-2 block text-sm font-medium text-slate-700"
                       >
-                        Email Address
+                        ই-মেইল ঠিকানা
                       </label>
 
                       <input
@@ -157,19 +204,21 @@ const EditProfileDetails = ({
                         disabled
                         className="
                           w-full
+                          rounded-xl
+                          border
+                          border-slate-200
+                          bg-slate-50
                           px-4
                           py-3
-                          border
-                          border-gray-300
-                          rounded-lg
-                          bg-gray-50
-                          text-gray-600
+                          text-sm
+                          text-slate-500
+                          outline-none
                           cursor-not-allowed
                         "
                       />
 
-                      <p className="text-xs text-gray-400 mt-1">
-                        Email address cannot be changed.
+                      <p className="mt-2 text-xs text-slate-400">
+                        নিরাপত্তার কারণে ই-মেইল ঠিকানা পরিবর্তন করা যাবে না।
                       </p>
                     </div>
                   </div>
@@ -177,75 +226,99 @@ const EditProfileDetails = ({
                   {/* =====================================================
                       COMPANY INFORMATION
                   ====================================================== */}
-                  <div className="space-y-6">
+                  <div className="rounded-2xl border border-slate-200 bg-white p-6">
 
-                    <h2 className="text-lg font-medium text-gray-800 border-b pb-2">
-                      Company Information
-                    </h2>
+                    {/* Section Header */}
+                    <div className="mb-7 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-base font-semibold text-slate-800">
+                          কোম্পানির তথ্য
+                        </h2>
 
-                    {/* Company Logo */}
-                    <div className="flex items-center gap-4">
-                      <div className="relative shrink-0">
-
-                        <img
-                          src={
-                            formData.companyLogo ||
-                            "https://via.placeholder.com/100"
-                          }
-                          alt="Company Logo"
-                          className="w-20 h-20 rounded-lg object-cover border-4 border-gray-200 bg-gray-100"
-                        />
-
-                        {uploading?.logo && (
-                          <div className="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center">
-                            <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                          </div>
-                        )}
+                        <p className="mt-1 text-xs text-slate-500">
+                          আপনার কোম্পানি বা প্রতিষ্ঠানের তথ্য
+                        </p>
                       </div>
 
-                      <div className="flex-1">
-                        <label className="block">
-                          <span className="sr-only">
-                            Choose company logo
-                          </span>
-
-                          <input
-                            type="file"
-                            accept="image/*"
-                            disabled={uploading?.logo}
-                            onChange={(e) =>
-                              handleImageChange(e, "logo")
-                            }
-                            className="
-                              block
-                              w-full
-                              text-sm
-                              text-gray-500
-                              file:mr-4
-                              file:py-2
-                              file:px-4
-                              file:rounded-full
-                              file:border-0
-                              file:text-sm
-                              file:font-semibold
-                              file:bg-green-50
-                              file:text-green-700
-                              hover:file:bg-green-100
-                              disabled:opacity-50
-                              cursor-pointer
-                            "
-                          />
-                        </label>
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+                        <Building2 className="h-5 w-5" />
                       </div>
                     </div>
 
-                    {/* Company Name */}
-                    <div>
+                    {/* ================= Company Logo ================= */}
+                    <div className="mb-7 rounded-xl border border-slate-100 bg-slate-50 p-4">
+                      <div className="flex items-center gap-4">
+
+                        <div className="relative shrink-0">
+
+                          <img
+                            src={
+                              formData.companyLogo ||
+                              "https://via.placeholder.com/100"
+                            }
+                            alt="কোম্পানির লোগো"
+                            className="h-20 w-20 rounded-2xl border-4 border-white bg-white object-contain p-1 shadow-sm"
+                          />
+
+                          {uploading?.logo && (
+                            <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-black/50">
+                              <div className="h-6 w-6 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm font-semibold text-slate-700">
+                            কোম্পানির লোগো
+                          </p>
+
+                          <p className="mt-1 text-xs text-slate-500">
+                            আপনার কোম্পানির লোগো আপলোড করুন
+                          </p>
+
+                          <label className="mt-3 inline-block">
+                            <span className="sr-only">
+                              কোম্পানির লোগো নির্বাচন করুন
+                            </span>
+
+                            <input
+                              type="file"
+                              accept="image/*"
+                              disabled={uploading?.logo}
+                              onChange={(e) =>
+                                handleImageChange(e, "logo")
+                              }
+                              className="
+                                block
+                                w-full
+                                text-xs
+                                text-slate-500
+                                file:mr-3
+                                file:rounded-lg
+                                file:border-0
+                                file:bg-indigo-50
+                                file:px-3
+                                file:py-2
+                                file:text-xs
+                                file:font-semibold
+                                file:text-indigo-600
+                                hover:file:bg-indigo-100
+                                disabled:opacity-50
+                                cursor-pointer
+                              "
+                            />
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* ================= Company Name ================= */}
+                    <div className="mb-5">
                       <label
                         htmlFor="companyName"
-                        className="block text-sm font-medium text-gray-700 mb-2"
+                        className="mb-2 block text-sm font-medium text-slate-700"
                       >
-                        Company Name
+                        কোম্পানির নাম
                       </label>
 
                       <input
@@ -260,28 +333,32 @@ const EditProfileDetails = ({
                         }
                         className="
                           w-full
+                          rounded-xl
+                          border
+                          border-slate-200
+                          bg-white
                           px-4
                           py-3
-                          border
-                          border-gray-300
-                          rounded-lg
+                          text-sm
+                          text-slate-700
                           outline-none
-                          focus:ring-2
-                          focus:ring-blue-500
-                          focus:border-blue-500
                           transition-all
+                          placeholder:text-slate-400
+                          focus:border-blue-500
+                          focus:ring-4
+                          focus:ring-blue-500/10
                         "
-                        placeholder="Enter company name"
+                        placeholder="কোম্পানির নাম লিখুন"
                       />
                     </div>
 
-                    {/* Company Description */}
+                    {/* ================= Company Description ================= */}
                     <div>
                       <label
                         htmlFor="companyDescription"
-                        className="block text-sm font-medium text-gray-700 mb-2"
+                        className="mb-2 block text-sm font-medium text-slate-700"
                       >
-                        Company Description
+                        কোম্পানি সম্পর্কে
                       </label>
 
                       <textarea
@@ -296,26 +373,35 @@ const EditProfileDetails = ({
                         rows={5}
                         className="
                           w-full
+                          resize-none
+                          rounded-xl
+                          border
+                          border-slate-200
+                          bg-white
                           px-4
                           py-3
-                          border
-                          border-gray-300
-                          rounded-lg
+                          text-sm
+                          leading-6
+                          text-slate-700
                           outline-none
-                          focus:ring-2
-                          focus:ring-blue-500
-                          focus:border-blue-500
                           transition-all
-                          resize-none
+                          placeholder:text-slate-400
+                          focus:border-blue-500
+                          focus:ring-4
+                          focus:ring-blue-500/10
                         "
-                        placeholder="Describe your company..."
+                        placeholder="আপনার কোম্পানি বা প্রতিষ্ঠান সম্পর্কে সংক্ষিপ্ত বিবরণ লিখুন..."
                       />
+
+                      <p className="mt-2 text-xs text-slate-400">
+                        চাকরিপ্রার্থীদের জন্য আপনার কোম্পানি সম্পর্কে সংক্ষিপ্ত ও পরিষ্কার তথ্য দিন।
+                      </p>
                     </div>
                   </div>
                 </div>
 
                 {/* ================= ACTION BUTTONS ================= */}
-                <div className="flex flex-col sm:flex-row justify-end gap-3 mt-8 pt-6 border-t">
+                <div className="mt-8 flex flex-col-reverse gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:justify-end">
 
                   {/* Cancel */}
                   <button
@@ -323,24 +409,28 @@ const EditProfileDetails = ({
                     onClick={handleCancel}
                     disabled={saving}
                     className="
-                      px-6
-                      py-3
-                      border
-                      border-gray-300
-                      text-gray-700
-                      rounded-lg
-                      hover:bg-gray-50
-                      disabled:opacity-50
-                      disabled:cursor-not-allowed
-                      transition-colors
-                      flex
+                      inline-flex
                       items-center
                       justify-center
                       gap-2
+                      rounded-xl
+                      border
+                      border-slate-200
+                      bg-white
+                      px-6
+                      py-3
+                      text-sm
+                      font-semibold
+                      text-slate-600
+                      transition-all
+                      hover:bg-slate-50
+                      hover:border-slate-300
+                      disabled:cursor-not-allowed
+                      disabled:opacity-50
                     "
                   >
-                    <X className="w-4 h-4" />
-                    <span>Cancel</span>
+                    <X className="h-4 w-4" />
+                    বাতিল করুন
                   </button>
 
                   {/* Save */}
@@ -353,32 +443,41 @@ const EditProfileDetails = ({
                       uploading?.logo
                     }
                     className="
-                      px-6
-                      py-3
-                      bg-blue-600
-                      text-white
-                      rounded-lg
-                      hover:bg-blue-700
-                      disabled:opacity-50
-                      disabled:cursor-not-allowed
-                      transition-colors
-                      flex
+                      inline-flex
                       items-center
                       justify-center
                       gap-2
+                      rounded-xl
+                      bg-gradient-to-r
+                      from-blue-600
+                      to-indigo-600
+                      px-7
+                      py-3
+                      text-sm
+                      font-semibold
+                      text-white
+                      shadow-sm
+                      transition-all
+                      hover:from-blue-700
+                      hover:to-indigo-700
+                      hover:shadow-md
+                      active:scale-[0.98]
+                      disabled:cursor-not-allowed
+                      disabled:opacity-50
                     "
                   >
                     {saving ? (
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <div className="h-4 w-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
                     ) : (
-                      <Save className="w-4 h-4" />
+                      <Save className="h-4 w-4" />
                     )}
 
                     <span>
-                      {saving ? "Saving..." : "Save Changes"}
+                      {saving ? "সংরক্ষণ করা হচ্ছে..." : "পরিবর্তন সংরক্ষণ করুন"}
                     </span>
                   </button>
                 </div>
+
               </div>
             </div>
           </div>

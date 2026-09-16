@@ -1,7 +1,7 @@
 import React from 'react'
 import {Search , MapPin} from 'lucide-react'
 
-const SearchHeader = ({filters , hasFilterChange}) => {
+const SearchHeader = ({filters ,handleFilterChange}) => {
   return (
     <div className="relative overflow-hidden bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl sm:rounded-3xl shadow-lg shadow-slate-200/50 dark:shadow-none border border-slate-200/80 dark:border-slate-800 p-5 sm:p-7 lg:p-9 mb-6 lg:mb-8 transition-all">
       {/* Subtle Background Glow/Gradient Accent */}
@@ -28,7 +28,7 @@ const SearchHeader = ({filters , hasFilterChange}) => {
               type="text"
               placeholder="Job title, company or keywords..."
               value={filters?.keyword || ''}
-              onChange={(e) => hasFilterChange('keyword', e.target.value)}
+              onChange={(e) => handleFilterChange('keyword', e.target.value)}
               className="w-full pl-11 pr-4 py-3 text-sm sm:text-base rounded-xl bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all shadow-sm"
             />
           </div>
@@ -40,7 +40,7 @@ const SearchHeader = ({filters , hasFilterChange}) => {
               type="text"
               placeholder="Location or remote..."
               value={filters?.location || ''}
-              onChange={(e) => hasFilterChange('location', e.target.value)}
+              onChange={(e) => handleFilterChange('location', e.target.value)}
               className="w-full pl-11 pr-4 py-3 text-sm sm:text-base rounded-xl bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all shadow-sm"
             />
           </div>

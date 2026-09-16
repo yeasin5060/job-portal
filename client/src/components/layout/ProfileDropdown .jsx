@@ -2,8 +2,10 @@ import React from 'react'
 import {ChevronDown} from 'lucide-react';
 import {Link, useNavigate} from 'react-router-dom'
  
-const ProfileDropdown  = ({isOpen , onToggle , avatar , companyName , email , onLogout , uerRole }) => {
+const ProfileDropdown  = ({isOpen , onToggle , avatar , companyName , email , onLogout , userRole }) => {
     const navigate = useNavigate();
+    console.log(userRole);
+    
   return (
     <div className='relative'>
         <button className='flex items-center space-x-3 p-2 rounded-xl hover:bg-gray-50 transition-colors duration-200' onClick={onToggle}>
@@ -21,7 +23,7 @@ const ProfileDropdown  = ({isOpen , onToggle , avatar , companyName , email , on
             }
             <div className='hidden sm:block text-left'>
                 <p className='text-sm font-medium text-gray-900'>{companyName}</p>
-                <p className='text-xs text-gray-500'>{uerRole}</p>
+                <p className='text-xs text-gray-500'>{userRole}</p>
             </div>
             <ChevronDown className='w-4 h-4 text-gray-400'/>
         </button>
@@ -32,13 +34,13 @@ const ProfileDropdown  = ({isOpen , onToggle , avatar , companyName , email , on
                         <p className='text-sm font-medium text-gray-900'>{companyName}</p>
                         <p className='text-xs text-gray-500'>{email}</p>
                     </div>
-                    <Link className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors' onClick={ () => navigate(userRole === "jobseeker" ? "/profile" : "/company-profile")}>
+                    <a className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer' onClick={ () => navigate(userRole === "jobseeker" ? "/profile" : "/company-profile")}>
                         View Profile
-                    </Link>
+                    </a>
                     <div className='border-2 border-gray-100 mt-2 pt-2'>
-                        <Link className='block px-4 py-2 text-sm text-red-600 hover:bg-gray-50 transition-colors' to="#" onClick={onLogout}>
+                        <a className='block px-4 py-2 text-sm text-red-600 hover:bg-gray-50 transition-colors cursor-pointer' to="#" onClick={onLogout}>
                             Sign out
-                        </Link>
+                        </a>
                     </div>
                 </div>
             )

@@ -10,7 +10,6 @@ const Navbar = () => {
     const { user , isAuthenticated , logout} = useAuth();
     const navigate = useNavigate();
 
-    console.log(user);
     
     const [profileDropdownOpen , setProfileDropdownOpne] = useState(false);
 
@@ -63,7 +62,7 @@ const Navbar = () => {
                 avatar={user?.avatar || ''}
                 companyName={user?.name || ''}
                 email={user?.email || ''}
-                uerRole={user?.role || ''}
+                userRole={user?.role || ''}
                 onLogout={logout}
               />
             ) : (

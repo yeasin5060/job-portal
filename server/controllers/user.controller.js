@@ -45,43 +45,76 @@ export const updateProfile = async(req , res) => {
 }
 
 
-//delete resume file {jobseeker only}
-export const deleteResume = async(req , res) => {
-    try {
-        const {resumeUrl} = req.body; //expecr resumeUrl to be the Url of the resume
+// delete resume file {jobseeker only}
+export const deleteResume = async (req, res) => {
+  try {
+    const { resumeUrl } = req.body;
 
-        //Extract file name from the Url
-        const fileName = resumeUrl?.split('/')?.pop();
-
-        const user = await User.findById(req.user._id);
-
-        if(!user) {
-            return res.status(404).json({message : "User not found"});
-        }
-
-        if(user.role !== 'jobseeker') {
-            return res.status(403).json({message : "Only jobseeker can delete resume"});
-        }
-
-        //construct the full file path
-        const filePath = path.join(__dirname, '../uploads', fileName);
-
-        //check if the file exists and than delete
-        if(fs.existsSync(filePath)) {
-            fs.unlinkSync(filePath);
-        }
-
-        user.resume = '';
-
-        await user.save();
-
-        res.json({message : 'Resume delete successfully'})
-
-    } catch (error) {
-        res.status(500).json({message : error.message});
+    if (!resumeUrl) {
+      return res.status(400).json({
+        message: "Resume URL is required",
+      });
     }
-}
 
+    // Extract file name from URL
+    const fileName = resumeUrl.split("/").pop();
+
+    if (!fileName) {
+      return res.status(400).json({
+        message: "Invalid resume URL",
+      });
+    }
+
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    if (user.role !== "jobseeker") {
+      return res.status(403).json({
+        message: "Only jobseeker can delete resume",
+      });
+    }
+
+    // uploads folder path
+    const filePath = path.join(
+      process.cwd(),
+      "uploads",
+      fileName
+    );
+
+    console.log("Resume URL:", resumeUrl);
+    console.log("File name:", fileName);
+    console.log("File path:", filePath);
+
+    // Delete physical file
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+      console.log("Resume file deleted:", filePath);
+    } else {
+      console.log("Resume file not found:", filePath);
+    }
+
+    // Remove resume URL from database
+    user.resume = "";
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "Resume deleted successfully",
+    });
+
+  } catch (error) {
+    console.error("Delete resume error:", error);
+
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
 //get user public profile
 export const getPublicProfile = async(req , res) => {
     try {

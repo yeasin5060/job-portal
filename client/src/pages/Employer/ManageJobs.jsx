@@ -168,570 +168,483 @@ const ManageJobs = () => {
 
   return (
   <DashboardLayout activeMenu="manage-jobs">
-  <div className="min-h-screen bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
-    <div className="mx-auto max-w-7xl">
+    <div className="min-h-screen bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
 
-      {/* ================= HEADER ================= */}
-      <div className="mb-7">
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+        {/* ================= HEADER ================= */}
+        <div className="mb-7">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
 
-          <div>
-            <div className="mb-2 inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600">
-              নিয়োগ ব্যবস্থাপনা
-            </div>
-
-            <h1 className="text-2xl font-bold tracking-tight text-slate-800">
-              চাকরির ব্যবস্থাপনা
-            </h1>
-
-            <p className="mt-1 text-sm text-slate-500">
-              আপনার চাকরির পোস্ট এবং আবেদনকারীদের তথ্য পরিচালনা করুন
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => navigate("/post-job")}
-            className="
-              inline-flex
-              items-center
-              justify-center
-              gap-2
-              rounded-xl
-              bg-gradient-to-r
-              from-blue-600
-              to-indigo-600
-              px-5
-              py-3
-              text-sm
-              font-semibold
-              text-white
-              shadow-lg
-              shadow-blue-500/20
-              transition-all
-              duration-200
-              hover:-translate-y-0.5
-              hover:from-blue-700
-              hover:to-indigo-700
-              hover:shadow-xl
-            "
-          >
-            <Plus className="h-5 w-5" />
-            নতুন চাকরি পোস্ট করুন
-          </button>
-        </div>
-      </div>
-
-      {/* ================= MAIN CARD ================= */}
-      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-
-        {/* ================= FILTER HEADER ================= */}
-        <div className="border-b border-slate-100 bg-white p-5 sm:p-6">
-
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
-
-            {/* Search */}
-            <div className="relative flex-1">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
-                <Search className="h-4 w-4 text-slate-400" />
-              </div>
-
-              <input
-                type="text"
-                placeholder="চাকরি খুঁজুন..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="
-                  block
-                  w-full
-                  rounded-xl
-                  border
-                  border-slate-200
-                  bg-slate-50
-                  py-3
-                  pl-11
-                  pr-4
-                  text-sm
-                  text-slate-700
-                  outline-none
-                  transition-all
-                  placeholder:text-slate-400
-                  focus:border-blue-500
-                  focus:bg-white
-                  focus:ring-4
-                  focus:ring-blue-500/10
-                "
-              />
-            </div>
-
-            {/* Status Filter */}
-            <div className="w-full lg:w-52">
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="
-                  block
-                  w-full
-                  rounded-xl
-                  border
-                  border-slate-200
-                  bg-slate-50
-                  px-4
-                  py-3
-                  text-sm
-                  text-slate-700
-                  outline-none
-                  transition-all
-                  focus:border-blue-500
-                  focus:bg-white
-                  focus:ring-4
-                  focus:ring-blue-500/10
-                "
-              >
-                <option value="All">সব স্ট্যাটাস</option>
-                <option value="Active">সক্রিয়</option>
-                <option value="Closed">বন্ধ</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Results Summary */}
-          <div className="mt-5 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500">
-                মোট{" "}
-                <span className="font-semibold text-slate-800">
-                  {filterAndSortJobs.length}
-                </span>{" "}
-                টি চাকরি পাওয়া গেছে
+              <div className="mb-2 inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600">
+                নিয়োগ ব্যবস্থাপনা
+              </div>
+
+              <h1 className="text-2xl font-bold tracking-tight text-slate-800">
+                চাকরির ব্যবস্থাপনা
+              </h1>
+
+              <p className="mt-1 text-sm text-slate-500">
+                আপনার চাকরির পোস্ট এবং আবেদনকারীদের তথ্য পরিচালনা করুন
               </p>
             </div>
 
-            <div className="hidden rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 sm:block">
-              দেখানো হচ্ছে {paginatedJobs.length} টি
-            </div>
+            <button
+              type="button"
+              onClick={() => navigate("/post-job")}
+              className="
+                inline-flex
+                items-center
+                justify-center
+                gap-2
+                rounded-xl
+                bg-gradient-to-r
+                from-blue-600
+                to-indigo-600
+                px-5
+                py-3
+                text-sm
+                font-semibold
+                text-white
+                shadow-lg
+                shadow-blue-500/20
+                transition-all
+                duration-200
+                hover:-translate-y-0.5
+                hover:from-blue-700
+                hover:to-indigo-700
+                hover:shadow-xl
+              "
+            >
+              <Plus className="h-5 w-5" />
+              নতুন চাকরি পোস্ট করুন
+            </button>
           </div>
         </div>
 
-        {/* ================= TABLE ================= */}
-        <div>
-          {filterAndSortJobs.length === 0 && !isLoading ? (
-            <div className="px-6 py-16 text-center">
+        {/* ================= MAIN CARD ================= */}
+        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
 
-              <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-2xl bg-slate-100">
-                <Search className="h-9 w-9 text-slate-400" />
+          {/* ================= FILTER HEADER ================= */}
+          <div className="border-b border-slate-100 bg-white p-5 sm:p-6">
+
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
+
+              {/* Search */}
+              <div className="relative flex-1">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+                  <Search className="h-4 w-4 text-slate-400" />
+                </div>
+
+                <input
+                  type="text"
+                  placeholder="চাকরি খুঁজুন..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="
+                    block
+                    w-full
+                    rounded-xl
+                    border
+                    border-slate-200
+                    bg-slate-50
+                    py-3
+                    pl-11
+                    pr-4
+                    text-sm
+                    text-slate-700
+                    outline-none
+                    transition-all
+                    placeholder:text-slate-400
+                    focus:border-blue-500
+                    focus:bg-white
+                    focus:ring-4
+                    focus:ring-blue-500/10
+                  "
+                />
               </div>
 
-              <h3 className="text-lg font-semibold text-slate-800">
-                কোনো চাকরি পাওয়া যায়নি
-              </h3>
-
-              <p className="mx-auto mt-2 max-w-md text-sm text-slate-500">
-                আপনার সার্চ বা ফিল্টারের শর্ত পরিবর্তন করে আবার চেষ্টা করুন।
-              </p>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setSearchTerm("");
-                  setStatusFilter("All");
-                }}
-                className="mt-5 text-sm font-semibold text-blue-600 hover:text-blue-700"
-              >
-                ফিল্টার পরিষ্কার করুন
-              </button>
+              {/* Status Filter */}
+              <div className="w-full lg:w-52">
+                <select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  className="
+                    block
+                    w-full
+                    rounded-xl
+                    border
+                    border-slate-200
+                    bg-slate-50
+                    px-4
+                    py-3
+                    text-sm
+                    text-slate-700
+                    outline-none
+                    transition-all
+                    focus:border-blue-500
+                    focus:bg-white
+                    focus:ring-4
+                    focus:ring-blue-500/10
+                  "
+                >
+                  <option value="All">সব স্ট্যাটাস</option>
+                  <option value="Active">সক্রিয়</option>
+                  <option value="Closed">বন্ধ</option>
+                </select>
+              </div>
             </div>
-          ) : (
-            <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100">
 
-              <table className="min-w-full divide-y divide-slate-100">
+            {/* Results Summary */}
+            <div className="mt-5 flex items-center justify-between">
+              <div>
+                <p className="text-sm text-slate-500">
+                  মোট{" "}
+                  <span className="font-semibold text-slate-800">
+                    {filterAndSortJobs.length}
+                  </span>{" "}
+                  টি চাকরি পাওয়া গেছে
+                </p>
+              </div>
 
-                {/* ================= TABLE HEAD ================= */}
-                <thead className="bg-slate-50">
-                  <tr>
+              <div className="hidden rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 sm:block">
+                দেখানো হচ্ছে {paginatedJobs.length} টি
+              </div>
+            </div>
+          </div>
 
-                    {/* Job Title */}
-                    <th
-                      className="
-                        min-w-[220px]
-                        cursor-pointer
-                        px-6
-                        py-4
-                        text-left
-                        text-xs
-                        font-semibold
-                        uppercase
-                        tracking-wider
-                        text-slate-500
-                        transition-colors
-                        hover:bg-slate-100
-                      "
-                      onClick={() => handleSort("title")}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span>চাকরির নাম</span>
-                        <SortIcon field="title" />
-                      </div>
-                    </th>
+          {/* ================= TABLE ================= */}
+          <div>
+            {filterAndSortJobs.length === 0 && !isLoading ? (
+              <div className="px-6 py-16 text-center">
 
-                    {/* Status */}
-                    <th
-                      className="
-                        min-w-[130px]
-                        cursor-pointer
-                        px-6
-                        py-4
-                        text-left
-                        text-xs
-                        font-semibold
-                        uppercase
-                        tracking-wider
-                        text-slate-500
-                        transition-colors
-                        hover:bg-slate-100
-                      "
-                      onClick={() => handleSort("status")}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span>স্ট্যাটাস</span>
-                        <SortIcon field="status" />
-                      </div>
-                    </th>
+                <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-2xl bg-slate-100">
+                  <Search className="h-9 w-9 text-slate-400" />
+                </div>
 
-                    {/* Applicants */}
-                    <th
-                      className="
-                        min-w-[140px]
-                        cursor-pointer
-                        px-6
-                        py-4
-                        text-left
-                        text-xs
-                        font-semibold
-                        uppercase
-                        tracking-wider
-                        text-slate-500
-                        transition-colors
-                        hover:bg-slate-100
-                      "
-                      onClick={() => handleSort("applicants")}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span>আবেদনকারী</span>
-                        <SortIcon field="applicants" />
-                      </div>
-                    </th>
+                <h3 className="text-lg font-semibold text-slate-800">
+                  কোনো চাকরি পাওয়া যায়নি
+                </h3>
 
-                    {/* Actions */}
-                    <th className="min-w-[190px] px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
-                      অ্যাকশন
-                    </th>
-                  </tr>
-                </thead>
+                <p className="mx-auto mt-2 max-w-md text-sm text-slate-500">
+                  আপনার সার্চ বা ফিল্টারের শর্ত পরিবর্তন করে আবার চেষ্টা করুন।
+                </p>
 
-                {/* ================= TABLE BODY ================= */}
-                <tbody className="divide-y divide-slate-100 bg-white">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchTerm("");
+                    setStatusFilter("All");
+                  }}
+                  className="mt-5 text-sm font-semibold text-blue-600 hover:text-blue-700"
+                >
+                  ফিল্টার পরিষ্কার করুন
+                </button>
+              </div>
+            ) : (
+              <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100">
 
-                  {isLoading ? (
-                    Array.from({ length: 5 }).map((_, index) => (
-                      <LoadingRow key={index} />
-                    ))
-                  ) : (
-                    paginatedJobs.map((job) => (
-                      <tr
-                        key={job.id}
-                        className="group transition-colors duration-200 hover:bg-blue-50/30"
+                <table className="min-w-full divide-y divide-slate-100">
+
+                  {/* ================= TABLE HEAD ================= */}
+                  <thead className="bg-slate-50">
+                    <tr>
+
+                      {/* Job Title */}
+                      <th
+                        className="
+                          min-w-[220px]
+                          cursor-pointer
+                          px-6
+                          py-4
+                          text-left
+                          text-xs
+                          font-semibold
+                          uppercase
+                          tracking-wider
+                          text-slate-500
+                          transition-colors
+                          hover:bg-slate-100
+                        "
+                        onClick={() => handleSort("title")}
                       >
+                        <div className="flex items-center gap-2">
+                          <span>চাকরির নাম</span>
+                          <SortIcon field="title" />
+                        </div>
+                      </th>
 
-                        {/* ================= JOB TITLE ================= */}
-                        <td className="px-6 py-5">
-                          <div>
-                            <h3 className="text-sm font-semibold text-slate-800 group-hover:text-blue-600 transition-colors">
-                              {job.title}
-                            </h3>
+                      {/* Status */}
+                      <th
+                        className="
+                          min-w-[130px]
+                          cursor-pointer
+                          px-6
+                          py-4
+                          text-left
+                          text-xs
+                          font-semibold
+                          uppercase
+                          tracking-wider
+                          text-slate-500
+                          transition-colors
+                          hover:bg-slate-100
+                        "
+                        onClick={() => handleSort("status")}
+                      >
+                        <div className="flex items-center gap-2">
+                          <span>স্ট্যাটাস</span>
+                          <SortIcon field="status" />
+                        </div>
+                      </th>
 
-                            <p className="mt-1 text-xs font-medium text-slate-500">
-                              {job.company}
-                            </p>
-                          </div>
-                        </td>
+                      {/* Applicants */}
+                      <th
+                        className="
+                          min-w-[140px]
+                          cursor-pointer
+                          px-6
+                          py-4
+                          text-left
+                          text-xs
+                          font-semibold
+                          uppercase
+                          tracking-wider
+                          text-slate-500
+                          transition-colors
+                          hover:bg-slate-100
+                        "
+                        onClick={() => handleSort("applicants")}
+                      >
+                        <div className="flex items-center gap-2">
+                          <span>আবেদনকারী</span>
+                          <SortIcon field="applicants" />
+                        </div>
+                      </th>
 
-                        {/* ================= STATUS ================= */}
-                        <td className="px-6 py-5">
-                          <span
-                            className={`
-                              inline-flex
-                              items-center
-                              gap-1.5
-                              rounded-full
-                              border
-                              px-3
-                              py-1.5
-                              text-xs
-                              font-semibold
-                              ${
-                                job.status === "Active"
-                                  ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-                                  : "border-slate-200 bg-slate-100 text-slate-600"
-                              }
-                            `}
-                          >
+                      {/* Actions */}
+                      <th className="min-w-[190px] px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                        অ্যাকশন
+                      </th>
+                    </tr>
+                  </thead>
+
+                  {/* ================= TABLE BODY ================= */}
+                  <tbody className="divide-y divide-slate-100 bg-white">
+
+                    {isLoading ? (
+                      Array.from({ length: 5 }).map((_, index) => (
+                        <LoadingRow key={index} />
+                      ))
+                    ) : (
+                      paginatedJobs.map((job) => (
+                        <tr
+                          key={job.id}
+                          className="group transition-colors duration-200 hover:bg-blue-50/30"
+                        >
+
+                          {/* ================= JOB TITLE ================= */}
+                          <td className="px-6 py-5">
+                            <div>
+                              <h3 className="text-sm font-semibold text-slate-800 group-hover:text-blue-600 transition-colors">
+                                {job.title}
+                              </h3>
+
+                              <p className="mt-1 text-xs font-medium text-slate-500">
+                                {job.company}
+                              </p>
+                            </div>
+                          </td>
+
+                          {/* ================= STATUS ================= */}
+                          <td className="px-6 py-5">
                             <span
                               className={`
-                                h-1.5
-                                w-1.5
+                                inline-flex
+                                items-center
+                                gap-1.5
                                 rounded-full
+                                border
+                                px-3
+                                py-1.5
+                                text-xs
+                                font-semibold
                                 ${
                                   job.status === "Active"
-                                    ? "bg-emerald-500"
-                                    : "bg-slate-400"
+                                    ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                                    : "border-slate-200 bg-slate-100 text-slate-600"
                                 }
                               `}
-                            />
+                            >
+                              <span
+                                className={`
+                                  h-1.5
+                                  w-1.5
+                                  rounded-full
+                                  ${
+                                    job.status === "Active"
+                                      ? "bg-emerald-500"
+                                      : "bg-slate-400"
+                                  }
+                                `}
+                              />
 
-                            {job.status === "Active"
-                              ? "সক্রিয়"
-                              : "বন্ধ"}
-                          </span>
-                        </td>
-
-                        {/* ================= APPLICANTS ================= */}
-                        <td className="px-6 py-5">
-                          <button
-                            type="button"
-                            onClick={() =>
-                              navigate("/applicants", {
-                                state: {
-                                  jobId: job.id,
-                                },
-                              })
-                            }
-                            className="
-                              inline-flex
-                              items-center
-                              gap-2
-                              rounded-lg
-                              px-2
-                              py-1.5
-                              text-sm
-                              font-semibold
-                              text-blue-600
-                              transition-colors
-                              hover:bg-blue-50
-                              hover:text-blue-700
-                            "
-                          >
-                            <Users className="h-4 w-4" />
-                            {job.applicants}
-                            <span className="text-xs font-normal text-slate-400">
-                              জন
+                              {job.status === "Active"
+                                ? "সক্রিয়"
+                                : "বন্ধ"}
                             </span>
-                          </button>
-                        </td>
+                          </td>
 
-                        {/* ================= ACTIONS ================= */}
-                        <td className="px-6 py-5">
-                          <div className="flex items-center gap-1.5">
-
-                            {/* Edit */}
+                          {/* ================= APPLICANTS ================= */}
+                          <td className="px-6 py-5">
                             <button
                               type="button"
-                              title="সম্পাদনা করুন"
                               onClick={() =>
-                                navigate("/post-job", {
+                                navigate("/applicants", {
                                   state: {
                                     jobId: job.id,
                                   },
                                 })
                               }
                               className="
+                                inline-flex
+                                items-center
+                                gap-2
                                 rounded-lg
-                                p-2
+                                px-2
+                                py-1.5
+                                text-sm
+                                font-semibold
                                 text-blue-600
                                 transition-colors
                                 hover:bg-blue-50
                                 hover:text-blue-700
                               "
                             >
-                              <Edit className="h-4 w-4" />
+                              <Users className="h-4 w-4" />
+                              {job.applicants}
+                              <span className="text-xs font-normal text-slate-400">
+                                জন
+                              </span>
                             </button>
+                          </td>
 
-                            {/* Active / Close */}
-                            {job.status === "Active" ? (
+                          {/* ================= ACTIONS ================= */}
+                          <td className="px-6 py-5">
+                            <div className="flex items-center gap-1.5">
+
+                              {/* Edit */}
                               <button
                                 type="button"
-                                title="চাকরি বন্ধ করুন"
+                                title="সম্পাদনা করুন"
                                 onClick={() =>
-                                  handleStatusChange(job.id)
+                                  navigate("/post-job", {
+                                    state: {
+                                      jobId: job.id,
+                                    },
+                                  })
                                 }
                                 className="
-                                  inline-flex
-                                  items-center
-                                  gap-1.5
                                   rounded-lg
                                   p-2
-                                  text-orange-600
+                                  text-blue-600
                                   transition-colors
-                                  hover:bg-orange-50
-                                  hover:text-orange-700
+                                  hover:bg-blue-50
+                                  hover:text-blue-700
                                 "
                               >
-                                <X className="h-4 w-4" />
-
-                                <span className="hidden text-xs font-semibold sm:inline">
-                                  বন্ধ করুন
-                                </span>
+                                <Edit className="h-4 w-4" />
                               </button>
-                            ) : (
+
+                              {/* Active / Close */}
+                              {job.status === "Active" ? (
+                                <button
+                                  type="button"
+                                  title="চাকরি বন্ধ করুন"
+                                  onClick={() =>
+                                    handleStatusChange(job.id)
+                                  }
+                                  className="
+                                    inline-flex
+                                    items-center
+                                    gap-1.5
+                                    rounded-lg
+                                    p-2
+                                    text-orange-600
+                                    transition-colors
+                                    hover:bg-orange-50
+                                    hover:text-orange-700
+                                  "
+                                >
+                                  <X className="h-4 w-4" />
+
+                                  <span className="hidden text-xs font-semibold sm:inline">
+                                    বন্ধ করুন
+                                  </span>
+                                </button>
+                              ) : (
+                                <button
+                                  type="button"
+                                  title="চাকরি সক্রিয় করুন"
+                                  onClick={() =>
+                                    handleStatusChange(job.id)
+                                  }
+                                  className="
+                                    inline-flex
+                                    items-center
+                                    gap-1.5
+                                    rounded-lg
+                                    p-2
+                                    text-emerald-600
+                                    transition-colors
+                                    hover:bg-emerald-50
+                                    hover:text-emerald-700
+                                  "
+                                >
+                                  <Plus className="h-4 w-4" />
+
+                                  <span className="hidden text-xs font-semibold sm:inline">
+                                    সক্রিয় করুন
+                                  </span>
+                                </button>
+                              )}
+
+                              {/* Delete */}
                               <button
                                 type="button"
-                                title="চাকরি সক্রিয় করুন"
+                                title="ডিলিট করুন"
                                 onClick={() =>
-                                  handleStatusChange(job.id)
+                                  handleDeleteJobs(job.id)
                                 }
                                 className="
-                                  inline-flex
-                                  items-center
-                                  gap-1.5
                                   rounded-lg
                                   p-2
-                                  text-emerald-600
+                                  text-red-600
                                   transition-colors
-                                  hover:bg-emerald-50
-                                  hover:text-emerald-700
+                                  hover:bg-red-50
+                                  hover:text-red-700
                                 "
                               >
-                                <Plus className="h-4 w-4" />
-
-                                <span className="hidden text-xs font-semibold sm:inline">
-                                  সক্রিয় করুন
-                                </span>
+                                <Trash2 className="h-4 w-4" />
                               </button>
-                            )}
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
 
-                            {/* Delete */}
-                            <button
-                              type="button"
-                              title="ডিলিট করুন"
-                              onClick={() =>
-                                handleDeleteJobs(job.id)
-                              }
-                              className="
-                                rounded-lg
-                                p-2
-                                text-red-600
-                                transition-colors
-                                hover:bg-red-50
-                                hover:text-red-700
-                              "
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
+          {/* ================= PAGINATION ================= */}
+          {totalPages > 1 && (
+            <div className="border-t border-slate-100 bg-white px-5 py-5 sm:px-6">
 
-        {/* ================= PAGINATION ================= */}
-        {totalPages > 1 && (
-          <div className="border-t border-slate-100 bg-white px-5 py-5 sm:px-6">
+              {/* Mobile Pagination */}
+              <div className="flex items-center justify-between sm:hidden">
 
-            {/* Mobile Pagination */}
-            <div className="flex items-center justify-between sm:hidden">
-
-              <button
-                type="button"
-                onClick={() =>
-                  setCurrentPage(
-                    Math.max(1, currentPage - 1)
-                  )
-                }
-                disabled={currentPage === 1}
-                className="
-                  rounded-lg
-                  border
-                  border-slate-200
-                  bg-white
-                  px-4
-                  py-2
-                  text-sm
-                  font-medium
-                  text-slate-600
-                  transition-colors
-                  hover:bg-slate-50
-                  disabled:cursor-not-allowed
-                  disabled:opacity-40
-                "
-              >
-                পূর্ববর্তী
-              </button>
-
-              <span className="text-sm font-medium text-slate-500">
-                {currentPage} / {totalPages}
-              </span>
-
-              <button
-                type="button"
-                onClick={() =>
-                  setCurrentPage(
-                    Math.min(
-                      totalPages,
-                      currentPage + 1
-                    )
-                  )
-                }
-                disabled={currentPage === totalPages}
-                className="
-                  rounded-lg
-                  border
-                  border-slate-200
-                  bg-white
-                  px-4
-                  py-2
-                  text-sm
-                  font-medium
-                  text-slate-600
-                  transition-colors
-                  hover:bg-slate-50
-                  disabled:cursor-not-allowed
-                  disabled:opacity-40
-                "
-              >
-                পরবর্তী
-              </button>
-            </div>
-
-            {/* Desktop Pagination */}
-            <div className="hidden sm:flex sm:items-center sm:justify-between">
-
-              <p className="text-sm text-slate-500">
-                দেখানো হচ্ছে{" "}
-                <span className="font-semibold text-slate-700">
-                  {startIndex + 1}
-                </span>{" "}
-                থেকে{" "}
-                <span className="font-semibold text-slate-700">
-                  {Math.min(
-                    startIndex + itemsPerPage,
-                    filterAndSortJobs.length
-                  )}
-                </span>{" "}
-                এর মধ্যে মোট{" "}
-                <span className="font-semibold text-slate-700">
-                  {filterAndSortJobs.length}
-                </span>{" "}
-                টি
-              </p>
-
-              <nav className="inline-flex items-center gap-1">
-
-                {/* Previous */}
                 <button
                   type="button"
                   onClick={() =>
@@ -745,11 +658,11 @@ const ManageJobs = () => {
                     border
                     border-slate-200
                     bg-white
-                    px-3
+                    px-4
                     py-2
                     text-sm
                     font-medium
-                    text-slate-500
+                    text-slate-600
                     transition-colors
                     hover:bg-slate-50
                     disabled:cursor-not-allowed
@@ -759,38 +672,10 @@ const ManageJobs = () => {
                   পূর্ববর্তী
                 </button>
 
-                {/* Pages */}
-                {Array.from(
-                  { length: totalPages },
-                  (_, i) => i + 1
-                ).map((page) => (
-                  <button
-                    type="button"
-                    key={page}
-                    onClick={() =>
-                      setCurrentPage(page)
-                    }
-                    className={`
-                      min-w-[38px]
-                      rounded-lg
-                      border
-                      px-3
-                      py-2
-                      text-sm
-                      font-medium
-                      transition-all
-                      ${
-                        currentPage === page
-                          ? "border-blue-600 bg-blue-600 text-white shadow-sm"
-                          : "border-slate-200 bg-white text-slate-500 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
-                      }
-                    `}
-                  >
-                    {page}
-                  </button>
-                ))}
+                <span className="text-sm font-medium text-slate-500">
+                  {currentPage} / {totalPages}
+                </span>
 
-                {/* Next */}
                 <button
                   type="button"
                   onClick={() =>
@@ -807,11 +692,11 @@ const ManageJobs = () => {
                     border
                     border-slate-200
                     bg-white
-                    px-3
+                    px-4
                     py-2
                     text-sm
                     font-medium
-                    text-slate-500
+                    text-slate-600
                     transition-colors
                     hover:bg-slate-50
                     disabled:cursor-not-allowed
@@ -820,13 +705,128 @@ const ManageJobs = () => {
                 >
                   পরবর্তী
                 </button>
-              </nav>
+              </div>
+
+              {/* Desktop Pagination */}
+              <div className="hidden sm:flex sm:items-center sm:justify-between">
+
+                <p className="text-sm text-slate-500">
+                  দেখানো হচ্ছে{" "}
+                  <span className="font-semibold text-slate-700">
+                    {startIndex + 1}
+                  </span>{" "}
+                  থেকে{" "}
+                  <span className="font-semibold text-slate-700">
+                    {Math.min(
+                      startIndex + itemsPerPage,
+                      filterAndSortJobs.length
+                    )}
+                  </span>{" "}
+                  এর মধ্যে মোট{" "}
+                  <span className="font-semibold text-slate-700">
+                    {filterAndSortJobs.length}
+                  </span>{" "}
+                  টি
+                </p>
+
+                <nav className="inline-flex items-center gap-1">
+
+                  {/* Previous */}
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setCurrentPage(
+                        Math.max(1, currentPage - 1)
+                      )
+                    }
+                    disabled={currentPage === 1}
+                    className="
+                      rounded-lg
+                      border
+                      border-slate-200
+                      bg-white
+                      px-3
+                      py-2
+                      text-sm
+                      font-medium
+                      text-slate-500
+                      transition-colors
+                      hover:bg-slate-50
+                      disabled:cursor-not-allowed
+                      disabled:opacity-40
+                    "
+                  >
+                    পূর্ববর্তী
+                  </button>
+
+                  {/* Pages */}
+                  {Array.from(
+                    { length: totalPages },
+                    (_, i) => i + 1
+                  ).map((page) => (
+                    <button
+                      type="button"
+                      key={page}
+                      onClick={() =>
+                        setCurrentPage(page)
+                      }
+                      className={`
+                        min-w-[38px]
+                        rounded-lg
+                        border
+                        px-3
+                        py-2
+                        text-sm
+                        font-medium
+                        transition-all
+                        ${
+                          currentPage === page
+                            ? "border-blue-600 bg-blue-600 text-white shadow-sm"
+                            : "border-slate-200 bg-white text-slate-500 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
+                        }
+                      `}
+                    >
+                      {page}
+                    </button>
+                  ))}
+
+                  {/* Next */}
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setCurrentPage(
+                        Math.min(
+                          totalPages,
+                          currentPage + 1
+                        )
+                      )
+                    }
+                    disabled={currentPage === totalPages}
+                    className="
+                      rounded-lg
+                      border
+                      border-slate-200
+                      bg-white
+                      px-3
+                      py-2
+                      text-sm
+                      font-medium
+                      text-slate-500
+                      transition-colors
+                      hover:bg-slate-50
+                      disabled:cursor-not-allowed
+                      disabled:opacity-40
+                    "
+                  >
+                    পরবর্তী
+                  </button>
+                </nav>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
-  </div>
   </DashboardLayout>
   )
 }

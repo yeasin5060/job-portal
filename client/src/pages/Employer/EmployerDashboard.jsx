@@ -86,8 +86,6 @@ const EmployerDashboard = () => {
       setIsLoading(false)
     }
   }
-
-  console.log(dashboardData);
   
 
   useEffect(()=> {

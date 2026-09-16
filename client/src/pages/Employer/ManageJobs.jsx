@@ -156,7 +156,6 @@ const ManageJobs = () => {
     }
   };
 
-  console.log(paginatedJobs);
   
 
   

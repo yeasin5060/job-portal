@@ -19,114 +19,219 @@ export const createJob = async (req , res) => {
 }
 
 
-export const getJobs = async (req , res) => {
-
+export const getJobs = async (req, res) => {
+  try {
     const {
-        keyword,
-        location,
-        category,
-        type,
-        minSalary,
-        maxSalary,
-        userId
+      keyword,
+      location,
+      category,
+      type,
+      minSalary,
+      maxSalary,
+      experience,
+      remoteOnly,
+      userId,
+      user,
     } = req.query;
 
     const query = {
-        isClosed : false,
-        ...(keyword && {title : { $regex : keyword, $options : 'i' }}),
-        ...(location && {location : { $regex : location, $options : 'i' }}),
-        ...(keyword && {category }),
-        ...(type && { type }),
+      isClosed: false,
     };
 
-    if(minSalary || maxSalary) {
-        query.$and = [];
-
-        if(minSalary) {
-            query.$and.push({salaryMax : {$gte : Number(minSalary)}});
-        }
-
-        if(maxSalary) {
-            query.$and.push({salaryMin : {$gte : Number(maxSalary)}});
-        }
-
-        if( query.$and.length === 0 ) {
-            delete query.$and;
-        }
+    // =========================
+    // Keyword Search
+    // =========================
+    if (keyword?.trim()) {
+      query.$or = [
+        {
+          title: {
+            $regex: keyword.trim(),
+            $options: "i",
+          },
+        },
+        {
+          description: {
+            $regex: keyword.trim(),
+            $options: "i",
+          },
+        },
+      ];
     }
+
+    // =========================
+    // Location
+    // =========================
+    if (location?.trim()) {
+      query.location = {
+        $regex: location.trim(),
+        $options: "i",
+      };
+    }
+
+    // =========================
+    // Category
+    // =========================
+    if (category?.trim()) {
+      query.category = category;
+    }
+
+    // =========================
+    // Job Type
+    // =========================
+    if (type?.trim()) {
+      query.type = type;
+    }
+
+    // =========================
+    // Experience
+    // =========================
+    if (experience?.trim()) {
+      query.experience = experience;
+    }
+
+    // =========================
+    // Salary
+    // =========================
+    if (minSalary || maxSalary) {
+      query.$and = [];
+
+      if (minSalary) {
+        query.$and.push({
+          salaryMax: {
+            $gte: Number(minSalary),
+          },
+        });
+      }
+
+      if (maxSalary) {
+        query.$and.push({
+          salaryMin: {
+            $lte: Number(maxSalary),
+          },
+        });
+      }
+
+      if (query.$and.length === 0) {
+        delete query.$and;
+      }
+    }
+
+    // =========================
+    // Remote Only
+    // =========================
+    if (remoteOnly === "true") {
+      query.location = {
+        $regex: "remote",
+        $options: "i",
+      };
+    }
+
+    console.log("Job Query:", query);
+
+    const jobs = await Job.find(query)
+      .populate(
+        "company",
+        "name companyName companyLogo"
+      )
+      .sort({ createdAt: -1 });
+
+    // =========================
+    // User ID
+    // =========================
+    const currentUserId = userId || user;
+
+    let savedJobIds = [];
+    let appliedJobStatusMap = {};
+
+    if (currentUserId) {
+      // Saved Jobs
+      const savedJobs = await SavedJob.find({
+        jobseeker: currentUserId,
+      }).select("job");
+
+      savedJobIds = savedJobs.map((saved) =>
+        String(saved.job)
+      );
+
+      // Applications
+      const applications = await Application.find({
+        applicant: currentUserId,
+      }).select("job status");
+
+      applications.forEach((application) => {
+        appliedJobStatusMap[String(application.job)] =
+          application.status;
+      });
+    }
+
+    // =========================
+    // Add Extra Information
+    // =========================
+    const jobsWithExtras = jobs.map((job) => {
+      const jobIdStr = String(job._id);
+
+      return {
+        ...job.toObject(),
+
+        isSaved: savedJobIds.includes(jobIdStr),
+
+        applicationStatus:
+          appliedJobStatusMap[jobIdStr] || null,
+      };
+    });
+
+    res.status(200).json(jobsWithExtras);
+  } catch (error) {
+    console.error("Get jobs error:", error);
+
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+
+
+export const getJobById = async (req, res) => {
     try {
-        const jobs = await Job.find(query).populate(
-            'company',
-            'name companyName companyLogo'
+        const { userId } = req.query;
+
+        const job = await Job.findById(req.params.id).populate(
+            "company",
+            "name companyName companyLogo"
         );
 
-        let savedJobIds = [];
-        let appliedJobStatusMap = [];
-
-        if(userId) {
-            //saved job
-            const savedJobs = await SavedJob.find({jobseeker : userId}).select('job');
-            savedJobIds = savedJobs.map((s) => String(s.job));
-
-             //saved job
-            const applications = await Application.find({applicant : userId}).select('job status');
-            applications.forEach((app) => {
-                appliedJobStatusMap[String(app.job)] = app.status;
+        if (!job) {
+            return res.status(404).json({
+                message: "Job not found",
             });
         }
 
+        let applicationStatus = null;
 
-        const jobsWithExtras = jobs.map((job)=> {
-            const jobIdStr = String(job._id);
-
-            return {
-                ...job.toObject(),
-                isSaved : savedJobIds.includes(jobIdStr),
-                applicationStatus : appliedJobStatusMap[jobIdStr] || null
-            };
-        });
-
-        res.json(jobsWithExtras);
-
-    } catch (error) {
-        res.status(500).json({message : error.message});
-    }
-}
-
-
-
-export const getJobById = async (req , res) => {
-    try {
-        const {userId} = req.query;
-
-        const job = await Job.findById(req.params.id).populate("company" , "name companyName companyLogo");
-
-        if(!job) {
-            return res.status(404).json({message : "Job not found"});
-        }
-
-        let applicationStatus = [];
-
-        if(userId) {
+        if (userId) {
             const application = await Application.findOne({
-                job : job._id,
-                applicant : userId
-            }).select('status');
+                job: job._id,
+                applicant: userId,
+            }).select("status");
 
-            if(application) {
+            if (application) {
                 applicationStatus = application.status;
             }
         }
 
-        res.json({
+        res.status(200).json({
             ...job.toObject(),
-            applicationStatus
+            applicationStatus,
         });
     } catch (error) {
-        res.status(500).json({message : error.message});
-    }
-}
+        console.error("Get job by ID error:", error);
 
+        res.status(500).json({
+            message: error.message,
+        });
+    }
+};
 
 export const updateJob = async (req , res) => {
     try {
@@ -194,34 +299,49 @@ export const toggleCloseJob = async (req , res) => {
     }
 }
 
-export const getJobsEmployer = async (req , res) => {
+export const getJobsEmployer = async (req, res) => {
     try {
         const userId = req.user._id;
-        const {role} = req.user;
+        const { role } = req.user;
 
-        if(role !== "employer") {
-            return res.status(403).json({message : "Access denied"});
+        if (role !== "employer") {
+            return res.status(403).json({
+                message: "Access denied",
+            });
         }
 
-        // get all jobs posted by employer
-        const jobs = await Job.find({company : userId}).populate("company" , "name companyName companyLogo").lean(); //lean() makes jobs plain js uobjects so we can add new field
+        // Get all jobs posted by employer
+        const jobs = await Job.find({
+            company: userId,
+        })
+            .populate(
+                "company",
+                "name companyName companyLogo"
+            )
+            .lean();
 
-        //count application for eacj job
+        // Count applications for each job
         const jobsWithApplicationCount = await Promise.all(
             jobs.map(async (job) => {
-                const applicatioCount = await Application.countDocuments({
-                    job : job._id
-                });
+                const applicationCount =
+                    await Application.countDocuments({
+                        job: job._id,
+                    });
+
                 return {
                     ...job,
-                    applicatioCount,
+                    applicationCount,
                 };
             })
         );
 
         res.status(200).json(jobsWithApplicationCount);
     } catch (error) {
-        res.status(500).json({message : error.message});
+        console.error("Get employer jobs error:", error);
+
+        res.status(500).json({
+            message: error.message,
+        });
     }
-}
+};
 

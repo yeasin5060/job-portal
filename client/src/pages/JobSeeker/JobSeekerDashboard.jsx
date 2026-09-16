@@ -53,69 +53,68 @@ const JobSeekerDashboard = () => {
   // Fetch Jobs
   // =========================
   const fetchJobs = async (filterParams = {}) => {
-    try {
-      setLoading(true);
-      setError(null);
+  try {
+    setLoading(true);
+    setError(null);
 
-      const params = new URLSearchParams();
+    const params = new URLSearchParams();
 
-      if (filterParams.keyword) {
-        params.append("keyword", filterParams.keyword);
-      }
-
-      if (filterParams.location) {
-        params.append("location", filterParams.location);
-      }
-
-      if (filterParams.category) {
-        params.append("category", filterParams.category);
-      }
-
-      if (filterParams.type) {
-        params.append("type", filterParams.type);
-      }
-
-      if (filterParams.minSalary) {
-        params.append("minSalary", filterParams.minSalary);
-      }
-
-      if (filterParams.maxSalary) {
-        params.append("maxSalary", filterParams.maxSalary);
-      }
-
-      if (filterParams.experience) {
-        params.append("experience", filterParams.experience);
-      }
-
-      if (filterParams.remoteOnly) {
-        params.append("remoteOnly", "true");
-      }
-
-      if (user?._id) {
-        params.append("user", user._id);
-      }
-
-      const response = await axiosInstance.get(
-        `${API_PATHS.JOBS.GET_ALL_JOBS}?${params.toString()}`
-      );
-
-      const jobsData = Array.isArray(response.data)
-        ? response.data
-        : Array.isArray(response.data?.jobs)
-        ? response.data.jobs
-        : [];
-
-      setJobs(jobsData);
-    } catch (error) {
-      console.error("Error fetching jobs:", error);
-
-      setError("Failed to fetch jobs. Please try again later.");
-
-      // Must always be array
-      setJobs([]);
-    } finally {
-      setLoading(false);
+    if (filterParams.keyword) {
+      params.append("keyword", filterParams.keyword);
     }
+
+    if (filterParams.location) {
+      params.append("location", filterParams.location);
+    }
+
+    if (filterParams.category) {
+      params.append("category", filterParams.category);
+    }
+
+    if (filterParams.type) {
+      params.append("type", filterParams.type);
+    }
+
+    if (filterParams.minSalary) {
+      params.append("minSalary", filterParams.minSalary);
+    }
+
+    if (filterParams.maxSalary) {
+      params.append("maxSalary", filterParams.maxSalary);
+    }
+
+    if (filterParams.experience) {
+      params.append("experience", filterParams.experience);
+    }
+
+    if (filterParams.remoteOnly) {
+      params.append("remoteOnly", "true");
+    }
+
+    // IMPORTANT: backend expects userId
+    if (user?._id) {
+      params.append("userId", user._id);
+    }
+
+    const response = await axiosInstance.get(
+      `${API_PATHS.JOBS.GET_ALL_JOBS}?${params.toString()}`
+    );
+
+    const jobsData = Array.isArray(response.data)
+      ? response.data
+      : Array.isArray(response.data?.jobs)
+      ? response.data.jobs
+      : [];
+
+    setJobs(jobsData);
+  } catch (error) {
+    console.error("Error fetching jobs:", error);
+
+    setError("Failed to fetch jobs. Please try again later.");
+    setJobs([]);
+  } finally {
+    setLoading(false);
+  }
   };
 
   // =========================
@@ -175,12 +174,11 @@ const JobSeekerDashboard = () => {
   // =========================
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      fetchJobs(getApiFilters());
-    }, 400);
+      fetchJobs(filters);
+    }, 500);
 
     return () => clearTimeout(timeoutId);
-  }, [filters, user]);
-
+  }, [filters]);
   // =========================
   // Immediate Search
   // =========================

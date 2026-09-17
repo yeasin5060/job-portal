@@ -45,7 +45,6 @@ const FilterContent = ({
   handleFilterChange,
 }) => {
 
-  console.log(filters);
   
   return (
     <>
@@ -72,7 +71,7 @@ const FilterContent = ({
               key={type.value}
               className="flex items-center cursor-pointer"
             >
-              <input
+             <input
                 type="checkbox"
                 id={type.value}
                 value={type.value}
@@ -83,6 +82,7 @@ const FilterContent = ({
                     e.target.checked ? type.value : ""
                   )
                 }
+                onClick={(e) => e.stopPropagation()}
                 className="w-4 h-4 text-blue-600 bg-slate-100 border-slate-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-slate-800 focus:ring-2 dark:bg-slate-700 dark:border-slate-600"
               />
 
@@ -129,6 +129,7 @@ const FilterContent = ({
                     e.target.checked ? type.value : ""
                   )
                 }
+                onClick={(e) => e.stopPropagation()}
                 className="w-4 h-4 text-blue-600 bg-slate-100 border-slate-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-slate-800 focus:ring-2 dark:bg-slate-700 dark:border-slate-600"
               />
 

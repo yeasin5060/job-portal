@@ -173,12 +173,24 @@ const JobSeekerDashboard = () => {
   // Fetch when filters change
   // =========================
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      fetchJobs(filters);
-    }, 500);
+  if (!user?._id) return;
 
-    return () => clearTimeout(timeoutId);
-  }, [filters]);
+  const timeoutId = setTimeout(() => {
+    fetchJobs(filters);
+  }, 500);
+
+  return () => clearTimeout(timeoutId);
+}, [
+  filters.keyword,
+  filters.location,
+  filters.category,
+  filters.type,
+  filters.minSalary,
+  filters.maxSalary,
+  filters.experience,
+  filters.remoteOnly,
+  user?._id,
+]);
   // =========================
   // Immediate Search
   // =========================

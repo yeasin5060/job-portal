@@ -210,23 +210,22 @@ const DeleteResume = async () => {
 
 // =========================
 // Sync User
-// =========================
 useEffect(() => {
-  const userData = {
-    name: user?.name || "",
-    email: user?.email || "",
-    avatar: user?.avatar || "",
-    resume: user?.resume || "",
-  };
+  if (user) {
+    const userData = {
+      name: user.name || "",
+      email: user.email || "",
+      avatar: user.avatar || "",
+      resume: user.resume || "",
+    };
 
-  setProfileData(userData);
-  setFormData(userData);
+    setProfileData(userData);
+    setFormData(userData);
+  }
 }, [user]);
 
-
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950/30">
+    <div className="min-h-screen bg-white text-slate-900">
       <Navbar />
 
       <div className="pt-20 pb-12">

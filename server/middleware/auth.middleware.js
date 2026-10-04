@@ -42,3 +42,21 @@ export const protect = async (req, res, next) => {
         });
     }
 };
+
+export const optionalAuth = async (req, res, next) => {
+    try {
+        let token = req.headers.authorization;
+
+        if (token && token.startsWith("Bearer ")) {
+            token = token.split(" ")[1];
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            const user = await User.findById(decoded.id).select("-password");
+            if (user) {
+                req.user = user;
+            }
+        }
+    } catch (error) {
+        // Ignore token errors for optional authentication
+    }
+    next();
+};

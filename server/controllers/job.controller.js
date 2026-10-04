@@ -194,7 +194,7 @@ export const getJobs = async (req, res) => {
 
 export const getJobById = async (req, res) => {
     try {
-        const { userId } = req.query;
+        const currentUserId = req.user?._id || req.query.userId;
 
         const job = await Job.findById(req.params.id).populate(
             "company",
@@ -209,10 +209,10 @@ export const getJobById = async (req, res) => {
 
         let applicationStatus = null;
 
-        if (userId) {
+        if (currentUserId) {
             const application = await Application.findOne({
                 job: job._id,
-                applicant: userId,
+                applicant: currentUserId,
             }).select("status");
 
             if (application) {

@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Banknote, ArrowRight } from "lucide-react";
 
 const SalaryRangeSlider = ({ filters, handleFilterChange }) => {
@@ -41,20 +40,20 @@ const SalaryRangeSlider = ({ filters, handleFilterChange }) => {
     );
   };
 
-  const hasSalaryFilter = minSalary || maxSalary;
+  const hasSalaryFilter = Boolean(minSalary || maxSalary);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 pt-1">
       {/* Input Fields */}
       <div className="grid grid-cols-2 gap-3">
         {/* Minimum Salary */}
         <div>
-          <label className="block mb-2 text-xs font-semibold text-slate-600 dark:text-slate-400">
-            Minimum
+          <label className="block mb-1.5 text-xs font-bold text-slate-900">
+            Minimum (৳)
           </label>
 
           <div className="relative">
-            <Banknote className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+            <Banknote className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
 
             <input
               type="number"
@@ -65,24 +64,21 @@ const SalaryRangeSlider = ({ filters, handleFilterChange }) => {
               onChange={handleMinSalaryChange}
               onBlur={handleMinSalaryBlur}
               className="w-full h-11 pl-9 pr-3 rounded-xl border border-slate-200 
-              bg-slate-50 text-sm text-slate-800 placeholder:text-slate-400
+              bg-white text-sm font-semibold text-slate-900 placeholder:text-slate-400
               outline-none transition-all
-              focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10
-              dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200
-              dark:placeholder:text-slate-500 dark:focus:border-blue-500
-              dark:focus:bg-slate-900"
+              focus:border-blue-600 focus:bg-white focus:ring-3 focus:ring-blue-500/20 shadow-xs"
             />
           </div>
         </div>
 
         {/* Maximum Salary */}
         <div>
-          <label className="block mb-2 text-xs font-semibold text-slate-600 dark:text-slate-400">
-            Maximum
+          <label className="block mb-1.5 text-xs font-bold text-slate-900">
+            Maximum (৳)
           </label>
 
           <div className="relative">
-            <Banknote className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+            <Banknote className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
 
             <input
               type="number"
@@ -93,12 +89,9 @@ const SalaryRangeSlider = ({ filters, handleFilterChange }) => {
               onChange={handleMaxSalaryChange}
               onBlur={handleMaxSalaryBlur}
               className="w-full h-11 pl-9 pr-3 rounded-xl border border-slate-200 
-              bg-slate-50 text-sm text-slate-800 placeholder:text-slate-400
+              bg-white text-sm font-semibold text-slate-900 placeholder:text-slate-400
               outline-none transition-all
-              focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10
-              dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200
-              dark:placeholder:text-slate-500 dark:focus:border-blue-500
-              dark:focus:bg-slate-900"
+              focus:border-blue-600 focus:bg-white focus:ring-3 focus:ring-blue-500/20 shadow-xs"
             />
           </div>
         </div>
@@ -106,26 +99,28 @@ const SalaryRangeSlider = ({ filters, handleFilterChange }) => {
 
       {/* Salary Range Preview */}
       {hasSalaryFilter && (
-        <div className="relative overflow-hidden rounded-xl border border-blue-100 bg-blue-50/70 px-3.5 py-3 dark:border-blue-900/40 dark:bg-blue-950/20">
+        <div className="relative overflow-hidden rounded-xl border border-blue-200/90 bg-gradient-to-r from-blue-50/90 to-indigo-50/90 px-3.5 py-3 shadow-xs">
           <div className="flex items-center justify-between gap-2">
             <div>
-              <p className="text-[11px] font-medium uppercase tracking-wide text-blue-500 dark:text-blue-400">
-                Salary Range
+              <p className="text-[11px] font-bold uppercase tracking-wider text-blue-700">
+                Min Salary
               </p>
 
-              <p className="mt-1 text-sm font-bold text-slate-800 dark:text-slate-200">
+              <p className="mt-1 text-sm font-extrabold text-slate-900">
                 ৳ {formatSalary(minSalary)}
               </p>
             </div>
 
-            <ArrowRight className="w-4 h-4 shrink-0 text-blue-500" />
+            <div className="w-7 h-7 rounded-full bg-white shadow-xs flex items-center justify-center shrink-0 border border-blue-100">
+              <ArrowRight className="w-3.5 h-3.5 text-blue-600" />
+            </div>
 
             <div className="text-right">
-              <p className="text-[11px] font-medium uppercase tracking-wide text-blue-500 dark:text-blue-400">
-                Maximum
+              <p className="text-[11px] font-bold uppercase tracking-wider text-indigo-700">
+                Max Salary
               </p>
 
-              <p className="mt-1 text-sm font-bold text-slate-800 dark:text-slate-200">
+              <p className="mt-1 text-sm font-extrabold text-slate-900">
                 {maxSalary ? `৳ ${formatSalary(maxSalary)}` : "No Limit"}
               </p>
             </div>
@@ -134,12 +129,11 @@ const SalaryRangeSlider = ({ filters, handleFilterChange }) => {
       )}
 
       {/* Helper Text */}
-      <p className="text-[11px] leading-relaxed text-slate-400 dark:text-slate-500">
-        Enter your preferred minimum and maximum monthly salary.
+      <p className="text-[11px] font-medium leading-relaxed text-slate-600">
+        Enter your preferred monthly salary range in BDT (৳).
       </p>
     </div>
   );
 };
 
 export default SalaryRangeSlider;
-

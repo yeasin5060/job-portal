@@ -27,7 +27,8 @@ const JobSeekerDashboard = () => {
   const navigate = useNavigate();
 
   const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);       // প্রথম লোড
+  const [filterLoading, setFilterLoading] = useState(false); // ফিল্টার রিলোড
   const [viewMode, setViewMode] = useState("grid");
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [error, setError] = useState(null);
@@ -55,9 +56,13 @@ const JobSeekerDashboard = () => {
   // Fetch Jobs
   // =========================
   const fetchJobs = useCallback(
-    async (filterParams = {}) => {
+    async (filterParams = {}, isFilter = false) => {
       try {
-        setLoading(true);
+        if (isFilter) {
+          setFilterLoading(true);
+        } else {
+          setLoading(true);
+        }
         setError(null);
 
         const params = new URLSearchParams();
@@ -116,6 +121,7 @@ const JobSeekerDashboard = () => {
         setJobs([]);
       } finally {
         setLoading(false);
+        setFilterLoading(false);
       }
     },
     [user?._id]
@@ -174,11 +180,19 @@ const JobSeekerDashboard = () => {
   // =========================
   // Fetch when filters or user change (debounced)
   // =========================
+  // প্রথম লোড
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      fetchJobs(filters);
-    }, 400);
+    fetchJobs(filters, false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetchJobs]);
 
+  // ফিল্টার পরিবর্তনে debounced reload (inline spinner)
+  useEffect(() => {
+    // প্রথম রেন্ডারে skip করা হয়
+    if (loading) return;
+    const timeoutId = setTimeout(() => {
+      fetchJobs(filters, true);
+    }, 400);
     return () => clearTimeout(timeoutId);
   }, [
     filters.keyword,
@@ -189,7 +203,7 @@ const JobSeekerDashboard = () => {
     filters.maxSalary,
     filters.experience,
     filters.remoteOnly,
-    fetchJobs,
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   ]);
 
   // =========================
@@ -436,12 +450,10 @@ const JobSeekerDashboard = () => {
               {/* =========================
                   Jobs Content State
               ========================= */}
-              {loading ? (
-                <div className="py-20 flex flex-col items-center justify-center bg-white rounded-3xl border border-slate-200 shadow-xs">
-                  <LoadingSpinner />
-                  <p className="mt-4 text-sm font-semibold text-slate-600">
-                    চাকরিগুলো লোড হচ্ছে...
-                  </p>
+              {loading || filterLoading ? (
+                // লোডিং: inline ছোট স্পিনার — Navbar ও Sidebar দেখা যাবে
+                <div className="bg-white rounded-3xl border border-slate-200 shadow-xs">
+                  <LoadingSpinner inline />
                 </div>
               ) : error ? (
                 /* Error */

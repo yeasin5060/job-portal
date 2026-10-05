@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { User } from '../models/user.model.js';
+import { uploadDir } from '../middleware/upload.middleware.js';
 
 
 // update user profile  {name , avatar , company details}
@@ -80,22 +81,22 @@ export const deleteResume = async (req, res) => {
     }
 
     // uploads folder path
-    const filePath = path.join(
-      process.cwd(),
-      "uploads",
-      fileName
-    );
+    const filePath = path.join(uploadDir, fileName);
 
     console.log("Resume URL:", resumeUrl);
     console.log("File name:", fileName);
     console.log("File path:", filePath);
 
-    // Delete physical file
-    if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath);
-      console.log("Resume file deleted:", filePath);
-    } else {
-      console.log("Resume file not found:", filePath);
+    // Delete physical file safely
+    try {
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+        console.log("Resume file deleted:", filePath);
+      } else {
+        console.log("Resume file not found:", filePath);
+      }
+    } catch (err) {
+      console.warn("Could not delete resume file:", err.message);
     }
 
     // Remove resume URL from database

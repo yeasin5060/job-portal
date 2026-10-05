@@ -12,6 +12,7 @@ import jobRouter from "./routes/job.route.js";
 import applicationRouter from './routes/application.route.js';
 import savedJobsRouter from './routes/savedJobs.route.js';
 import analyticsRouter from './routes/analytics.route.js'
+import { uploadDir } from "./middleware/upload.middleware.js";
 
 
 const app = express();
@@ -39,10 +40,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Static uploads
-app.use(
-  "/uploads",
-  express.static(path.join(__dirname, "uploads"))
-);
+app.use("/uploads", express.static(uploadDir));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Root route
 app.get("/", (req, res) => {

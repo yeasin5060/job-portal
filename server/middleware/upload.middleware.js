@@ -1,16 +1,30 @@
 import multer from "multer";
 import path from "path";
-import fs from "fs";
+import os from "os";
 
-const uploadDir = path.join(process.cwd(), "uploads");
+// On Vercel / serverless environment, filesystem is read-only except /tmp
+export const uploadDir = process.env.VERCEL
+    ? path.join(os.tmpdir(), "uploads")
+    : path.join(process.cwd(), "uploads");
 
 // uploads folder না থাকলে তৈরি করবে
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
+try {
+    if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+    }
+} catch (error) {
+    console.warn("Could not create uploads directory:", error.message);
 }
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
+        try {
+            if (!fs.existsSync(uploadDir)) {
+                fs.mkdirSync(uploadDir, { recursive: true });
+            }
+        } catch (err) {
+            console.warn("Could not create uploads directory in destination:", err.message);
+        }
         cb(null, uploadDir);
     },
 

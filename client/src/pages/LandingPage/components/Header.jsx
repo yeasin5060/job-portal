@@ -65,8 +65,8 @@ const Header = () => {
                     {isAuthenticated ? (
                         <div className="flex items-center space-x-3">
 
-                            <span className="text-gray-700 hidden sm:block">
-                                স্বাগতম, {user.fullName}
+                            <span className="text-gray-700 font-medium hidden sm:block">
+                                স্বাগতম, {user?.name || user?.fullName || 'ব্যবহারকারী'}
                             </span>
 
                             <button

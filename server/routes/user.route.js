@@ -2,9 +2,6 @@ import express from 'express';
 import { updateProfile, deleteResume , getPublicProfile } from '../controllers/user.controller.js';
 import { protect } from '../middleware/auth.middleware.js';
 
-protect
-
-
 const router = express.Router();
 
 router.put('/update-profile' , protect , updateProfile);

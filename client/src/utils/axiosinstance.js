@@ -22,22 +22,31 @@ axiosInstance.interceptors.request.use((config)=> {
     }
 );
 
-axiosInstance.interceptors.response.use((response)=> 
-    {
+axiosInstance.interceptors.response.use(
+    (response) => {
         return response;
-    },(error)=> {
-        //handle common error globally
-        if(error.response) {
-            if(error.response.status === 401) {
-                window.location.href = "/";
-            }else if(error.response.status === 500) {
-                console.log("Server Error, Please try agin later");
+    },
+    (error) => {
+        // handle common error globally
+        if (error.response) {
+            if (error.response.status === 401) {
+                // If token exists but expired, clear storage
+                if (localStorage.getItem("token")) {
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("user");
+                    // Only redirect if not already on public pages
+                    if (window.location.pathname !== "/" && window.location.pathname !== "/login" && window.location.pathname !== "/signup") {
+                        window.location.href = "/login";
+                    }
+                }
+            } else if (error.response.status === 500) {
+                console.error("Server Error, Please try again later");
             }
-        }else if(error.code === "ECONNABORTED") {
-            console.error("Request timeoutx, Please try agin");
+        } else if (error.code === "ECONNABORTED") {
+            console.error("Request timeout, Please try again");
         }
-        return Promise.reject(error)
-    } 
+        return Promise.reject(error);
+    }
 );
 
 export default axiosInstance;

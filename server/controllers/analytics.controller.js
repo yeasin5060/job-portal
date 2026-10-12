@@ -75,11 +75,11 @@ export const getEmployerAnalytics = async (req , res) => {
         const hiredTrend = getTrend(hiredLast7 , hiredPrev7);
 
         // === data ===
-        const recendJobs = await Job.find({company : companyId}).sort({createdAt : -1}).limit(5).select("title location type createdAt isclosed");
+        const recentJobsList = await Job.find({company : companyId}).sort({createdAt : -1}).limit(5).select("title location type createdAt isClosed");
 
-        const recentApllications = await Application.find({
+        const recentApplicationsList = await Application.find({
             job : {$in : jobIds}
-        }).sort({createdAt : -1}).limit('5').populate("applicant" , "name email avatar").populate("job", "title");
+        }).sort({createdAt : -1}).limit(5).populate("applicant" , "name email avatar").populate("job", "title");
 
         res.json({
             counts : {
@@ -94,8 +94,11 @@ export const getEmployerAnalytics = async (req , res) => {
                 }   
             },
             data : {
-                recendJobs,
-                recentApllications
+                // backward compatible for both spellings
+                recendJobs: recentJobsList,
+                recentJobs: recentJobsList,
+                recentApllications: recentApplicationsList,
+                recentApplications: recentApplicationsList
             }
         });
 

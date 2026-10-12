@@ -48,7 +48,7 @@ const SearchHeader = ({
               <span>স্মার্ট ক্যারিয়ার সার্চ</span>
             </div>
 
-            <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-slate-900 leading-tight">
+            <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-slate-900 leading-tight ">
               আপনার{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600">
                 স্বপ্নের চাকরি

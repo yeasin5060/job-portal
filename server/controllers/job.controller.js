@@ -138,7 +138,7 @@ export const getJobs = async (req, res) => {
     // =========================
     // User ID
     // =========================
-    const currentUserId = userId || user;
+    const currentUserId = req.user?._id || userId || user;
 
     let savedJobIds = [];
     let appliedJobStatusMap = {};
